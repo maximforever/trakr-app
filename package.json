@@ -1,0 +1,26 @@
+{
+  "name": "trakr-app",
+  "version": "1.0.0",
+  "description": "**Trakr** is a minimal money-tracking app to help you (but really, me) understand where my money's going every month.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd client && yarn start",
+    "build": "cd client && yarn build",
+    "install": "cd client && yarn"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximforever/trakr-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maximforever/trakr-app/issues"
+  },
+  "homepage": "https://github.com/maximforever/trakr-app#readme"
+}
