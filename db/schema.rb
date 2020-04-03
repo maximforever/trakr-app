@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_03_182754) do
+ActiveRecord::Schema.define(version: 2020_04_03_214344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2020_04_03_182754) do
     t.bigint "user_id"
     t.integer "amount"
     t.string "description"
-    t.json "budgets"
     t.string "merchant"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -42,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_04_03_182754) do
     t.integer "default_monthly_budget"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.json "budgets"
   end
 
 end

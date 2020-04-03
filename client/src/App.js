@@ -1,22 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import ExpenseForm from './components/ExpenseForm'
+import Expenses from './components/Expenses'
+import './assets/stylesheets/App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <button onClick={fetchTestData}>
-        Fetch Test Data
-      </button>
-    </div>
-  );
+class App extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      expenses: []
+    }
+
+    this.fetchExpenses = this.fetchExpenses.bind(this);
+    this.submitNewExpense = this.submitNewExpense.bind(this);
+  }
+
+  componentDidMount(){
+    this.fetchExpenses();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <ExpenseForm 
+          submitNewExpense={this.submitNewExpense}
+        />
+        <Expenses expenses={this.state.expenses} />
+      </div>
+    );
+  }
+  
+  submitNewExpense(expense){
+    fetch('/api/v1/expenses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expense),
+    })
+      .then(res => res.json())
+      .then((response) => { 
+        console.log(response);
+        this.setState({
+          expenses: response.expenses,
+        })
+      })
+      .catch((error) => { console.log("Error while fetching test datas", error); })
+  }
+
+  fetchExpenses() {
+    fetch('/api/v1/expenses')
+      .then(res => res.json())
+      .then((response) => { 
+        this.setState({
+          expenses: response.expenses,
+        })
+      })
+      .catch((error) => { console.log("Error while fetching test datas", error); })
+  }
 }
 
-const fetchTestData = function () {
-  fetch('/api/v1/tests')
-    .then(res => res.json())
-    .then((response) => { console.log("Test datas response", response); })
-    .catch((error) => { console.log("Error while fetching test datas", error); })
-}
+
 
 export default App;
