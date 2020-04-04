@@ -27,7 +27,6 @@ class ExpenseForm extends Component {
   handleSubmit(e){
     e.preventDefault(e);
     this.submitData();
-    console.log(e);
   }
 
   submitData(){
@@ -40,26 +39,30 @@ class ExpenseForm extends Component {
     this.props.submitNewExpense(newExpense);
   }
 
+  validExpense(){
+    return (this.state.amount === 0 || this.state.description.length < 2);
+  }
+
   render(){
     return (
       <div className="new-expense-form">
         <h3>New Expense</h3>
         <form onSubmit={this.handleSubmit}>
-          <label>Amount:
+          <div className="oneInput">
+            <label>Amount:</label>
             <input value={this.state.amount} type='number' name='amount' onChange={this.handleInputChange}></input>
-            <br />
-          </label>
+          </div>
 
-          <label>Description:
+          <div className="oneInput">
+            <label>Description:</label>
             <input value={this.state.description} type='text' name='description' onChange={this.handleInputChange}></input>
-            <br />
-          </label>
+          </div>
 
-          <label>Merchant:
+          <div className="oneInput">
+            <label>Merchant:</label>
             <input value={this.state.merchant} type='text' name='merchant' onChange={this.handleInputChange}></input>
-            <br />
-          </label>
-          <button>Add Expense</button>
+          </div>
+          <button disabled={this.validExpense()}>Add Expense</button>
         </form>
       </div>
     )

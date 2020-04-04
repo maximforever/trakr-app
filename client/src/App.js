@@ -14,6 +14,7 @@ class App extends Component {
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
     this.submitNewExpense = this.submitNewExpense.bind(this);
+    this.deleteExpense = this.deleteExpense.bind(this);
   }
 
   componentDidMount(){
@@ -26,7 +27,10 @@ class App extends Component {
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}
         />
-        <Expenses expenses={this.state.expenses} />
+        <Expenses 
+          expenses={this.state.expenses} 
+          deleteExpense={this.deleteExpense}
+        />
       </div>
     );
   }
@@ -38,6 +42,20 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(expense),
+    })
+      .then(res => res.json())
+      .then((response) => { 
+        console.log(response);
+        this.setState({
+          expenses: response.expenses,
+        })
+      })
+      .catch((error) => { console.log("Error while fetching test datas", error); })
+  }
+
+  deleteExpense(id){
+    fetch(`/api/v1/expenses/${id}`, {
+      method: 'DELETE',
     })
       .then(res => res.json())
       .then((response) => { 

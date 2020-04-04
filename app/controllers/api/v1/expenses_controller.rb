@@ -1,6 +1,4 @@
 class Api::V1::ExpensesController < ApplicationController
-  #skip_before_action :verify_authenticity_token
-
   def index
     @expenses = Expense.all
 
@@ -20,6 +18,15 @@ class Api::V1::ExpensesController < ApplicationController
         message: @expense.errors.full_messages
       }
     end
+  end
+
+  def destroy
+    @expense = Expense.find(params[:id]);
+    @expense.destroy
+    render json:  {
+      status: 200,
+      expenses: User.first.expenses
+    } 
   end
 
   private
