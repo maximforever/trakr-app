@@ -8,11 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd client && yarn start",
-    "build": "cd client && yarn build",
-    "install": "cd client && yarn",
-    "heroku-postbuild": "cd client && yarn build"
+    "build": "yarn --cwd client install && yarn --cwd client build",
+    "deploy": "cp -a client/build/. public/",
+    "heroku-postbuild": "yarn build && yarn deploy"
   },
   "engines": {
     "node": "12.13.1",
