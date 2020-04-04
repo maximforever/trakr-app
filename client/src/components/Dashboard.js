@@ -6,21 +6,18 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      moneySpentToday: this.moneySpentToday(),
-    }
-
     this.moneySpentToday = this.moneySpentToday.bind(this);
     this.moneySpentThisMonth = this.moneySpentThisMonth.bind(this);
     this.dailyBudget = this.dailyBudget.bind(this);
+    this.monthlyBalance = this.monthlyBalance.bind(this);
   }
-  
+
   render() {
     return(
       <div className="dashboard">
         <div className="square full-square card">
-          <div className="label">Spent today:</div>
-          <div className="metric">${this.state.moneySpentToday}</div>
+          <div className="label">Spent today</div>
+          <div className="metric">${this.moneySpentToday()}</div>
         </div>
         <div className="half-square-wrapper">
           <div className="card square half-square">
@@ -29,7 +26,7 @@ class Dashboard extends Component {
           </div>
           <div className="card square half-square">
             <div className="label">Monthly balance</div>
-            <div className="metric">{this.monthProgress()}%</div>
+            <div className="metric">${this.monthlyBalance()}</div>
           </div>
         </div>
       </div>
@@ -37,36 +34,41 @@ class Dashboard extends Component {
   }
 
   moneySpentToday(){
-    console.log(this.props.expenses);
     return this.props.expenses.reduce((acc, expense) => {
-      if(this.isToday(expense.created_at)){
-        return acc + expense.amount;
-      }
+      return (this.isToday(new Date(), expense.timestamp)) ? acc + expense.amount : 0;
     }, 0)
   }
 
   moneySpentThisMonth(){
-    console.log(this.props.expenses.length);
     return this.props.expenses.reduce((acc, expense) => {
-      if(this.isThisMonth(expense.created_at)){
-        return acc + expense.amount;
-      }
+      return (this.isThisMonth(new Date(), expense.timestamp)) ? acc + expense.amount : 0;
     }, 0)
   }
 
-  isToday(timestamp){
-    /*TODO*/
-    return true;
+  isToday(today, timestamp){
+    timestamp = new Date(timestamp);
+    return (
+      today.getYear() === timestamp.getYear() && 
+      today.getMonth() === timestamp.getMonth() && 
+      today.getDate() === timestamp.getDate()
+    )
   }
 
-  isThisMonth(timestamp){
-    console.log(timestamp);
-    /*TODO*/
-    return true;
+  isThisMonth(today, timestamp){
+    timestamp = new Date(timestamp);
+    return (
+      today.getYear() === timestamp.getYear() && 
+      today.getMonth() === timestamp.getMonth()
+    )
   }
 
   leftToSpendToday(){
-    return this.dailyBudget() - this.state.moneySpentToday;
+    return this.dailyBudget() - this.moneySpentToday();
+  }
+
+  monthlyBalance(){
+    let today = new Date();
+    return this.dailyBudget()*today.getDate() - this.moneySpentThisMonth();
   }
 
   monthProgress(){
