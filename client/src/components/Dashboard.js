@@ -17,16 +17,16 @@ class Dashboard extends Component {
       <div className="dashboard">
         <div className="square full-square card">
           <div className="label">Spent today</div>
-          <div className="metric">${this.moneySpentToday()}</div>
+          <div className="metric">{this.moneyFormat(this.moneySpentToday())}</div>
         </div>
         <div className="half-square-wrapper">
           <div className="card square half-square">
             <div className="label">Left to spend</div>
-            <div className="metric">${this.leftToSpendToday()}</div>
+            <div className="metric">{this.moneyFormat(this.leftToSpendToday())}</div>
           </div>
           <div className="card square half-square">
             <div className="label">Monthly balance</div>
-            <div className="metric">${this.monthlyBalance()}</div>
+            <div className="metric">{this.monthlyBalance()}</div>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@ class Dashboard extends Component {
   moneySpentToday(){
     return this.props.expenses.reduce((acc, expense) => {
       return (this.isToday(new Date(), expense.timestamp)) ? acc + expense.amount : 0;
-    }, 0)
+    }, 0);
   }
 
   moneySpentThisMonth(){
@@ -68,7 +68,7 @@ class Dashboard extends Component {
 
   monthlyBalance(){
     let today = new Date();
-    return this.dailyBudget()*today.getDate() - this.moneySpentThisMonth();
+    return this.moneyFormat(this.dailyBudget()*today.getDate() - this.moneySpentThisMonth());
   }
 
   monthProgress(){
@@ -83,6 +83,10 @@ class Dashboard extends Component {
 
   daysInMonth (month, year) {
     return new Date(year, month + 1, 0).getDate();
+  }
+
+  moneyFormat(number){
+    return (number >= 0) ? `$${number}` : `-$${Math.abs(number)}`
   }
 }
 
