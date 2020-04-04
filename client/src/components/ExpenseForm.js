@@ -8,13 +8,19 @@ class ExpenseForm extends Component {
     super(props);
 
     this.state = {
-      amount: 0,
+      amount: "",
       description: "",
       merchant: "",
+      timestamp: "",
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setDateTimePickerToNow = this.setDateTimePickerToNow.bind(this);
+  }
+
+  componentDidMount(){
+    this.setDateTimePickerToNow();
   }
 
   handleInputChange(e){
@@ -29,14 +35,33 @@ class ExpenseForm extends Component {
     this.submitData();
   }
 
+  resetState(){
+    this.setState({
+      amount: "",
+      description: "",
+      merchant: "",
+      timestamp: "",
+    })
+  }
+
   submitData(){
     const newExpense = {
       amount: this.state.amount,
       description: this.state.description,
       merchant: this.state.merchant,
+      timestamp: this.state.timestamp,
     }
 
     this.props.submitNewExpense(newExpense);
+    this.resetState();
+  }
+
+  setDateTimePickerToNow(){
+    const timezoneOffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    const currentDatetime = new Date(Date.now() - timezoneOffset).toISOString().slice(0,16);
+    this.setState({
+      timestamp: currentDatetime
+    })
   }
 
   validExpense(){
@@ -45,23 +70,29 @@ class ExpenseForm extends Component {
 
   render(){
     return (
-      <div className="new-expense-form">
+      <div className="new-expense-form card">
         <h3>New Expense</h3>
         <form onSubmit={this.handleSubmit}>
-          <div className="oneInput">
+          <div className="one-input">
             <label>Amount:</label>
             <input value={this.state.amount} type='number' name='amount' onChange={this.handleInputChange}></input>
           </div>
 
-          <div className="oneInput">
+          <div className="one-input">
             <label>Description:</label>
             <input value={this.state.description} type='text' name='description' onChange={this.handleInputChange}></input>
           </div>
 
-          <div className="oneInput">
+          <div className="one-input">
             <label>Merchant:</label>
             <input value={this.state.merchant} type='text' name='merchant' onChange={this.handleInputChange}></input>
           </div>
+
+          <div className="one-input">
+            <label>Date:</label>
+            <input value={this.state.timestamp} type='datetime-local' name='timestamp' onChange={this.handleInputChange}></input>
+          </div>
+
           <button disabled={this.validExpense()}>Add Expense</button>
         </form>
       </div>

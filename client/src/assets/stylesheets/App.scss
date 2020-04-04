@@ -1,15 +1,25 @@
 .App {
+  width: 90%;
   max-width: 600px;
   margin: 2rem auto;
 }
 
-.new-expense-form {
+.card {
   padding: 2rem;
   border: 2px solid #000000;
 
+  h3 {
+    margin-top: 0;
+  }
+}
 
-  .oneInput {
-    margin: 0.5rem 0;
+.new-expense-form {
+  label {
+    display: block;
+  }
+
+  .one-input {
+    margin: 1rem 0;
   }
 }
 

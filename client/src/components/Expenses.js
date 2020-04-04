@@ -13,7 +13,9 @@ function renderExpenses(expenses, deleteExpense){
   return expenses.map((expense) => {
     return (
       <div className="one-expense" key={expense.id}>
-        <span><strong>${expense.amount}</strong> for {expense.description || "Undefined"}</span>
+        <span>
+          <strong>${expense.amount}</strong> for {expense.description || "Undefined"}
+        </span>
         <a href="#" onClick={() => { deleteExpense(expense.id)}}>delete</a>
       </div>
     )

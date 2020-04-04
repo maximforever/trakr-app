@@ -1,0 +1,26 @@
+.half-square-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card.square {
+  text-align: center;
+
+  .label {
+    padding: 0.3rem;
+  }
+
+  .metric {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+}
+
+.card.full-square {
+  margin: 0.3rem 0;
+}
+
+.card.half-square {
+  width: 42%;
+  margin: 0.3rem 0; 
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ExpenseForm from './components/ExpenseForm'
 import Expenses from './components/Expenses'
+import Dashboard from './components/Dashboard'
 import './assets/stylesheets/App.scss';
 
 class App extends Component {
@@ -9,21 +10,28 @@ class App extends Component {
     super(props);
 
     this.state = {
-      expenses: []
+      expenses: [],
+      monthlyBudget: 0,
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
+    this.fetchMonthlyBudget = this.fetchMonthlyBudget.bind(this);
     this.submitNewExpense = this.submitNewExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
   componentDidMount(){
     this.fetchExpenses();
+    this.fetchMonthlyBudget();
   }
 
   render() {
     return (
       <div className="App">
+        <Dashboard
+          expenses={this.state.expenses}
+          monthlyBudget={this.state.monthlyBudget}
+        />
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}
         />
@@ -45,12 +53,11 @@ class App extends Component {
     })
       .then(res => res.json())
       .then((response) => { 
-        console.log(response);
         this.setState({
           expenses: response.expenses,
         })
       })
-      .catch((error) => { console.log("Error while fetching test datas", error); })
+      .catch((error) => { console.log("Error fetching data", error); })
   }
 
   deleteExpense(id){
@@ -59,12 +66,11 @@ class App extends Component {
     })
       .then(res => res.json())
       .then((response) => { 
-        console.log(response);
         this.setState({
           expenses: response.expenses,
         })
       })
-      .catch((error) => { console.log("Error while fetching test datas", error); })
+      .catch((error) => { console.log("Error fetching data", error); })
   }
 
   fetchExpenses() {
@@ -75,7 +81,18 @@ class App extends Component {
           expenses: response.expenses,
         })
       })
-      .catch((error) => { console.log("Error while fetching test datas", error); })
+      .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  fetchMonthlyBudget() {
+    fetch('/api/v1/users/monthly-budget')
+      .then(res => res.json())
+      .then((response) => { 
+        this.setState({
+          monthlyBudget: response.monthlyBudget,
+        })
+      })
+      .catch((error) => { console.log("Error fetching data", error); })
   }
 }
 
