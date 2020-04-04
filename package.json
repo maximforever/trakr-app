@@ -13,6 +13,10 @@
     "build": "cd client && yarn build",
     "install": "cd client && yarn"
   },
+  "engines": {
+    "node": "12.13.1",
+    "yarn": "1.21.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maximforever/trakr-app.git"
