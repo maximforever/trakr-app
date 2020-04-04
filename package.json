@@ -11,7 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd client && yarn start",
     "build": "cd client && yarn build",
-    "install": "cd client && yarn"
+    "install": "cd client && yarn",
+    "heroku-postbuild": "cd client && yarn build"
   },
   "engines": {
     "node": "12.13.1",
