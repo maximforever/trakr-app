@@ -14,6 +14,10 @@
     font-size: 3rem;
     font-weight: 600;
   }
+
+  &.half-square {
+    width: 38%;
+  }
 }
 
 .card.full-square {
@@ -23,4 +27,25 @@
 .card.half-square {
   width: 42%;
   margin: 0.3rem 0; 
+}
+
+@media only screen and (max-width: 700px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .card.square {
+    .label {
+      font-size: 0.9rem;
+      padding: 0.2rem;
+    }
+    .metric {
+      font-size: 2rem;
+    }
+
+    &.half-square {
+      width: 38%; 
+    }
+  }
+
 }
