@@ -26,7 +26,7 @@ class Dashboard extends Component {
           </div>
           <div className="card square half-square">
             <div className="label">Monthly balance</div>
-            <div className="metric">{this.monthlyBalance()} <span className="submetric">/${this.moneySpentThisMonth()}</span></div>
+            <div className="metric">{this.monthlyBalance()} <span className="submetric">/(${this.moneySpentThisMonth()})</span></div>
           </div>
         </div>
       </div>

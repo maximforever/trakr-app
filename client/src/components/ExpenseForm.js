@@ -111,7 +111,7 @@ class ExpenseForm extends Component {
   }
 
   validExpense(){
-    return (this.state.amount === 0 || this.state.description.length < 2);
+    return (this.state.amount === 0 || this.state.description.length < 2 || !this.state.timestamp.length );
   }
 
   toggleExpenseForm(){
