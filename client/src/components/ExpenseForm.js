@@ -1,4 +1,4 @@
-import '../assets/stylesheets/App.scss';
+import '../assets/stylesheets/ExpenseForm.scss';
 
 import React, { Component } from 'react';
 
@@ -12,11 +12,13 @@ class ExpenseForm extends Component {
       description: "",
       merchant: "",
       timestamp: "",
+      displayForm: false
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setDateTimePickerToNow = this.setDateTimePickerToNow.bind(this);
+    this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
   }
 
   componentDidMount(){
@@ -68,35 +70,57 @@ class ExpenseForm extends Component {
     return (this.state.amount === 0 || this.state.description.length < 2);
   }
 
-  render(){
+  renderNewExpenseForm(){
     return (
       <div className="new-expense-form card">
         <h3>New Expense</h3>
         <form onSubmit={this.handleSubmit}>
           <div className="one-input">
-            <label>Amount:</label>
+            <label>Amount</label>
             <input value={this.state.amount} type='number' name='amount' onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
-            <label>Description:</label>
+            <label>Description</label>
             <input value={this.state.description} type='text' name='description' onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
-            <label>Merchant:</label>
+            <label>Merchant</label>
             <input value={this.state.merchant} type='text' name='merchant' onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
-            <label>Date:</label>
+            <label>Date</label>
             <input value={this.state.timestamp} type='datetime-local' name='timestamp' onChange={this.handleInputChange}></input>
           </div>
 
-          <button disabled={this.validExpense()}>Add Expense</button>
+          <div className="button-wrapper">
+            <button className="cancel" onClick={this.toggleExpenseForm}>Cancel</button>
+            <button disabled={this.validExpense()}>Add Expense</button>
+          </div>
         </form>
       </div>
     )
+  }
+
+  renderAddExpenseToggle(){
+    return (
+      <div className="add-expense-toggle" onClick={this.toggleExpenseForm}>+</div>
+    )
+  }
+
+
+  toggleExpenseForm(){
+    this.setState((prevState) => {
+      return {
+        displayForm: !prevState.displayForm
+      }
+    })
+  }
+
+  render(){
+    return this.state.displayForm ? this.renderNewExpenseForm() : this.renderAddExpenseToggle();
   }
 }
 
