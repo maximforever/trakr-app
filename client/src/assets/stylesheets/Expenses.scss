@@ -1,0 +1,12 @@
+.one-expense {
+  .lnr {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #e47575;
+
+    &:hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}

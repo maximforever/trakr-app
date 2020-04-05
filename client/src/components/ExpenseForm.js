@@ -25,50 +25,16 @@ class ExpenseForm extends Component {
     this.setDateTimePickerToNow();
   }
 
-  handleInputChange(e){
-    const name = e.target.name;
-    this.setState({
-      [name]: e.target.value
-    });
+  render(){
+    return this.state.displayForm ? this.renderNewExpenseForm() : this.renderAddExpenseToggle();
   }
 
-  handleSubmit(e){
-    e.preventDefault(e);
-    this.submitData();
-  }
-
-  resetState(){
-    this.setState({
-      amount: "",
-      description: "",
-      merchant: "",
-      timestamp: "",
-    })
-  }
-
-  submitData(){
-    const newExpense = {
-      amount: this.state.amount,
-      description: this.state.description,
-      merchant: this.state.merchant,
-      timestamp: this.state.timestamp,
-    }
-
-    this.props.submitNewExpense(newExpense);
-    this.toggleExpenseForm();
-    this.resetState();
-  }
-
-  setDateTimePickerToNow(){
-    const timezoneOffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    const currentDatetime = new Date(Date.now() - timezoneOffset).toISOString().slice(0,16);
-    this.setState({
-      timestamp: currentDatetime
-    })
-  }
-
-  validExpense(){
-    return (this.state.amount === 0 || this.state.description.length < 2);
+  renderAddExpenseToggle(){
+    return (
+      <div className="add-expense-toggle" onClick={this.toggleExpenseForm}>
+        <span className="plus">+</span>
+      </div>
+    )
   }
 
   renderNewExpenseForm(){
@@ -98,19 +64,55 @@ class ExpenseForm extends Component {
 
           <div className="button-wrapper">
             <button className="cancel" onClick={this.toggleExpenseForm}>Cancel</button>
-            <button disabled={this.validExpense()}>Add Expense</button>
+            <button className="submit" disabled={this.validExpense()}>Add Expense</button>
           </div>
         </form>
       </div>
     )
   }
 
-  renderAddExpenseToggle(){
-    return (
-      <div className="add-expense-toggle" onClick={this.toggleExpenseForm}>+</div>
-    )
+  handleInputChange(e){
+    const name = e.target.name;
+    this.setState({
+      [name]: e.target.value
+    });
   }
 
+  handleSubmit(e){
+    e.preventDefault(e);
+    
+    const newExpense = {
+      amount: this.state.amount,
+      description: this.state.description,
+      merchant: this.state.merchant,
+      timestamp: this.state.timestamp,
+    }
+
+    this.props.submitNewExpense(newExpense);
+    this.toggleExpenseForm();
+    this.resetState();
+  }
+
+  resetState(){
+    this.setState({
+      amount: "",
+      description: "",
+      merchant: "",
+      timestamp: "",
+    })
+  }
+
+  setDateTimePickerToNow(){
+    const timezoneOffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    const currentDatetime = new Date(Date.now() - timezoneOffset).toISOString().slice(0,16);
+    this.setState({
+      timestamp: currentDatetime
+    })
+  }
+
+  validExpense(){
+    return (this.state.amount === 0 || this.state.description.length < 2);
+  }
 
   toggleExpenseForm(){
     this.setState((prevState) => {
@@ -118,21 +120,6 @@ class ExpenseForm extends Component {
         displayForm: !prevState.displayForm
       }
     })
-  }
-
-  render(){
-    /*TODO: test this UX*/
-    // return this.state.displayForm ? this.renderNewExpenseForm() : this.renderAddExpenseToggle();
-    if(this.state.displayForm){
-      return (
-        <div>
-          { this.renderAddExpenseToggle() }
-          { this.renderNewExpenseForm() }
-        </div>
-      )
-    } else {
-      return this.renderAddExpenseToggle();
-    }
   }
 }
 

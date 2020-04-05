@@ -1,4 +1,5 @@
 import React from 'react';
+import '../assets/stylesheets/Expenses.scss';
 
 function Expenses(props){
 /* TODO: implement this!*/
@@ -22,7 +23,7 @@ function renderExpenses(expenses, deleteExpense){
         <span>
           <strong>${expense.amount}</strong> for {expense.description || "Undefined"}
         </span>
-        <a href="#" onClick={() => { deleteExpense(expense.id)}}>delete</a>
+        <span onClick={() => { deleteExpense(expense.id)}}className="lnr lnr-cross-circle"></span>
       </div>
     )
   })

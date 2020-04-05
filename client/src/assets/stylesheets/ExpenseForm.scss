@@ -1,14 +1,4 @@
 .new-expense-form {
-
-  /* experimental */
-  position: absolute;
-  background: white;
-  top: 4rem;
-  transform: translateX(-50%);
-  left: 50%;
-  width: 80%;
-
-
   label {
     display: block;
   }
@@ -33,10 +23,14 @@
 }
 
 .add-expense-toggle {
-  font-size: 8rem;
   text-align: center;
-  text-shadow: 2px 2px 5px #168e14;
-  color: #018001;
+  padding: 1rem 0;
+
+  .plus {
+    font-size: 8rem;
+    text-shadow: 2px 2px 5px #168e14;
+    color: #018001;
+  }
 
   &:hover {
     cursor: pointer;
@@ -44,7 +38,4 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .new-expense-form {
-    width: 75%;
-  }
 }

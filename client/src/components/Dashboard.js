@@ -35,13 +35,13 @@ class Dashboard extends Component {
 
   moneySpentToday(){
     return this.props.expenses.reduce((acc, expense) => {
-      return (this.isToday(new Date(), expense.timestamp)) ? acc + expense.amount : 0;
+      return (this.isToday(new Date(), expense.timestamp)) ? (acc + expense.amount) : acc;
     }, 0);
   }
 
   moneySpentThisMonth(){
     return this.props.expenses.reduce((acc, expense) => {
-      return (this.isThisMonth(new Date(), expense.timestamp)) ? acc + expense.amount : 0;
+      return (this.isThisMonth(new Date(), expense.timestamp)) ? acc + expense.amount : acc;
     }, 0)
   }
 

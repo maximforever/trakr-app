@@ -3,17 +3,19 @@ import ExpenseForm from './components/ExpenseForm'
 import Expenses from './components/Expenses'
 import Dashboard from './components/Dashboard'
 import Navigation from './components/Navigation'
+import Settings from './components/Settings'
+import Stats from './components/Stats'
 import './assets/stylesheets/App.scss';
 
 class App extends Component {
-
   constructor(props){
     super(props);
 
     this.state = {
       expenses: [],
       monthlyBudget: 0,
-      currentPage: "home"
+      currentMonthlyBudget: 0,
+      currentPage: "home",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -50,7 +52,6 @@ class App extends Component {
   renderHome(){
     return (
       <div className="home">
-        
         <Dashboard
           expenses={this.state.expenses}
           monthlyBudget={this.state.monthlyBudget}
@@ -67,11 +68,16 @@ class App extends Component {
   }
 
   renderStats(){
-    return <div>Look, charts!</div>
+    return <Stats />
   }
 
   renderSettings(){
-    return <div>Get your settings in order.</div>
+    return (
+      <Settings 
+        monthlyBudget={this.state.monthlyBudget}
+        currentMonthlyBudget={this.state.monthlyBudget}
+      />
+    )
   }
   
   submitNewExpense(expense){

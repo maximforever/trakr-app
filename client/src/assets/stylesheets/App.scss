@@ -8,6 +8,10 @@
   font-family: 'Anonymous Pro', monospace;
 }
 
+button {
+  font-size: 1rem;
+}
+
 button.cancel {
   border: none;
   text-decoration: underline;
@@ -15,8 +19,17 @@ button.cancel {
   background: none;
 }
 
+button.submit {
+  background: #6ef56e;
+  border: none;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  color: black;
+}
+
 .card {
-  padding: 2rem;
+  padding: 1.3rem;
+  margin: 0.3rem 0;
   border: 2px solid #000000;
 
   h3 {
