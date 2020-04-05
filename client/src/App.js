@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ExpenseForm from './components/ExpenseForm'
 import Expenses from './components/Expenses'
 import Dashboard from './components/Dashboard'
+import Navigation from './components/Navigation'
 import './assets/stylesheets/App.scss';
 
 class App extends Component {
@@ -12,12 +13,14 @@ class App extends Component {
     this.state = {
       expenses: [],
       monthlyBudget: 0,
+      currentPage: "home"
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
     this.fetchMonthlyBudget = this.fetchMonthlyBudget.bind(this);
     this.submitNewExpense = this.submitNewExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.navigateToPage = this.navigateToPage.bind(this);
   }
 
   componentDidMount(){
@@ -26,8 +29,28 @@ class App extends Component {
   }
 
   render() {
-    return (
+    return(
       <div className="App">
+        <Navigation navigateToPage={this.navigateToPage} />
+        {this.renderBodyContent()}
+      </div>
+    )
+  }
+
+  renderBodyContent() {
+    if(this.state.currentPage === "home"){
+      return this.renderHome();
+    } else if (this.state.currentPage === "stats"){
+      return this.renderStats();
+    } else if (this.state.currentPage === "settings"){
+      return this.renderSettings();
+    }
+  }
+
+  renderHome(){
+    return (
+      <div className="home">
+        
         <Dashboard
           expenses={this.state.expenses}
           monthlyBudget={this.state.monthlyBudget}
@@ -41,6 +64,14 @@ class App extends Component {
         />
       </div>
     );
+  }
+
+  renderStats(){
+    return <div>Look, charts!</div>
+  }
+
+  renderSettings(){
+    return <div>Get your settings in order.</div>
   }
   
   submitNewExpense(expense){
@@ -93,6 +124,13 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  navigateToPage(page){
+    console.log(page);
+    this.setState({
+      currentPage: page
+    })
   }
 }
 

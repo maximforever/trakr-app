@@ -1,6 +1,12 @@
 import React from 'react';
 
 function Expenses(props){
+/* TODO: implement this!*/
+/*  if(props.expenses.length){
+    const timestamps = props.expenses.map((e) => `${e.timestamp}, ${e.description}` )
+    console.log(timestamps);
+  }*/
+
   return (
     <div>
       <h3>Expenses:</h3>

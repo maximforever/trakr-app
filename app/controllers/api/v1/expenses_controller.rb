@@ -11,7 +11,7 @@ class Api::V1::ExpensesController < ApplicationController
     if @expense.save!
       render json:  {
         status: 200,
-        expenses: User.first.expenses
+        expenses: User.first.expenses.order(created_at: :desc)
       }  
     else
       puts "error: #{@expense.errors.full_messages}"
