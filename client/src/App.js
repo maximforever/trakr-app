@@ -15,7 +15,7 @@ class App extends Component {
       expenses: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "home",
+      currentPage: "settings",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -23,6 +23,7 @@ class App extends Component {
     this.submitNewExpense = this.submitNewExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
+    this.updateMonthlyBudget = this.updateMonthlyBudget .bind(this);
   }
 
   componentDidMount(){
@@ -54,7 +55,7 @@ class App extends Component {
       <div className="home">
         <Dashboard
           expenses={this.state.expenses}
-          monthlyBudget={this.state.monthlyBudget}
+          monthlyBudget={this.getCurrentBudget()}
         />
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}
@@ -75,9 +76,19 @@ class App extends Component {
     return (
       <Settings 
         monthlyBudget={this.state.monthlyBudget}
-        currentMonthlyBudget={this.state.monthlyBudget}
+        currentMonthlyBudget={this.state.currentMonthlyBudget}
+        updateMonthlyBudget={this.updateMonthlyBudget}
+        key={this.state.monthlyBudget + this.state.currentMonthlyBudget}
       />
     )
+  }
+
+  getCurrentBudget(){
+    if(this.state.currentMonthlyBudget === this.state.monthlyBudget){
+      return this.state.monthlyBudget;
+    }
+    
+    return this.state.currentMonthlyBudget;
   }
   
   submitNewExpense(expense){
@@ -127,13 +138,31 @@ class App extends Component {
       .then((response) => { 
         this.setState({
           monthlyBudget: response.monthlyBudget,
+          currentMonthlyBudget: response.currentMonthlyBudget,
+        })
+      })
+      .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  updateMonthlyBudget(newBudget) {
+    fetch('/api/v1/users/monthly-budget', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newBudget),
+    })
+      .then(res => res.json())
+      .then((response) => { 
+        this.setState({
+          monthlyBudget: response.monthlyBudget,
+          currentMonthlyBudget: response.currentMonthlyBudget,
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
   navigateToPage(page){
-    console.log(page);
     this.setState({
       currentPage: page
     })
