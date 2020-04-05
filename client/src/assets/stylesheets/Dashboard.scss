@@ -13,6 +13,10 @@
   .metric {
     font-size: 3rem;
     font-weight: 600;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
   }
 
   &.half-square {
@@ -20,6 +24,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+  }
+
+  .submetric {
+    color: gray;
+    font-size: 1.5rem;
   }
 }
 
@@ -35,6 +44,10 @@
     }
     .metric {
       font-size: 2rem;
+    }
+
+    .submetric {
+      font-size: 0.9rem;
     }
 
     &.half-square {
