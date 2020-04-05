@@ -55,6 +55,7 @@ class ExpenseForm extends Component {
     }
 
     this.props.submitNewExpense(newExpense);
+    this.toggleExpenseForm();
     this.resetState();
   }
 
@@ -120,7 +121,18 @@ class ExpenseForm extends Component {
   }
 
   render(){
-    return this.state.displayForm ? this.renderNewExpenseForm() : this.renderAddExpenseToggle();
+    /*TODO: test this UX*/
+    // return this.state.displayForm ? this.renderNewExpenseForm() : this.renderAddExpenseToggle();
+    if(this.state.displayForm){
+      return (
+        <div>
+          { this.renderAddExpenseToggle() }
+          { this.renderNewExpenseForm() }
+        </div>
+      )
+    } else {
+      return this.renderAddExpenseToggle();
+    }
   }
 }
 

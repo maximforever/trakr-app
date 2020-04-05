@@ -1,4 +1,14 @@
 .new-expense-form {
+
+  /* experimental */
+  position: absolute;
+  background: white;
+  top: 4rem;
+  transform: translateX(-50%);
+  left: 50%;
+  width: 80%;
+
+
   label {
     display: block;
   }
@@ -30,5 +40,11 @@
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .new-expense-form {
+    width: 75%;
   }
 }
