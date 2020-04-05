@@ -3,10 +3,10 @@ class User < ApplicationRecord
   has_many :categories, through: :expenses
 
   def current_monthly_budget
-    if budgets[this_month].nil?
+    if self.budgets[this_month].nil?
       set_this_months_budget_to_default
     else
-      budgets[this_month]
+      self.budgets[this_month]
     end
   end
 

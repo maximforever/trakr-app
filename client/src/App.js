@@ -15,7 +15,7 @@ class App extends Component {
       expenses: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "settings",
+      currentPage: "home",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -157,6 +157,7 @@ class App extends Component {
         this.setState({
           monthlyBudget: response.monthlyBudget,
           currentMonthlyBudget: response.currentMonthlyBudget,
+          currentPage: "home"
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
