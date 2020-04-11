@@ -12,14 +12,17 @@ class ExpenseForm extends Component {
       description: "",
       merchant: "",
       timestamp: "",
-      category: "takeout",
+      category: "",
       displayForm: false,
+      showCategoryInput: false,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setDateTimePickerToNow = this.setDateTimePickerToNow.bind(this);
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
+    this.populateCategory = this.populateCategory.bind(this);
+    this.revealCategoryInput = this.revealCategoryInput.bind(this);
   }
 
   componentDidMount(){
@@ -59,6 +62,12 @@ class ExpenseForm extends Component {
           </div>
 
           <div className="one-input">
+            <label>Category</label>
+            {this.renderCategorySection()}
+            {this.renderCategoryInput()}
+          </div>
+
+          <div className="one-input">
             <label>Date</label>
             <input value={this.state.timestamp} type='datetime-local' name='timestamp' onChange={this.handleInputChange}></input>
           </div>
@@ -72,11 +81,54 @@ class ExpenseForm extends Component {
     )
   }
 
+  renderCategorySection(){
+    return (
+      <div className="category-section">
+        {this.renderCategoryList()}
+        {this.renderCategoryToggle()}
+      </div>
+    )
+  }
+
+  revealCategoryInput() {
+    this.setState({
+      showCategoryInput: true,
+    })
+  }
+
+  renderCategoryInput(){
+    if(!this.state.showCategoryInput){ return null; }
+    return (<input value={this.state.category} type='text' name='category' onChange={this.handleInputChange}></input>)
+  }
+
+  renderCategoryList(){
+    return this.props.categories.map((category) => {
+      return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
+    })
+  }
+
+  renderCategoryToggle(){
+    if(this.state.showCategoryInput){ return null; }
+
+    return (
+      <span className="category add-new-category" onClick={this.revealCategoryInput}>
+        <span className="lnr lnr-plus-circle"></span>
+      </span>
+    )
+  }
+
   handleInputChange(e){
     const name = e.target.name;
     this.setState({
-      [name]: e.target.value
+      [name]: e.target.value,
     });
+  }
+
+  populateCategory(e){
+    this.setState({
+      category: e.target.innerHTML.trim(),
+      showCategoryInput: true,
+    })
   }
 
   handleSubmit(e){
@@ -91,8 +143,6 @@ class ExpenseForm extends Component {
     }
 
     this.props.submitNewExpense(newExpense);
-    // this.toggleExpenseForm();
-    // this.resetState();
   }
 
   resetState(){

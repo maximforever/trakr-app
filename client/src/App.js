@@ -13,6 +13,7 @@ class App extends Component {
 
     this.state = {
       expenses: [],
+      categories: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
       currentPage: "home",
@@ -59,6 +60,7 @@ class App extends Component {
         />
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}
+          categories={this.state.categories}
         />
         <Expenses 
           expenses={this.state.expenses} 
@@ -105,6 +107,7 @@ class App extends Component {
         if(response.status === 200){
           this.setState({
             expenses: response.expenses,
+            categories: response.categories,
           })
         } else {
           console.log(response.message);
@@ -121,6 +124,7 @@ class App extends Component {
       .then((response) => { 
         this.setState({
           expenses: response.expenses,
+          categories: response.categories,
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
@@ -132,6 +136,7 @@ class App extends Component {
       .then((response) => { 
         this.setState({
           expenses: response.expenses,
+          categories: response.categories,
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
