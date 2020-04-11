@@ -3,12 +3,28 @@
   margin: 0 auto;
 }
 
-.one-category-stat {
+.one-category-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
+  padding: 0.3rem 0;
+
+  &.header {
+    font-weight: 600;
+    text-decoration: underline;
+  }
 }
 
 .category-name {
   font-weight: 600;
+  flex-grow: 1;
+}
+
+.category-amount {
+  width: 18%;
+  text-align: left;
+}
+
+.category-percentage {
+  text-align: right;
+  width: 26%
 }

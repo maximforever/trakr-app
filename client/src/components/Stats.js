@@ -17,7 +17,7 @@ class Stats extends Component {
   render(){
     return (
       <div className="stats card">
-        <div className="card spending-by-category">
+        <div className="spending-by-category">
           {this.renderSpendingByCategory()}
         </div>
       </div>
@@ -36,14 +36,33 @@ class Stats extends Component {
       }
     })
 
+    return (
+      <div>
+        <div className="one-category-row header">
+          <span className="category-name">Category</span>
+          <span className="category-amount">Sum</span>
+          <span className="category-percentage">Budget %</span>
+        </div>
+
+        {this.renderSpendingTable(spending)}
+      </div>
+    )
+  }
+
+  renderSpendingTable(spending){
     return Object.keys(spending).map((category) => {
       return (
-        <div className="one-category-stat" key={category}>
+        <div className="one-category-row" key={category}>
           <span className="category-name">{category}</span>
           <span className="category-amount">${spending[category]}</span>
+          <span className="category-percentage">{this.percentage(spending[category])}%</span>
         </div>
       )
     })
+  }
+
+  percentage(amount){
+    return Math.floor(amount/this.props.monthlyBudget * 1000)/10
   }
 
 }
