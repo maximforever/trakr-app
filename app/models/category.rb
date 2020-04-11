@@ -1,3 +1,4 @@
 class Category < ApplicationRecord
-  belongs_to :expense
+  has_many :expenses
+  has_many :users, through: :expenses
 end

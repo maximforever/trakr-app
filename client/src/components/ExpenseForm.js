@@ -12,7 +12,8 @@ class ExpenseForm extends Component {
       description: "",
       merchant: "",
       timestamp: "",
-      displayForm: false
+      category: "takeout",
+      displayForm: false,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -86,19 +87,21 @@ class ExpenseForm extends Component {
       description: this.state.description,
       merchant: this.state.merchant,
       timestamp: this.state.timestamp,
+      category: this.state.category,
     }
 
     this.props.submitNewExpense(newExpense);
-    this.toggleExpenseForm();
-    this.resetState();
+    // this.toggleExpenseForm();
+    // this.resetState();
   }
 
   resetState(){
+    this.setDateTimePickerToNow();
     this.setState({
       amount: "",
       description: "",
       merchant: "",
-      timestamp: "",
+      category: "subscriptions",
     })
   }
 

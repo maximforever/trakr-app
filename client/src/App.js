@@ -102,9 +102,13 @@ class App extends Component {
     })
       .then(res => res.json())
       .then((response) => { 
-        this.setState({
-          expenses: response.expenses,
-        })
+        if(response.status === 200){
+          this.setState({
+            expenses: response.expenses,
+          })
+        } else {
+          console.log(response.message);
+        }
       })
       .catch((error) => { console.log("Error fetching data", error); })
   }

@@ -2,5 +2,5 @@ class Expense < ApplicationRecord
   validates :description, :amount, :timestamp, presence: true
   
   belongs_to :user
-  has_one :category
+  belongs_to :category
 end

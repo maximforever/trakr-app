@@ -20,10 +20,11 @@ function renderExpenses(expenses, deleteExpense){
   return expenses.map((expense) => {
     return (
       <div className="one-expense" key={expense.id}>
-        <span>
-          <strong>${expense.amount}</strong> for {expense.description || "Undefined"}
-        </span>
-        <span onClick={() => { deleteExpense(expense.id)}}className="lnr lnr-cross-circle"></span>
+        <div>
+          <div className="category">{expense.category}</div>
+          <div><strong>${expense.amount}</strong> for {expense.description || "Undefined"}</div>
+        </div>
+        <div onClick={() => { deleteExpense(expense.id)}}className="lnr lnr-cross-circle"></div>
       </div>
     )
   })
