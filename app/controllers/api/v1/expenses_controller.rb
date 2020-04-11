@@ -37,7 +37,7 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def categories
-    expenses.map(&:category).uniq
+    expenses.map(&:category).reject(&:nil?).uniq
   end
 
   private
