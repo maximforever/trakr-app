@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ExpenseForm from './components/ExpenseForm'
-import Expenses from './components/Expenses'
+import ExpenseList from './components/ExpenseList'
 import Dashboard from './components/Dashboard'
 import Navigation from './components/Navigation'
 import Settings from './components/Settings'
@@ -16,7 +16,7 @@ class App extends Component {
       categories: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "stats",
+      currentPage: "home",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -62,7 +62,7 @@ class App extends Component {
           submitNewExpense={this.submitNewExpense}
           categories={this.state.categories}
         />
-        <Expenses 
+        <ExpenseList 
           expenses={this.state.expenses} 
           deleteExpense={this.deleteExpense}
         />
