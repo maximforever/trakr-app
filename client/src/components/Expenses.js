@@ -17,6 +17,11 @@ function Expenses(props){
 }
 
 function renderExpenses(expenses, deleteExpense){
+  if (!expenses.length){
+    return <p>No expenses recorded yet - try adding one!</p>
+  }
+
+
   return expenses.map((expense) => {
     return (
       <div className="one-expense" key={expense.id}>
