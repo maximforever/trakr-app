@@ -1,0 +1,14 @@
+.card .spending-by-category {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.one-category-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.category-name {
+  font-weight: 600;
+}

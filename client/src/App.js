@@ -16,7 +16,7 @@ class App extends Component {
       categories: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "home",
+      currentPage: "stats",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -71,7 +71,11 @@ class App extends Component {
   }
 
   renderStats(){
-    return <Stats />
+    return <Stats 
+      expenses={this.state.expenses}
+      categories={this.state.categories}
+      monthlyBudget={this.getCurrentBudget()}
+    />
   }
 
   renderSettings(){
