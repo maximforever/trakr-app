@@ -24,7 +24,7 @@ class App extends Component {
     this.submitNewExpense = this.submitNewExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
-    this.updateMonthlyBudget = this.updateMonthlyBudget .bind(this);
+    this.updateMonthlyBudget = this.updateMonthlyBudget.bind(this);
   }
 
   componentDidMount(){

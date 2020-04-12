@@ -18,25 +18,35 @@ function renderExpenses(expenses, deleteExpense){
 
   const uniqueSortedDates = getUniqueSortedDates(expenses);
   return uniqueSortedDates.map((date) => {
-    let expensesOnThisDate = getExpensesOnThisDate(expenses, date, deleteExpense);
+    const expensesOnThisDate = getExpensesOnThisDate(expenses, date)
+    const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense);
+    const spentThisDay = moneySpentThisDay(expensesOnThisDate);
 
     return(
-      <div>
-        <h3>{date}</h3>
-        { expensesOnThisDate }
+      <div className="day-of-expenses" key={date}>
+        <div className="date-header">
+          <span>{date}</span>
+          <span>${spentThisDay}</span>
+        </div>
+        { expenseElements }
       </div>
     )
   })
 }
 
-function getExpensesOnThisDate(expenses, date, deleteExpense){
+function expensesElements(expenses, date, deleteExpense){
   return expenses.map((expense) => {
-    if(readableDate(expense.timestamp) === date){
-      return (<Expense 
-              expense={expense} 
-              deleteExpense={deleteExpense}
-            />)
-    }
+    return (<Expense 
+            key={expense.id}
+            expense={expense} 
+            deleteExpense={deleteExpense}
+          />)
+  })
+}
+
+function getExpensesOnThisDate(expenses, date){
+  return expenses.filter((expense)=> {
+    return readableDate(expense.timestamp) === date;
   })
 }
 
@@ -48,6 +58,12 @@ function getUniqueSortedDates(expenses) {
   });
 
   return [...new Set(dates)];
+}
+
+function moneySpentThisDay(expenses){
+  return expenses.reduce((acc, expense) => {
+    return acc + expense.amount;
+  }, 0);
 }
 
 function readableDate(dateString){

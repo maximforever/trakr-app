@@ -4,4 +4,17 @@
   color: black;
   border-bottom: 1px solid #d2d2d2;
   padding-bottom: 0.6rem;
+  margin: 1rem 0 1.7rem 0; 
+}
+
+.date-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding-bottom: 0.5rem;
+}
+
+.day-of-expenses {
+  padding-bottom: 1rem;
 }

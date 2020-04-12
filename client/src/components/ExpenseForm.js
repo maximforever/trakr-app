@@ -106,6 +106,8 @@ class ExpenseForm extends Component {
       if(category.trim().length){
         return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
       }
+
+      return null;
     })
   }
 
