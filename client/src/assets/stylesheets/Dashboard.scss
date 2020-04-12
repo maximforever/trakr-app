@@ -20,10 +20,11 @@
   }
 
   &.half-square {
-    width: 38%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    flex-grow: 1; 
+    max-width: 42%;
   }
 
   .submetric {
@@ -51,7 +52,7 @@
     }
 
     &.half-square {
-      width: 38%; 
+      max-width: 38%;
     }
   }
 
