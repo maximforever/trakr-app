@@ -1,7 +1,11 @@
-.nav-bar{
+.nav-bar {
   display: flex;
   justify-content: space-between;  
   border: 2px solid black;
+
+  &.card {
+    padding: 0;
+  }
 }
 
 .nav-button {

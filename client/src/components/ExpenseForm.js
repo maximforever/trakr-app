@@ -44,7 +44,7 @@ class ExpenseForm extends Component {
   renderNewExpenseForm(){
     return (
       <div className="new-expense-form card">
-        <h3>New Expense</h3>
+        <h2>New Expense</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="one-input">
             <label>Amount</label>
@@ -98,7 +98,7 @@ class ExpenseForm extends Component {
 
   renderCategoryInput(){
     if(!this.state.showCategoryInput){ return null; }
-    return (<input value={this.state.category} type='text' name='category' onChange={this.handleInputChange}></input>)
+    return (<input value={this.state.category} type='text' name='category'  placeholder="enter category" onChange={this.handleInputChange}></input>)
   }
 
   renderCategoryList(){

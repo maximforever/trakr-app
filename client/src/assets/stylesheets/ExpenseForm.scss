@@ -4,7 +4,7 @@
 
   .plus {
     font-size: 8rem;
-    text-shadow: 2px 2px 5px #168e14;
+    text-shadow: 2px 2px 7px rgba(22, 142, 20, 0.4);
     color: #018001;
   }
 
@@ -13,20 +13,30 @@
   }
 }
 
+h2 {
+  margin-top: 0;
+}
+
 .category-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   padding: 0.25rem 0;
   min-height: 26px;
+  line-height: 1.7;
 }
 
 span.category {
   font-size: 1rem;
-  padding-right: 1rem;
+  padding: 0 1rem 0 0;
   &:hover {
     cursor: pointer;
     color: #000000;
+  }
+
+  &.add-new-category {
+    display: flex;
+    align-items: center;
   }
 }
 
