@@ -26,7 +26,7 @@ function renderExpenses(expenses, deleteExpense){
       <div className="day-of-expenses" key={date}>
         <div className="date-header">
           <span>{date}</span>
-          <span>${spentThisDay}</span>
+          <span className="daily-spending-total">${spentThisDay}</span>
         </div>
         { expenseElements }
       </div>
