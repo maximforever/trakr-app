@@ -16,13 +16,13 @@ class Dashboard extends Component {
     return(
       <div className="dashboard">
         <div className="square full-square card">
-          <div className="label">Spent today</div>
-          <div className="metric">{this.moneyFormat(this.moneySpentToday())}</div>
+          <div className="label">Left to spend</div>
+          <div className="metric">{this.moneyFormat(this.leftToSpendToday())}</div>
         </div>
         <div className="half-square-wrapper">
           <div className="card square half-square">
-            <div className="label">Left to spend</div>
-            <div className="metric">{this.moneyFormat(this.leftToSpendToday())}</div>
+            <div className="label">Spent today</div>
+            <div className="metric">{this.moneyFormat(this.moneySpentToday())}</div>
           </div>
           <div className="card square half-square">
             <div className="label">Monthly balance</div>
