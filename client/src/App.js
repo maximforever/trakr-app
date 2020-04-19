@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import './assets/stylesheets/App.scss';
+
+import Welcome from './components/Welcome'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 import Dashboard from './components/Dashboard'
 import Navigation from './components/Navigation'
 import Settings from './components/Settings'
 import Stats from './components/Stats'
-import './assets/stylesheets/App.scss';
 
 class App extends Component {
   constructor(props){
@@ -35,8 +37,12 @@ class App extends Component {
   render() {
     return(
       <div className="App">
+
+        <Welcome />
+      {/*  
         <Navigation navigateToPage={this.navigateToPage} />
         {this.renderBodyContent()}
+      */}
       </div>
     )
   }
