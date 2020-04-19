@@ -50,12 +50,19 @@ class Stats extends Component {
   }
 
   renderSpendingTable(spending){
-    return Object.keys(spending).map((category) => {
+    let spendingArray = Object.keys(spending).map((category) => {
+      return {
+        category: category,
+        amount: Number(spending[category]),
+      }
+    }).sort((a, b) => (a.amount < b.amount) ? 1 : -1);
+
+    return spendingArray.map((category) => {
       return (
-        <div className="one-category-row" key={category}>
-          <span className="category-name">{category}</span>
-          <span className="category-amount">${spending[category]}</span>
-          <span className="category-percentage">{this.percentage(spending[category])}%</span>
+        <div className="one-category-row" key={category.category}>
+          <span className="category-name">{category.category}</span>
+          <span className="category-amount">${category.amount}</span>
+          <span className="category-percentage">{this.percentage(category.amount)}%</span>
         </div>
       )
     })
