@@ -38,11 +38,9 @@ class App extends Component {
     return(
       <div className="App">
 
-        <Welcome />
-      {/*  
+        {/*<Welcome />*/}
         <Navigation navigateToPage={this.navigateToPage} />
         {this.renderBodyContent()}
-      */}
       </div>
     )
   }
