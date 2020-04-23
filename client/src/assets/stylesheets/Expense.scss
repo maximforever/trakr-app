@@ -12,6 +12,8 @@
     font-size: 1rem;
     text-decoration: none;
     color: #e47575;
+    display: flex;
+    align-items: center;
 
     &:hover {
       color: red;
