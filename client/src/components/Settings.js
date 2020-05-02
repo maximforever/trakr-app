@@ -1,4 +1,4 @@
-import '../assets/stylesheets/Settings.scss';
+import '../assets/stylesheets/settings.scss';
 
 import React, { Component } from 'react';
 

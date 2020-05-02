@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/stylesheets/Expense.scss';
+import '../assets/stylesheets/expense.scss';
 
 function Expense(props){
   const { expense } = props;

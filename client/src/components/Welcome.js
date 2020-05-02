@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../assets/stylesheets/Welcome.scss';
+import '../assets/stylesheets/welcome.scss';
 
 function Welcome(){
   return(

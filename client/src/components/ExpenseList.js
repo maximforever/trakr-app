@@ -1,6 +1,6 @@
 import React from 'react';
-import Expense from './Expense';
-import '../assets/stylesheets/ExpenseList.scss';
+import Expense from './expense';
+import '../assets/stylesheets/expenseList.scss';
 
 function ExpenseList(props){
 /* TODO: implement dispaying expenses by date */

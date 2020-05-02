@@ -1,4 +1,4 @@
-import '../assets/stylesheets/Stats.scss';
+import '../assets/stylesheets/stats.scss';
 
 import React, { Component } from 'react';
 

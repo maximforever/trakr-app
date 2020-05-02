@@ -1,4 +1,4 @@
-import '../assets/stylesheets/ExpenseForm.scss';
+import '../assets/stylesheets/expenseForm.scss';
 
 import React, { Component } from 'react';
 

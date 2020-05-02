@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
 
-import Welcome from './components/Welcome'
-import ExpenseForm from './components/ExpenseForm'
-import ExpenseList from './components/ExpenseList'
-import Dashboard from './components/Dashboard'
-import Navigation from './components/Navigation'
-import Settings from './components/Settings'
-import Stats from './components/Stats'
+import Welcome from './components/welcome'
+import ExpenseForm from './components/expenseForm'
+import ExpenseList from './components/expenseList'
+import Dashboard from './components/dashboard'
+import Navigation from './components/navigation'
+import Settings from './components/settings'
+import Stats from './components/stats'
 
 class App extends Component {
   constructor(props){
