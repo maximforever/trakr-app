@@ -24,6 +24,7 @@ function Welcome(){
 function renderGoogleLoginButton() {
   const responseGoogle = (response) => {
     console.log(response);
+    talkToServer(response.accessToken)
   }
 
   return(
@@ -32,9 +33,15 @@ function renderGoogleLoginButton() {
       buttonText="Login"
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
+      uxMode="redirect"
+      redirectUri="http://localhost:3000/auth/google_oauth2/callback"
       cookiePolicy={'single_host_origin'}
     />
   )
+}
+
+function talkToServer(token) {
+  console.log(token);
 }
 
 export default Welcome;
