@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/welcome.scss';
+import { GoogleLogin } from 'react-google-login';
 
 function Welcome(){
   return(
@@ -14,9 +15,25 @@ function Welcome(){
 
       <div>
         <p>To get started, sign in with your Google account</p>
-        <p></p>
+        <p>{ renderGoogleLoginButton() }</p>
       </div>
     </div>
+  )
+}
+
+function renderGoogleLoginButton() {
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
+
+  return(
+    <GoogleLogin
+      clientId="261179776021-aia4ltj1eq494nmfj9fl7foh28o9ckdu.apps.googleusercontent.com"
+      buttonText="Login"
+      onSuccess={responseGoogle}
+      onFailure={responseGoogle}
+      cookiePolicy={'single_host_origin'}
+    />
   )
 }
 
