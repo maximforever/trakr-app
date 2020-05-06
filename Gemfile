@@ -26,6 +26,8 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # gem 'rack-cors'
 
 gem 'pry', '~> 0.12.2'
+gem 'jwt'
+gem 'google-id-token', git: 'https://github.com/google/google-id-token'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

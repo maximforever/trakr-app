@@ -14,6 +14,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      loggedIn: false,
       expenses: [],
       categories: [],
       monthlyBudget: 0,
@@ -30,19 +31,30 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.fetchExpenses();
-    this.fetchMonthlyBudget();
+    this.fetchSession();
   }
 
   render() {
-    return(
-      <div className="App">
+    //TODO: clean this logic up:
 
-        <Welcome />
-        {/*<Navigation navigateToPage={this.navigateToPage} />
-        {this.renderBodyContent()}*/}
-      </div>
-    )
+    if(this.state.loggedIn)
+    {
+      return(
+        <div className="App">
+          <p>Welcome, {this.state.email}. <a href = "/logout">Log out</a></p> 
+          <Navigation navigateToPage={this.navigateToPage} />
+          {this.renderBodyContent()}
+        </div>
+      )
+    } else {
+      return (
+        <div className="App">
+          <Welcome />
+        </div>
+      )
+    }
+
+
   }
 
   renderBodyContent() {
@@ -138,6 +150,24 @@ class App extends Component {
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
+  fetchSession() {
+    fetch('/session', this.fetchOptions())
+      .then(res => res.json())
+      .then((response) => { 
+        this.setState({
+          loggedIn: response.loggedIn,
+          email: response.email,
+        }, () => {
+          if(this.state.loggedIn){
+            // TODO this is uglyyyy‰
+            this.fetchExpenses();
+            this.fetchMonthlyBudget();
+          }
+        })
+      })
+      .catch((error) => { console.log("Error fetching session data", error); })
+  }
+
   fetchExpenses() {
     fetch('/api/v1/expenses')
       .then(res => res.json())
@@ -185,6 +215,16 @@ class App extends Component {
     this.setState({
       currentPage: page
     })
+  }
+
+  fetchOptions(){
+    //const token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': 'someTestValue',
+      }
+    }
   }
 }
 

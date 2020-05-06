@@ -1,4 +1,6 @@
 class Api::V1::ExpensesController < ApplicationController
+  before_action :authenticate
+
   def index
     render json:  {
       status: 200,
@@ -13,7 +15,7 @@ class Api::V1::ExpensesController < ApplicationController
 
     # TODO: replace with actual user
     @expense = Expense.new(expense_params.merge({ 
-      user: User.first
+      user: current_user
     }))
 
     if @expense.save
@@ -34,7 +36,7 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def expenses
-    User.first.expenses.order(created_at: :desc)
+    current_user.expenses.order(created_at: :desc)
   end
 
   def categories

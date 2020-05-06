@@ -24,7 +24,7 @@ function Welcome(){
 function renderGoogleLoginButton() {
   const responseGoogle = (response) => {
     console.log(response);
-    talkToServer(response.accessToken)
+    talkToServer(response.tokenId)
   }
 
   return(
@@ -33,8 +33,8 @@ function renderGoogleLoginButton() {
       buttonText="Login"
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
-      uxMode="redirect"
-      redirectUri="http://localhost:3000/auth/google_oauth2/callback"
+      isSignedIn={true}
+      uxMode="popup"
       cookiePolicy={'single_host_origin'}
     />
   )
@@ -42,6 +42,12 @@ function renderGoogleLoginButton() {
 
 function talkToServer(token) {
   console.log(token);
+  fetch(`/auth/google_oauth2/callback?token=${token}`)
+    .then(res => res.json())
+    .then((response) => { 
+      console.log(response);
+    })
+    .catch((error) => { console.log("Error fetching data", error); })
 }
 
 export default Welcome;
