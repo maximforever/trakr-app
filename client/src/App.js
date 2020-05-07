@@ -8,6 +8,7 @@ import Dashboard from './components/dashboard'
 import Navigation from './components/navigation'
 import Settings from './components/settings'
 import Stats from './components/stats'
+import UserHeader from './components/userHeader'
 
 class App extends Component {
   constructor(props){
@@ -41,7 +42,7 @@ class App extends Component {
     {
       return(
         <div className="App">
-          <p>Welcome, {this.state.email}. <a href = "/logout">Log out</a></p> 
+          <UserHeader user={this.state.user} />          
           <Navigation navigateToPage={this.navigateToPage} />
           {this.renderBodyContent()}
         </div>
@@ -156,7 +157,7 @@ class App extends Component {
       .then((response) => { 
         this.setState({
           loggedIn: response.loggedIn,
-          email: response.email,
+          user: response.loggedInUser
         }, () => {
           if(this.state.loggedIn){
             // TODO this is uglyyyy‰

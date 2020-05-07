@@ -20,16 +20,24 @@ class SessionsController < ApplicationController
     end
 
     def show
-
-      user_email = user_signed_in? ? current_user.email : nil
-
       render json:  {
         loggedIn: user_signed_in?,
-        email: user_email
+        loggedInUser: signed_in_user_data
       }
     end
 
     private
+
+    def signed_in_user_data 
+      return nil unless user_signed_in?
+
+      return {
+        email: current_user.email,
+        firstName: current_user.preferred_first_name,
+        image: current_user.image
+      }
+
+    end
 
     def token
       params[:token]
