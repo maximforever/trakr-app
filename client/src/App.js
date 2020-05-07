@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
 
+
 import Welcome from './components/welcome'
 import ExpenseForm from './components/expenseForm'
 import ExpenseList from './components/expenseList'
