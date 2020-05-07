@@ -36,7 +36,8 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def expenses
-    current_user.expenses.order(created_at: :desc)
+    # TODO: get expenses from previous months
+    current_user.expenses.this_month.order(created_at: :desc)
   end
 
   def categories
