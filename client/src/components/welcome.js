@@ -33,7 +33,7 @@ function renderGoogleLoginButton() {
       buttonText="Login"
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
-      isSignedIn={true}
+      isSignedIn={false}
       uxMode="popup"
       cookiePolicy={'single_host_origin'}
     />
