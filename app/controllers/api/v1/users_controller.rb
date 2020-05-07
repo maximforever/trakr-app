@@ -24,14 +24,14 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def update_default_monthly_budget
-    if user.default_monthly_budget != params[:monthlyBudget] 
-      user.default_monthly_budget = params[:monthlyBudget]
+    if current_user.default_monthly_budget != params[:monthlyBudget] 
+      current_user.default_monthly_budget = params[:monthlyBudget]
     end
   end
 
   def update_current_monthly_budget
-    if user.budgets[this_month] != params[:currentMonthlyBudget] 
-      user.budgets[this_month] = params[:currentMonthlyBudget]
+    if current_user.budgets[this_month] != params[:currentMonthlyBudget] 
+      current_user.budgets[this_month] = params[:currentMonthlyBudget]
     end    
   end
 
