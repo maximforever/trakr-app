@@ -1,20 +1,18 @@
 class Api::V1::UsersController < ApplicationController
   def show_monthly_budget
-    @user = User.first 
     render json:  {
-      monthlyBudget: @user.default_monthly_budget,
-      currentMonthlyBudget: @user.current_monthly_budget
+      monthlyBudget: current_user.default_monthly_budget,
+      currentMonthlyBudget: current_user.current_monthly_budget
     }
   end
 
   def update_monthly_budget
-    @user = User.first 
     update_default_monthly_budget
     update_current_monthly_budget
-    if @user.save!
+    if current_user.save!
       render json:  {
-        monthlyBudget: @user.default_monthly_budget,
-        currentMonthlyBudget: @user.current_monthly_budget
+        monthlyBudget: current_user.default_monthly_budget,
+        currentMonthlyBudget: current_user.current_monthly_budget
       }
     else 
       render json: {
@@ -24,8 +22,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-
-  attr_accessor :user
 
   def update_default_monthly_budget
     if user.default_monthly_budget != params[:monthlyBudget] 

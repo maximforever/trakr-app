@@ -7,6 +7,21 @@ class User < ApplicationRecord
     self.budgets[this_month]
   end
 
+  def self.find_or_create_from_token(token, provider)
+    where(uid: token['sub']).first_or_initialize.tap do |user|
+      user.provider = provider
+      user.uid = token['sub']
+      user.first_name = token['given_name']
+      user.last_name = token['family_name']
+      user.email = token['email']
+      user.image = token['picture']
+      user.budgets = {}
+      user.default_monthly_budget = 1000
+      user.preferred_first_name = token['given_name']
+      user.save!
+    end
+  end
+
   private
 
   def this_month

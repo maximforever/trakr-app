@@ -9,12 +9,14 @@ import Dashboard from './components/dashboard'
 import Navigation from './components/navigation'
 import Settings from './components/settings'
 import Stats from './components/stats'
+import UserHeader from './components/userHeader'
 
 class App extends Component {
   constructor(props){
     super(props);
 
     this.state = {
+      loggedIn: false,
       expenses: [],
       categories: [],
       monthlyBudget: 0,
@@ -31,19 +33,30 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.fetchExpenses();
-    this.fetchMonthlyBudget();
+    this.fetchSession();
   }
 
   render() {
-    return(
-      <div className="App">
+    //TODO: clean this logic up:
 
-        {/*<Welcome />*/}
-        <Navigation navigateToPage={this.navigateToPage} />
-        {this.renderBodyContent()}
-      </div>
-    )
+    if(this.state.loggedIn)
+    {
+      return(
+        <div className="App">
+          <UserHeader user={this.state.user} />          
+          <Navigation navigateToPage={this.navigateToPage} />
+          {this.renderBodyContent()}
+        </div>
+      )
+    } else {
+      return (
+        <div className="App">
+          <Welcome />
+        </div>
+      )
+    }
+
+
   }
 
   renderBodyContent() {
@@ -139,6 +152,24 @@ class App extends Component {
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
+  fetchSession() {
+    fetch('/session', this.fetchOptions())
+      .then(res => res.json())
+      .then((response) => { 
+        this.setState({
+          loggedIn: response.loggedIn,
+          user: response.loggedInUser
+        }, () => {
+          if(this.state.loggedIn){
+            // TODO this is uglyyyy‰
+            this.fetchExpenses();
+            this.fetchMonthlyBudget();
+          }
+        })
+      })
+      .catch((error) => { console.log("Error fetching session data", error); })
+  }
+
   fetchExpenses() {
     fetch('/api/v1/expenses')
       .then(res => res.json())
@@ -186,6 +217,16 @@ class App extends Component {
     this.setState({
       currentPage: page
     })
+  }
+
+  fetchOptions(){
+    //const token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': 'someTestValue',
+      }
+    }
   }
 }
 

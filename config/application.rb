@@ -25,6 +25,10 @@ module Trakr
     config.load_defaults 6.0
     config.action_controller.default_protect_from_forgery = true
 
+    config.session_store :cookie_store, key: '30fk4fmnclfjghgasd4msd9q34k5568f'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
