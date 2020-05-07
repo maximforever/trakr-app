@@ -21,9 +21,11 @@ class SessionsController < ApplicationController
 
     def show
 
+      user_email = user_signed_in? ? current_user.email : nil
+
       render json:  {
         loggedIn: user_signed_in?,
-        email: current_user.email
+        email: user_email
       }
     end
 
