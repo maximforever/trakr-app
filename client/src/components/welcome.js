@@ -14,7 +14,7 @@ function Welcome(){
 
       <div>
         <p>To get started, sign in with your Google account</p>
-        <p></p>
+        <div className="button-wrapper">{ renderGoogleLoginButton() }</div>
       </div>
     </div>
   )
@@ -23,8 +23,6 @@ function Welcome(){
 function renderGoogleLoginButton() {
   const responseGoogle = (response) => {
     window.location.href = `/auth/google_oauth2/callback?token=${response.tokenId}`
-
-    //sendTokenToServer(response.tokenId)
   }
 
   return(
@@ -38,16 +36,6 @@ function renderGoogleLoginButton() {
       cookiePolicy={'single_host_origin'}
     />
   )
-}
-
-function sendTokenToServer(token) {
-  console.log(token);
-  fetch(`/auth/google_oauth2/callback?token=${token}`)
-    .then(res => res.json())
-    .then((response) => { 
-      window.reload();
-    })
-    .catch((error) => { console.log("Error fetching data", error); })
 }
 
 export default Welcome;

@@ -16,7 +16,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loggedIn: false,
+      status: "loading",
+      loggedInUser: null,
       expenses: [],
       categories: [],
       monthlyBudget: 0,
@@ -37,29 +38,45 @@ class App extends Component {
   }
 
   render() {
-    //TODO: clean this logic up:
-
-    if(this.state.loggedIn)
-    {
-      return(
-        <div className="App">
-          <UserHeader user={this.state.user} />          
-          <Navigation navigateToPage={this.navigateToPage} />
-          {this.renderBodyContent()}
-        </div>
-      )
-    } else {
-      return (
-        <div className="App">
-          <Welcome />
-        </div>
-      )
-    }
-
-
+    return(
+      <div className="App">
+        {this.renderContent()}
+      </div>
+    )
   }
 
-  renderBodyContent() {
+  renderContent() {
+    switch (this.state.status){
+      case "loggedIn":
+        return this.renderLoggedInInterface();
+        break;
+      case "loggedOut":
+        return this.renderLogin();
+        break;
+      default:
+        break;
+    }
+  }
+
+  renderLoggedInInterface() {
+    return(
+      <div className="App">
+        <UserHeader user={this.state.user} />          
+        <Navigation navigateToPage={this.navigateToPage} />
+        {this.renderLoggedInBodyContent()}
+      </div>
+    )
+  }
+
+  renderLogin() {
+    return (
+      <div className="App">
+        <Welcome />
+      </div>
+    )
+  }
+
+  renderLoggedInBodyContent() {
     if(this.state.currentPage === "home"){
       return this.renderHome();
     } else if (this.state.currentPage === "stats"){
@@ -157,11 +174,11 @@ class App extends Component {
       .then(res => res.json())
       .then((response) => { 
         this.setState({
-          loggedIn: response.loggedIn,
+          status: response.loggedIn,
           user: response.loggedInUser
         }, () => {
           if(this.state.loggedIn){
-            // TODO this is uglyyyy‰
+            // TODO this is uglyyyy
             this.fetchExpenses();
             this.fetchMonthlyBudget();
           }
