@@ -23,8 +23,9 @@ function Welcome(){
 
 function renderGoogleLoginButton() {
   const responseGoogle = (response) => {
-    console.log(response);
-    talkToServer(response.tokenId)
+    window.location.href = `/auth/google_oauth2/callback?token=${response.tokenId}`
+
+    //sendTokenToServer(response.tokenId)
   }
 
   return(
@@ -40,12 +41,12 @@ function renderGoogleLoginButton() {
   )
 }
 
-function talkToServer(token) {
+function sendTokenToServer(token) {
   console.log(token);
   fetch(`/auth/google_oauth2/callback?token=${token}`)
     .then(res => res.json())
     .then((response) => { 
-      console.log(response);
+      window.reload();
     })
     .catch((error) => { console.log("Error fetching data", error); })
 }
