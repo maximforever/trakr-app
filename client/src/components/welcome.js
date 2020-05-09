@@ -20,4 +20,34 @@ function Welcome(){
   )
 }
 
+function renderGoogleLoginButton() {
+  const responseGoogle = (response) => {
+    window.location.href = `/auth/google_oauth2/callback?token=${response.tokenId}`
+
+    //sendTokenToServer(response.tokenId)
+  }
+
+  return(
+    <GoogleLogin
+      clientId="261179776021-aia4ltj1eq494nmfj9fl7foh28o9ckdu.apps.googleusercontent.com"
+      buttonText="Login"
+      onSuccess={responseGoogle}
+      onFailure={responseGoogle}
+      isSignedIn={false}
+      uxMode="popup"
+      cookiePolicy={'single_host_origin'}
+    />
+  )
+}
+
+function sendTokenToServer(token) {
+  console.log(token);
+  fetch(`/auth/google_oauth2/callback?token=${token}`)
+    .then(res => res.json())
+    .then((response) => { 
+      window.reload();
+    })
+    .catch((error) => { console.log("Error fetching data", error); })
+}
+
 export default Welcome;
