@@ -16,7 +16,7 @@ class App extends Component {
 
     this.state = {
       status: "loading",
-      loggedInUser: null,
+      user: null,
       expenses: [],
       categories: [],
       monthlyBudget: 0,
@@ -176,7 +176,7 @@ class App extends Component {
           status: response.loggedIn,
           user: response.loggedInUser
         }, () => {
-          if(this.state.loggedIn){
+          if(this.state.status === "loggedIn"){
             // TODO this is uglyyyy
             this.fetchExpenses();
             this.fetchMonthlyBudget();
