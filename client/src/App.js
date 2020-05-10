@@ -22,7 +22,7 @@ class App extends Component {
       categories: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "home",
+      currentPage: "stats",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);

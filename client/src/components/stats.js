@@ -1,4 +1,5 @@
 import '../assets/stylesheets/stats.scss';
+import OccurenceCalendar from './occurenceCalendar'
 
 import React, { Component } from 'react';
 
@@ -7,11 +8,11 @@ class Stats extends Component {
   constructor(props){
     super(props);
 
-    // TODO: not sure if we need state here at all
-    this.state = {}
-  }
+    this.state = {
+      currentCategory: ""
+    }
 
-  componentDidMount(){
+    this.handleClick = this.handleClick.bind(this);
   }
 
   render(){
@@ -45,6 +46,11 @@ class Stats extends Component {
         </div>
 
         {this.renderSpendingTable(spending)}
+
+        <OccurenceCalendar 
+          expenses={this.props.expenses} 
+          category={this.state.currentCategory}
+        />
       </div>
     )
   }
@@ -60,11 +66,17 @@ class Stats extends Component {
     return spendingArray.map((category) => {
       return (
         <div className="one-category-row" key={category.category}>
-          <span className="category-name">{category.category}</span>
+          <span className="category-name" onClick={() => this.handleClick(category.category)}>{category.category}</span>
           <span className="category-amount">${category.amount}</span>
           <span className="category-percentage">{this.percentage(category.amount)}%</span>
         </div>
       )
+    })
+  }
+
+  handleClick(category){
+    this.setState({
+      currentCategory: category,
     })
   }
 
