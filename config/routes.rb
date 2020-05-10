@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'auth/:provider/callback',  to: 'sessions#create'
   get 'logout',                   to: 'sessions#destroy'
-  get 'session',          to: 'sessions#show'
+  get 'session',                  to: 'sessions#show'
 
   namespace :api do
     namespace :v1 do

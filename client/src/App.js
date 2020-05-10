@@ -49,12 +49,10 @@ class App extends Component {
     switch (this.state.status){
       case "loggedIn":
         return this.renderLoggedInInterface();
-        break;
       case "loggedOut":
         return this.renderLogin();
-        break;
       default:
-        break;
+        return null;
     }
   }
 
@@ -167,14 +165,14 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
-  }
+  } 
 
   fetchSession() {
     fetch('/session', this.fetchOptions())
       .then(res => res.json())
       .then((response) => { 
         this.setState({
-          status: response.loggedIn,
+          status: response.status,
           user: response.loggedInUser
         }, () => {
           if(this.state.status === "loggedIn"){
