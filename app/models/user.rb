@@ -8,9 +8,6 @@ class User < ApplicationRecord
   end
 
   def self.find_or_create_from_token(token, provider)
-    puts "TOKEN"
-    puts token
-    puts "====="
     where(uid: token['sub']).first_or_initialize.tap do |user|
       user.provider = provider
       user.uid = token['sub']

@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     def show
       status = user_signed_in? ? "loggedIn" : "loggedOut"
       render json:  {
-        loggedIn: status,
+        status: status,
         loggedInUser: signed_in_user_data
       }
     end
