@@ -21,10 +21,11 @@ class OccurenceCalendar extends Component {
 
   renderCells() {
     const d = new Date();
-    const days = this.daysInMonth(d.getMonth(), d.getYear());
+    const daysInMonth = this.daysInMonth(d.getMonth(), d.getYear());
+    const daysToRoundOutRow = 7 - daysInMonth%7;
     let cells = [];
 
-    for(let i=1; i<=days; i++){
+    for(let i=1; i<=daysInMonth; i++){
       const matchingExpenses = this.props.expenses.filter((expense) => {
         const selectedCategory = this.props.category.length ? this.props.category === expense.category : true;
         return i === this.getDay(expense.timestamp) && selectedCategory;
@@ -32,7 +33,11 @@ class OccurenceCalendar extends Component {
 
       const thisClass = matchingExpenses.length ? "cell has-spending  " : "cell";
 
-      cells.push(<div className={thisClass}>{i}</div>);
+      cells.push(<div className={thisClass}>{i}</div>);      
+    }
+
+    for(let i=1; i<=daysToRoundOutRow; i++){
+      cells.push(<div className='cell invisible'></div>);
     }
 
     return cells;
