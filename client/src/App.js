@@ -25,11 +25,11 @@ class App extends Component {
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
-    this.fetchMonthlyBudget = this.fetchMonthlyBudget.bind(this);
+    this.fetchUserSettings = this.fetchUserSettings.bind(this);
     this.submitNewExpense = this.submitNewExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
-    this.updateMonthlyBudget = this.updateMonthlyBudget.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
   }
 
   componentDidMount(){
@@ -115,7 +115,8 @@ class App extends Component {
       <Settings 
         monthlyBudget={this.state.monthlyBudget}
         currentMonthlyBudget={this.state.currentMonthlyBudget}
-        updateMonthlyBudget={this.updateMonthlyBudget}
+        preferredFirstName={this.state.user.firstName}
+        updateSettings={this.updateSettings}
         key={this.state.monthlyBudget + this.state.currentMonthlyBudget}
       />
     )
@@ -177,7 +178,7 @@ class App extends Component {
           if(this.state.status === "loggedIn"){
             // TODO this is uglyyyy
             this.fetchExpenses();
-            this.fetchMonthlyBudget();
+            this.fetchUserSettings();
           }
         })
       })
@@ -196,32 +197,40 @@ class App extends Component {
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
-  fetchMonthlyBudget() {
-    fetch('/api/v1/users/monthly-budget')
+  fetchUserSettings() {
+    fetch('/api/v1/users/settings')
       .then(res => res.json())
       .then((response) => { 
+        let user = {...this.state.user}
+        user.firstName = response.preferredFirstName
+
         this.setState({
           monthlyBudget: response.monthlyBudget,
           currentMonthlyBudget: response.currentMonthlyBudget,
+          user,
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
-  updateMonthlyBudget(newBudget) {
-    fetch('/api/v1/users/monthly-budget', {
+  updateSettings(newSettings) {
+    fetch('/api/v1/users/settings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newBudget),
+      body: JSON.stringify(newSettings),
     })
       .then(res => res.json())
-      .then((response) => { 
+      .then((response) => {
+        let user = {...this.state.user}
+        user.firstName = response.preferredFirstName
+
         this.setState({
           monthlyBudget: response.monthlyBudget,
           currentMonthlyBudget: response.currentMonthlyBudget,
-          currentPage: "home"
+          currentPage: "home",
+          user,
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })

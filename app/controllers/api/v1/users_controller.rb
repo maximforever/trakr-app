@@ -1,19 +1,15 @@
 class Api::V1::UsersController < ApplicationController
-  def show_monthly_budget
-    render json:  {
-      monthlyBudget: current_user.default_monthly_budget,
-      currentMonthlyBudget: current_user.current_monthly_budget
-    }
+  def show_settings
+    render json: user_settings
   end
 
-  def update_monthly_budget
+  def update_settings
     update_default_monthly_budget
     update_current_monthly_budget
+    update_preferred_first_name
+
     if current_user.save!
-      render json:  {
-        monthlyBudget: current_user.default_monthly_budget,
-        currentMonthlyBudget: current_user.current_monthly_budget
-      }
+      render json: user_settings
     else 
       render json: {
         status: "error"
@@ -22,6 +18,14 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
+
+  def user_settings 
+    {
+      monthlyBudget: current_user.default_monthly_budget,
+      currentMonthlyBudget: current_user.current_monthly_budget,
+      preferredFirstName: current_user.preferred_first_name
+    }
+  end
 
   def update_default_monthly_budget
     if current_user.default_monthly_budget != params[:monthlyBudget] 
@@ -33,6 +37,10 @@ class Api::V1::UsersController < ApplicationController
     if current_user.budgets[this_month] != params[:currentMonthlyBudget] 
       current_user.budgets[this_month] = params[:currentMonthlyBudget]
     end    
+  end
+
+  def update_preferred_first_name
+    current_user.preferred_first_name = params[:preferredFirstName].strip
   end
 
   def this_month

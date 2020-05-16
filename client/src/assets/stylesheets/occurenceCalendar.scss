@@ -8,14 +8,14 @@
 .cell-wrapper {
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
+  justify-content: space-between;
   margin: auto;
 }
 
 .cell {
   width: 1.4rem;
   height: 1.4rem;
-  margin: 2% 2.27%;
+  margin: 2% 3%;
   border-radius: 0.3rem;
   box-sizing: border-box;
   display: flex;
@@ -27,6 +27,11 @@
 
   &.has-spending {
     border-color: #c1636e;
+  }
+
+  &.invisible {
+    background: none;
+    border-color: rgba(0,0,0,0);
   }
 }
 

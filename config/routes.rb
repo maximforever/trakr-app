@@ -11,8 +11,8 @@ Rails.application.routes.draw do
       post 'expenses',        to: 'expenses#create'
       delete 'expenses/:id',  to: 'expenses#destroy'
 
-      get 'users/monthly-budget',   to: 'users#show_monthly_budget'
-      post 'users/monthly-budget',   to: 'users#update_monthly_budget'
+      get 'users/settings',   to: 'users#show_settings'
+      post 'users/settings',   to: 'users#update_settings'
     end
   end
 end

@@ -10,6 +10,7 @@ class Settings extends Component {
     this.state = {
       monthlyBudget: this.props.monthlyBudget,
       currentMonthlyBudget: this.props.currentMonthlyBudget,
+      preferredFirstName: this.props.preferredFirstName,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -32,6 +33,11 @@ class Settings extends Component {
             <input value={this.state.currentMonthlyBudget} type='number' name='currentMonthlyBudget' onChange={this.handleInputChange}></input>
           </div>
 
+          <div className="one-input">
+            <label>Preferred first name</label>
+            <input value={this.state.preferredFirstName} type='text' name='preferredFirstName' onChange={this.handleInputChange}></input>
+          </div>
+
           <div className="button-wrapper">
             <button className="submit" disabled={this.validSettings()}>Update Settings</button>
           </div>
@@ -51,12 +57,13 @@ class Settings extends Component {
   handleSubmit(e){
     e.preventDefault(e);
     
-    const newBudget = {
+    const newSettings = {
       monthlyBudget: Number(this.state.monthlyBudget),
       currentMonthlyBudget: Number(this.state.currentMonthlyBudget),
+      preferredFirstName: this.state.preferredFirstName.trim(),
     }
 
-    this.props.updateMonthlyBudget(newBudget);
+    this.props.updateSettings(newSettings);
   }
 
   validSettings(){
