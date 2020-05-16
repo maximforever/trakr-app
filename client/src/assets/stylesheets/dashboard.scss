@@ -24,7 +24,7 @@
     flex-direction: column;
     justify-content: flex-end;
     flex-grow: 1; 
-    max-width: 42%;
+    max-width: 41%;
   }
 
   .submetric {
@@ -34,7 +34,7 @@
 }
 
 .card.half-square {
-  width: 42%;
+  width: 41%;
 }
 
 @media only screen and (max-width: 700px) {
@@ -52,7 +52,7 @@
     }
 
     &.half-square {
-      max-width: 38%;
+      max-width: 37%;
     }
   }
 

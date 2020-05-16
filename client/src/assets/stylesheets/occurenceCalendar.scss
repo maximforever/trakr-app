@@ -9,21 +9,33 @@
   display: flex;
   flex-wrap: wrap;
   width: 80%;
+  margin: auto;
 }
 
 .cell {
   width: 1.4rem;
   height: 1.4rem;
-  margin: 0 0.35rem 0.7rem 0.35rem;
+  margin: 2% 2.27%;
   border-radius: 0.3rem;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.8rem;
   background: #e8e8e8;
+  border: 2px solid #e8e8e8;
 
   &.has-spending {
-    background: #eccbd7;
-    color: #3c071a;
+    border-color: #c1636e;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .cell-wrapper {
+    width: 100%;
+  }
+
+  .cell {
+    margin: 2% 2.5%;
   }
 }

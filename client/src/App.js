@@ -21,7 +21,7 @@ class App extends Component {
       categories: [],
       monthlyBudget: 0,
       currentMonthlyBudget: 0,
-      currentPage: "stats",
+      currentPage: "home",
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
