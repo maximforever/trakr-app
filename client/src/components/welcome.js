@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../assets/stylesheets/welcome.scss';
 import { GoogleLogin } from 'react-google-login';
 
