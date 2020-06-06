@@ -2,5 +2,5 @@ class Expense < ApplicationRecord
   validates :description, :amount, :timestamp, presence: true  
   belongs_to :user
 
-  scope :this_month, -> { where(:timestamp => Time.now.beginning_of_month..Time.now.end_of_month) }
+  scope :for_month, -> (date) { where(:timestamp => date.beginning_of_month..date.end_of_month) }
 end

@@ -20,8 +20,13 @@ class App extends Component {
       expenses: [],
       categories: [],
       monthlyBudget: 0,
+      currentDate: {
+        month: null,
+        year: null,
+      },
       currentMonthlyBudget: 0,
       currentPage: "home",
+      datepickerPages: ["home", "stats"],
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -30,9 +35,12 @@ class App extends Component {
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+    this.previousMonth = this.previousMonth.bind(this);
+    this.nextMonth = this.nextMonth.bind(this);
   }
 
   componentDidMount(){
+    this.setCurrentDate();
     this.fetchSession();
   }
 
@@ -59,7 +67,13 @@ class App extends Component {
     return(
       <div>
         <UserHeader user={this.state.user} />          
-        <Navigation navigateToPage={this.navigateToPage} />
+        <Navigation 
+          navigateToPage={this.navigateToPage} 
+          renderDateSelector={this.pageShouldIncludeDatepicker()}
+          date={this.state.currentDate}
+          nextMonth={this.nextMonth}
+          previousMonth={this.previousMonth}
+        />
         {this.renderLoggedInBodyContent()}
       </div>
     )
@@ -191,6 +205,7 @@ class App extends Component {
         }, () => {
           if(this.state.status === "loggedIn"){
             // TODO this is uglyyyy
+
             this.fetchExpenses();
             this.fetchUserSettings();
           }
@@ -200,7 +215,7 @@ class App extends Component {
   }
 
   fetchExpenses() {
-    fetch('/api/v1/expenses')
+    fetch(`/api/v1/expenses/?month=${this.state.currentDate.month}&year=${this.state.currentDate.year}`)
       .then(res => res.json())
       .then((response) => { 
         this.setState({
@@ -225,6 +240,20 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  setCurrentDate(){
+    const d = new Date();
+
+    let currentDate = {
+      month: d.getMonth() + 1,
+      year: 1900 + d.getYear(),
+    }
+
+    if(currentDate.month.length === 1){ currentDate.month = `0${currentDate.month}` }
+    this.setState({
+      currentDate
+    },  )
   }
 
   updateSettings(newSettings) {
@@ -256,6 +285,10 @@ class App extends Component {
     })
   }
 
+  pageShouldIncludeDatepicker(){
+    return this.state.datepickerPages.includes(this.state.currentPage);
+  }
+
   fetchOptions(){
     //const token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     return {
@@ -265,8 +298,30 @@ class App extends Component {
       }
     }
   }
+
+  nextMonth(){
+    // JS months run 0 to 11
+    let newMonth = this.state.currentDate.month < 12 ? this.state.currentDate.month + 1 : 1;
+    let newYear = newMonth === 1 ? this.state.currentDate.year + 1 : this.state.currentDate.year;
+    const currentDate = {
+      month: newMonth,
+      year: newYear,
+    }
+
+    this.setState({currentDate}, () => this.fetchExpenses());
+  }
+
+  previousMonth(){
+    // JS months run 0 to 11
+    let newMonth = this.state.currentDate.month > 1 ? this.state.currentDate.month - 1 : 12;
+    let newYear = newMonth === 12 ? this.state.currentDate.year - 1 : this.state.currentDate.year;
+    const currentDate = {
+      month: newMonth,
+      year: newYear,
+    }
+
+    this.setState({currentDate}, () => this.fetchExpenses());
+  }
 }
-
-
 
 export default App;
