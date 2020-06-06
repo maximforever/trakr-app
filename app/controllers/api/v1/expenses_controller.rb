@@ -10,16 +10,17 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def create
-    expense_params[:timestamp] = expense_params[:timestamp].to_datetime()
-    expense_params[:category] = expense_params[:category].downcase()
-
-    # TODO: replace with actual user
     @expense = Expense.new(expense_params.merge({ 
-      user: current_user
+      user: current_user,
+      timestamp: expense_params[:timestamp].to_datetime(),
+      category: expense_params[:category].blank? ? 'uncategorized' : expense_params[:category].downcase()
     }))
 
     if @expense.save
-      index
+      render json: {
+        status: 200,
+        newExpense: @expense
+      }
     else
       render json:  {
         status: 500,

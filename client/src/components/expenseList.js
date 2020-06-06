@@ -3,23 +3,24 @@ import Expense from './expense';
 import '../assets/stylesheets/expenseList.scss';
 
 function ExpenseList(props){
-/* TODO: implement dispaying expenses by date */
+/* TODO: implement dispaying expenses by month */
 
   return (
     <div>
       <h3 className="expense-heading">Expenses:</h3>
-      {renderExpenses(props.expenses, props.deleteExpense)}
+      {renderExpenses(props.expenses, props.deleteExpense, props.editExpense)}
     </div>
   )
 }
 
-function renderExpenses(expenses, deleteExpense){
+function renderExpenses(expenses, deleteExpense, editExpense){
   if (!expenses.length){ return <p>No expenses recorded yet - you should add one!</p> }
 
   const uniqueSortedDates = getUniqueSortedDates(expenses);
+
   return uniqueSortedDates.map((date) => {
     const expensesOnThisDate = getExpensesOnThisDate(expenses, date)
-    const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense);
+    const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense, editExpense);
     const spentThisDay = moneySpentThisDay(expensesOnThisDate);
 
     return(
@@ -34,12 +35,13 @@ function renderExpenses(expenses, deleteExpense){
   })
 }
 
-function expensesElements(expenses, date, deleteExpense){
+function expensesElements(expenses, date, deleteExpense, editExpense){
   return expenses.map((expense) => {
     return (<Expense 
             key={expense.id}
             expense={expense} 
             deleteExpense={deleteExpense}
+            editExpense={editExpense}
           />)
   })
 }

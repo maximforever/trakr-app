@@ -1,61 +1,53 @@
 import '../assets/stylesheets/occurenceCalendar.scss';
 
-import React, { Component } from 'react';
+import React from 'react';
 
-class OccurenceCalendar extends Component {
-
-  constructor(props){
-    super(props);
-  }
-
-  render(){
-    return (
-      <div className="occurence-calendar">
-        <h3>{this.renderCategoryTitle()}</h3>
-        <div className="cell-wrapper">
-          {this.renderCells()}
-        </div>
+function OccurenceCalendar(props){
+  return (
+    <div className="occurence-calendar">
+      <h3>{renderCategoryTitle(props.category)}</h3>
+      <div className="cell-wrapper">
+        {renderCells(props)}
       </div>
-    ) 
+    </div>
+  )
+}
+
+function renderCells(props) {
+  const d = new Date();
+  const daysThisMonth = daysInMonth(d.getMonth(), d.getYear());
+  const daysToRoundOutRow = 7 - daysThisMonth%7;
+  let cells = [];
+
+  for(let i=1; i<=daysThisMonth; i++){
+    const matchingExpenses = props.expenses.filter((expense) => {
+      const selectedCategory = props.category.length ? props.category === expense.category : true;
+      return i === getDay(expense.timestamp) && selectedCategory;
+    })
+
+    const thisClass = matchingExpenses.length ? "cell has-spending  " : "cell";
+
+    cells.push(<div className={thisClass} key={i}>{i}</div>);      
   }
 
-  renderCells() {
-    const d = new Date();
-    const daysInMonth = this.daysInMonth(d.getMonth(), d.getYear());
-    const daysToRoundOutRow = 7 - daysInMonth%7;
-    let cells = [];
-
-    for(let i=1; i<=daysInMonth; i++){
-      const matchingExpenses = this.props.expenses.filter((expense) => {
-        const selectedCategory = this.props.category.length ? this.props.category === expense.category : true;
-        return i === this.getDay(expense.timestamp) && selectedCategory;
-      })
-
-      const thisClass = matchingExpenses.length ? "cell has-spending  " : "cell";
-
-      cells.push(<div className={thisClass}>{i}</div>);      
-    }
-
-    for(let i=1; i<=daysToRoundOutRow; i++){
-      cells.push(<div className='cell invisible'></div>);
-    }
-
-    return cells;
+  for(let i=1; i<=daysToRoundOutRow; i++){
+    cells.push(<div className='cell invisible' key={`invisible-${i}`}></div>);
   }
 
-  renderCategoryTitle(){
-    return this.props.category.length ? this.props.category : "any"; 
-  }
+  return cells;
+}
 
-  daysInMonth(month, year) {
-    return new Date(year, month + 1, 0).getDate();
-  }
+function renderCategoryTitle(title){
+  return title.length ? title : "any"; 
+}
 
-  getDay(date){
-    const d = new Date(date);
-    return d.getDate();
-  }
+function daysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
 
+function getDay(date){
+  const d = new Date(date);
+  return d.getDate();
 }
 
 export default OccurenceCalendar;

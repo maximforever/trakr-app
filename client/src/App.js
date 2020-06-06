@@ -58,7 +58,7 @@ class App extends Component {
 
   renderLoggedInInterface() {
     return(
-      <div className="App">
+      <div>
         <UserHeader user={this.state.user} />          
         <Navigation navigateToPage={this.navigateToPage} />
         {this.renderLoggedInBodyContent()}
@@ -68,7 +68,7 @@ class App extends Component {
 
   renderLogin() {
     return (
-      <div className="App">
+      <div>
         <Welcome />
       </div>
     )
@@ -98,6 +98,7 @@ class App extends Component {
         <ExpenseList 
           expenses={this.state.expenses} 
           deleteExpense={this.deleteExpense}
+          editExpense={this.editExpense}
         />
       </div>
     );
@@ -132,7 +133,6 @@ class App extends Component {
   }
   
   submitNewExpense(expense){
-    console.log(expense);
     fetch('/api/v1/expenses', {
       method: 'POST',
       headers: {
@@ -143,10 +143,18 @@ class App extends Component {
       .then(res => res.json())
       .then((response) => { 
         if(response.status === 200){
+          let updatedCategories = this.state.categories;
+          let updatedExpenses = this.state.expenses.concat({...response.newExpense, new: true})
+
+          if(!updatedCategories.includes(expense.category)){
+            updatedCategories = updatedCategories.concat(expense.category)
+          }
+
           this.setState({
-            expenses: response.expenses,
-            categories: response.categories,
+            expenses: updatedExpenses,
+            categories: updatedCategories,
           })
+
         } else {
           console.log(response.message);
         }
@@ -154,7 +162,8 @@ class App extends Component {
       .catch((error) => { console.log("Error fetching data", error); })
   }
 
-  deleteExpense(id){
+  deleteExpense(e, id){
+    e.stopPropagation();
     fetch(`/api/v1/expenses/${id}`, {
       method: 'DELETE',
     })
@@ -166,6 +175,11 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
+  } 
+
+  editExpense(id){
+    console.log(id);
+    
   } 
 
   fetchSession() {
