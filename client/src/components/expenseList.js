@@ -14,7 +14,7 @@ function ExpenseList(props){
 }
 
 function renderExpenses(expenses, deleteExpense, editExpense){
-  if (!expenses.length){ return <p>No expenses recorded yet - you should add one!</p> }
+  if (!expenses.length){ return <p>No expenses recorded this month - you should add one!</p> }
 
   const uniqueSortedDates = getUniqueSortedDates(expenses);
 
