@@ -103,6 +103,7 @@ class App extends Component {
         <Dashboard
           expenses={this.state.expenses}
           monthlyBudget={this.getCurrentBudget()}
+          currentDate={this.state.currentDate}
         />
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}

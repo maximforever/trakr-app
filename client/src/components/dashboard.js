@@ -57,8 +57,8 @@ class Dashboard extends Component {
   isThisMonth(today, timestamp){
     timestamp = new Date(timestamp);
     return (
-      today.getYear() === timestamp.getYear() && 
-      today.getMonth() === timestamp.getMonth()
+      this.props.currentDate.year === timestamp.getYear() + 1900 && 
+      this.props.currentDate.month === timestamp.getMonth() + 1
     )
   }
 
