@@ -38,11 +38,6 @@ class ExpenseForm extends Component {
       <button className="submit add-expense-toggle" onClick={this.toggleExpenseForm}>
         <span className="lnr lnr-plus-circle"></span>Add new expense
       </button>
-
-/*
-      <div className="add-expense-toggle" onClick={this.toggleExpenseForm}>
-        <span className="plus">+</span>
-      </div>*/
     )
   }
 
@@ -177,6 +172,7 @@ class ExpenseForm extends Component {
   }
 
   toggleExpenseForm(){
+    window.navigator.vibrate(200);
     this.setState((prevState) => {
       return {
         displayForm: !prevState.displayForm

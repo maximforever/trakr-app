@@ -11,6 +11,7 @@
 
   .spending-info-wrapper{
     display: flex;
+    flex-grow: 1;
 
     .amount-section {
       display: flex;
@@ -19,13 +20,14 @@
       font-weight: 600;
       padding: 0 0.5rem;
       background: #ffffff;
-      min-width: 30px;
-      border-radius: 5px 0 0 5px
+      min-width: 15%;
+      border-radius: 0 5px 5px 0;
     }
 
     .spending-info {
       padding: 0.5rem;
       display: flex;
+      flex-grow: 1;
       flex-direction: column;
     }
   }
