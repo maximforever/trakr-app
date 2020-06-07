@@ -2,7 +2,6 @@ class Api::V1::ExpensesController < ApplicationController
   before_action :authenticate
 
   def index
-    puts params.inspect
     render json:  {
       status: 200,
       expenses: expenses(params[:month], params[:year]),

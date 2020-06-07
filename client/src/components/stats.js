@@ -39,18 +39,28 @@ class Stats extends Component {
 
     return (
       <div>
-        <div className="one-category-row header">
-          <span className="category-name">Category</span>
-          <span className="category-amount">Sum</span>
-          <span className="category-percentage">Budget %</span>
-        </div>
-
+        {this.renderSpendingHeaders(this.props.expenses.length)}
         {this.renderSpendingTable(spending)}
 
         <OccurenceCalendar 
           expenses={this.props.expenses} 
           category={this.state.currentCategory}
         />
+      </div>
+    )
+  }
+
+  renderSpendingHeaders(countOfExpenses){
+    if(!countOfExpenses){
+      return <div>No expenses recorded this month</div>
+    }
+
+
+    return (
+      <div className="one-category-row header">
+        <span className="category-name">Category</span>
+        <span className="category-amount">Sum</span>
+        <span className="category-percentage">Budget %</span>
       </div>
     )
   }

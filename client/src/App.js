@@ -179,7 +179,7 @@ class App extends Component {
 
   deleteExpense(e, id){
     e.stopPropagation();
-    fetch(`/api/v1/expenses/${id}`, {
+    fetch(`/api/v1/expenses/${id}${this.dateParams()}`, {
       method: 'DELETE',
     })
       .then(res => res.json())
@@ -217,7 +217,7 @@ class App extends Component {
   }
 
   fetchExpenses() {
-    fetch(`/api/v1/expenses/?month=${this.state.currentDate.month}&year=${this.state.currentDate.year}`)
+    fetch(`/api/v1/expenses/${this.dateParams()}`)
       .then(res => res.json())
       .then((response) => { 
         this.setState({
@@ -299,6 +299,10 @@ class App extends Component {
         'X-CSRF-Token': 'someTestValue',
       }
     }
+  }
+
+  dateParams(){
+    return `?month=${this.state.currentDate.month}&year=${this.state.currentDate.year}`;
   }
 
   nextMonth(){
