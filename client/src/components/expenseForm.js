@@ -48,7 +48,17 @@ class ExpenseForm extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="one-input">
             <label>Amount</label>
-            <input value={this.state.amount} type='number' name='amount' onChange={this.handleInputChange}></input>
+            <div className="amount-spent-wrapper">
+              $ <input 
+                  autofocus="true" 
+                  className="amount-spent"
+                  min="1" 
+                  value={this.state.amount} 
+                  type='number' 
+                  name='amount' 
+                  onChange={this.handleInputChange}>
+                </input>
+            </div>
           </div>
 
           <div className="one-input">

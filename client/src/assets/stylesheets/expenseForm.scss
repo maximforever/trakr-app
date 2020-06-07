@@ -21,6 +21,22 @@ h2 {
   margin-top: 0;
 }
 
+input:focus {
+  outline: none;
+}
+
+.amount-spent-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  
+  .amount-spent {
+    border: none;
+    border-bottom: 1px solid gray;
+    font-size: 2rem;
+  }
+}
+
 .category-section {
   display: flex;
   flex-wrap: wrap;
