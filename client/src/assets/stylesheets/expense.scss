@@ -1,5 +1,4 @@
 .one-expense {
-  padding: 0.5rem;
   border: 1px solid #e0e0e0;
   margin: 0.7rem 0;
   border-radius: 5px;
@@ -9,12 +8,35 @@
   display: flex;
   justify-content: space-between;
 
+
+  .spending-info-wrapper{
+    display: flex;
+
+    .amount-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 600;
+      padding: 0 0.5rem;
+      background: #ffffff;
+      min-width: 30px;
+      border-radius: 5px 0 0 5px
+    }
+
+    .spending-info {
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   .lnr {
     font-size: 1rem;
     text-decoration: none;
     color: #e47575;
     display: flex;
     align-items: center;
+    padding: 0.5rem;
 
     &:hover {
       color: red;

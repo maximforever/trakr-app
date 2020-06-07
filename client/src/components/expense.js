@@ -6,9 +6,17 @@ function Expense(props){
     
   return(
     <div className={getClass(expense.new)} key={expense.id} onClick={() => {props.editExpense(expense.id)}}>
-      <div>
-        <div className="category">{expense.category}</div>
-        <div><strong>${expense.amount}</strong> for {expense.description || "Undefined"}</div>
+      <div className="spending-info-wrapper">
+        
+        <div className="amount-section">
+          <span className="amount">${expense.amount}</span> 
+        </div>
+
+        <div className="spending-info">
+          <div className="category">{expense.category}</div>
+          <div>{expense.description || "Undefined"}</div>
+        </div>
+
       </div>
       <div onClick={(e) => {props.deleteExpense(e, expense.id)}}className="lnr lnr-cross-circle"></div>
     </div>
