@@ -21,6 +21,7 @@
   background: none;
   text-align: center;
   padding: 1rem 0;
+  user-select: none
 
   &:hover{
     cursor: pointer;
@@ -40,7 +41,7 @@
   }
 
   .lnr {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 
   .nav-button {
