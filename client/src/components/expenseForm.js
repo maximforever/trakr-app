@@ -2,20 +2,22 @@ import '../assets/stylesheets/expenseForm.scss';
 
 import React, { Component } from 'react';
 
+const defaultState = {
+  amount: "",
+  description: "",
+  merchant: "",
+  timestamp: "",
+  category: "",
+  displayForm: false,
+  showCategoryInput: false,
+}
+
 class ExpenseForm extends Component {
 
   constructor(props){
     super(props);
 
-    this.state = {
-      amount: "",
-      description: "",
-      merchant: "",
-      timestamp: "",
-      category: "",
-      displayForm: false,
-      showCategoryInput: false,
-    }
+    this.state = {}
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,7 +28,7 @@ class ExpenseForm extends Component {
   }
 
   componentDidMount(){
-    this.setDateTimePickerToNow();
+    this.resetState();
   }
 
   render(){
@@ -156,17 +158,16 @@ class ExpenseForm extends Component {
       category: this.state.category,
     }
 
-    this.props.submitNewExpense(newExpense);
+    this.props.submitNewExpense(newExpense, (success) => {
+      if(success){
+        this.resetState();
+      }
+    });
   }
 
   resetState(){
+    this.setState({...defaultState})
     this.setDateTimePickerToNow();
-    this.setState({
-      amount: "",
-      description: "",
-      merchant: "",
-      category: "subscriptions",
-    })
   }
 
   setDateTimePickerToNow(){
@@ -182,6 +183,7 @@ class ExpenseForm extends Component {
   }
 
   toggleExpenseForm(){
+    this.props.toggleExpenseForm();
     this.setState((prevState) => {
       return {
         displayForm: !prevState.displayForm

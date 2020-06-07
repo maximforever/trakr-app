@@ -1,3 +1,11 @@
+.new-expense-form {
+  margin-bottom: 1.7rem;
+
+  button.submit {
+    padding: 0.3rem 1rem;
+  }
+}
+
 .add-expense-toggle {
     width: 100%;
     margin: 1.7rem 0;
@@ -11,10 +19,6 @@
     .lnr-plus-circle {
       margin-right: 1rem;
     }
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 h2 {
@@ -65,12 +69,3 @@ span.category {
     border: none;
   }
 }
-
-.new-expense-form {
-  margin-bottom: 1.7rem;
-
-  button.submit {
-    padding: 0.3rem 1rem;
-  }
-}
-

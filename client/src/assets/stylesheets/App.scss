@@ -2,6 +2,7 @@
   width: 90%;
   max-width: 480px;
   margin: 2rem auto;
+  position: relative;
 }
 
 * {
@@ -11,7 +12,11 @@
 button {
   font-size: 1rem;
   margin: 0 0.5rem;
-  user-select: none
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 button.cancel {

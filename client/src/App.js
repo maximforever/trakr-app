@@ -25,6 +25,7 @@ class App extends Component {
         month: null,
         year: null,
       },
+      showExpenseForm: false,
       currentMonthlyBudget: 0,
       currentPage: "home",
       datepickerPages: ["home", "stats"],
@@ -36,6 +37,7 @@ class App extends Component {
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+    this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
   }
@@ -68,13 +70,7 @@ class App extends Component {
     return(
       <div>
         <UserHeader user={this.state.user} />          
-        <Navigation 
-          navigateToPage={this.navigateToPage} 
-          renderDateSelector={this.pageShouldIncludeDatepicker()}
-          date={this.state.currentDate}
-          nextMonth={this.nextMonth}
-          previousMonth={this.previousMonth}
-        />
+        {this.renderNavigation()}
         {this.renderLoggedInBodyContent()}
       </div>
     )
@@ -101,22 +97,51 @@ class App extends Component {
   renderHome(){
     return (
       <div className="home">
-        <Dashboard
-          expenses={this.state.expenses}
-          monthlyBudget={this.getCurrentBudget()}
-          currentDate={this.state.currentDate}
-        />
+        {this.renderDashboard()}
         <ExpenseForm 
           submitNewExpense={this.submitNewExpense}
+          toggleExpenseForm={this.toggleExpenseForm}
           categories={this.state.categories}
         />
-        <ExpenseList 
-          expenses={this.state.expenses} 
-          deleteExpense={this.deleteExpense}
-          editExpense={this.editExpense}
-        />
+        {this.renderExpenseList()}
       </div>
     );
+  }
+
+  renderNavigation(){
+    if(this.state.showExpenseForm){ return null; }
+
+    return(
+      <Navigation 
+        navigateToPage={this.navigateToPage} 
+        renderDateSelector={this.pageShouldIncludeDatepicker()}
+        date={this.state.currentDate}
+        nextMonth={this.nextMonth}
+        previousMonth={this.previousMonth}
+      />
+    )
+  }
+
+  renderDashboard(){
+    if(this.state.showExpenseForm){ return null; }
+
+    return(
+      <Dashboard
+        expenses={this.state.expenses}
+        monthlyBudget={this.getCurrentBudget()}
+        currentDate={this.state.currentDate}
+      />
+    )
+  }
+
+  renderExpenseList(){
+    return(
+      <ExpenseList 
+        expenses={this.state.expenses} 
+        deleteExpense={this.deleteExpense}
+        editExpense={this.editExpense}
+      />
+    )
   }
 
   renderStats(){
@@ -147,7 +172,7 @@ class App extends Component {
     return this.state.currentMonthlyBudget;
   }
   
-  submitNewExpense(expense){
+  submitNewExpense(expense, successCallback){
     fetch('/api/v1/expenses', {
       method: 'POST',
       headers: {
@@ -170,6 +195,8 @@ class App extends Component {
             categories: updatedCategories,
           })
 
+          this.toggleExpenseForm();
+          successCallback(true);
         } else {
           console.log(response.message);
         }
@@ -299,6 +326,14 @@ class App extends Component {
         'X-CSRF-Token': 'someTestValue',
       }
     }
+  }
+
+  toggleExpenseForm(){
+    this.setState((prevState) => {
+      return {
+        showExpenseForm: !prevState.showExpenseForm,
+      }
+    })
   }
 
   dateParams(){
