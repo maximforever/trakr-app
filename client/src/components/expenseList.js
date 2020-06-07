@@ -7,7 +7,7 @@ function ExpenseList(props){
 
   return (
     <div>
-      <h3 className="expense-heading">Expenses:</h3>
+      <h3 className="expense-heading">Expenses</h3>
       {renderExpenses(props.expenses, props.deleteExpense, props.editExpense)}
     </div>
   )

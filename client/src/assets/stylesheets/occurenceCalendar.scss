@@ -3,6 +3,10 @@
   padding: 0.4rem;
   border-radius: 0.3rem;
   margin: 0.8rem 0;
+  
+  h3 {
+    margin: 2% 3% 4%;
+  }
 }
 
 .cell-wrapper {
@@ -10,10 +14,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin: auto;
-}
-
-h3 {
-  margin: 2% 3% 4%;
 }
 
 .cell {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
 
 
-import Welcome from './components/welcome'
+import SignInPage from './components/signInPage'
 import ExpenseForm from './components/expenseForm'
 import ExpenseList from './components/expenseList'
 import Dashboard from './components/dashboard'
@@ -60,7 +60,7 @@ class App extends Component {
       case "loggedIn":
         return this.renderLoggedInInterface();
       case "loggedOut":
-        return this.renderLogin();
+        return <SignInPage />
       default:
         return null;
     }
@@ -72,14 +72,6 @@ class App extends Component {
         <UserHeader user={this.state.user} />          
         {this.renderNavigation()}
         {this.renderLoggedInBodyContent()}
-      </div>
-    )
-  }
-
-  renderLogin() {
-    return (
-      <div>
-        <Welcome />
       </div>
     )
   }

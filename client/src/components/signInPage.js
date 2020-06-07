@@ -1,10 +1,10 @@
 import React from 'react';
-import '../assets/stylesheets/welcome.scss';
+import '../assets/stylesheets/sign-in-page.scss';
 import { GoogleLogin } from 'react-google-login';
 
-function Welcome(){
+function SignInPage(){
   return(
-    <div className="welcome-page card">
+    <div className="logged-out-page card">
       <h1>Welcome to Trakr</h1>
       <h3>Trakr helps you</h3>
       <ul>
@@ -39,4 +39,4 @@ function renderGoogleLoginButton() {
   )
 }
 
-export default Welcome;
+export default SignInPage;
