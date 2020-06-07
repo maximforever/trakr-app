@@ -1,12 +1,16 @@
 .add-expense-toggle {
-  text-align: center;
-  padding: 1rem 0;
+    width: 100%;
+    margin: 1.7rem 0;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  .plus {
-    font-size: 8rem;
-    text-shadow: 2px 2px 7px rgba(22, 142, 20, 0.4);
-    color: #018001;
-  }
+    .lnr-plus-circle {
+      margin-right: 1rem;
+    }
 
   &:hover {
     cursor: pointer;
@@ -46,5 +50,11 @@ span.category {
   }
 }
 
-@media only screen and (max-width: 700px) {
+.new-expense-form {
+  margin-bottom: 1.7rem;
+
+  button.submit {
+    padding: 0.3rem 1rem;
+  }
 }
+
