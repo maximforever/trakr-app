@@ -172,7 +172,6 @@ class ExpenseForm extends Component {
   }
 
   toggleExpenseForm(){
-    window.navigator.vibrate(200);
     this.setState((prevState) => {
       return {
         displayForm: !prevState.displayForm
