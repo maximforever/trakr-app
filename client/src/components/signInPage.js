@@ -22,16 +22,20 @@ function SignInPage(){
 }
 
 function renderGoogleLoginButton() {
-  const responseGoogle = (response) => {
+  const successfulGoogleResponse = (response) => {
     window.location.href = `/auth/google_oauth2/callback?token=${response.tokenId}`
+  }
+
+  const failedGoogleResponse = (response) => {
+    console.log(response);
   }
 
   return(
     <GoogleLogin
       clientId="261179776021-aia4ltj1eq494nmfj9fl7foh28o9ckdu.apps.googleusercontent.com"
       buttonText="Login"
-      onSuccess={responseGoogle}
-      onFailure={responseGoogle}
+      onSuccess={successfulGoogleResponse}
+      onFailure={failedGoogleResponse}
       isSignedIn={false}
       uxMode="popup"
       cookiePolicy={'single_host_origin'}

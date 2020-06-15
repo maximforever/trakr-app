@@ -25,6 +25,11 @@ h2 {
   margin-top: 0;
 }
 
+form input {
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
 input:focus {
   outline: none;
 }
@@ -32,12 +37,10 @@ input:focus {
 .amount-spent-wrapper {
   display: flex;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1.7rem;
   
   .amount-spent {
-    border: none;
-    border-bottom: 1px solid gray;
-    font-size: 2rem;
+    font-size: 1.7rem;
   }
 }
 
