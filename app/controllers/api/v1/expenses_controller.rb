@@ -4,7 +4,7 @@ class Api::V1::ExpensesController < ApplicationController
   def index
     render json:  {
       status: 200,
-      expenses: expenses(params[:month], params[:year]),
+      expenses: expenses(params[:year]),
       categories: categories,
     } 
   end
@@ -36,16 +36,13 @@ class Api::V1::ExpensesController < ApplicationController
     index
   end
 
-  def expenses(month, year)
-    # TODO: get expenses from previous months
-    puts "MONTH"
-    puts month, year
-    current_user.expenses.for_month(Time.parse("#{year}-#{month}-01")).order(created_at: :desc)
+  def expenses(year)
+    current_user.expenses.for_year(Time.parse("#{year}-01-01")).order(created_at: :desc)
   end
 
   def categories
     #TODO: fetch all the categories, not just from this month
-    expenses(params[:month], params[:year]).map(&:category).reject(&:nil?).uniq
+    expenses(params[:year]).map(&:category).reject(&:nil?).uniq
   end
 
   private
