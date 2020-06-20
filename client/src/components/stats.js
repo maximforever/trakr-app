@@ -26,16 +26,7 @@ class Stats extends Component {
   }
 
   renderSpendingByCategory(){
-    let spending = {};
-
-    this.props.expenses.forEach((expense) => {
-      const category = expense.category;
-      if(typeof(spending[category]) === 'undefined'){
-        spending[category] = expense.amount;
-      } else {
-        spending[category] += expense.amount;  
-      }
-    })
+    let spending = this.sortExpensesByCategory();
 
     return (
       <div>
@@ -43,6 +34,7 @@ class Stats extends Component {
         {this.renderSpendingTable(spending)}
 
         <OccurenceCalendar 
+          currentDate={this.props.currentDate}
           expenses={this.props.expenses} 
           category={this.state.currentCategory}
         />
@@ -82,6 +74,20 @@ class Stats extends Component {
         </div>
       )
     })
+  }
+
+  sortExpensesByCategory(){
+    let spending = {};
+    this.props.expenses.forEach((expense) => {
+      const category = expense.category;
+      if(typeof(spending[category]) === 'undefined'){
+        spending[category] = expense.amount;
+      } else {
+        spending[category] += expense.amount;  
+      }
+    });
+
+    return spending;
   }
 
   handleClick(category){

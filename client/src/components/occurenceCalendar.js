@@ -14,9 +14,10 @@ function OccurenceCalendar(props){
 }
 
 function renderCells(props) {
-  const d = new Date();
-  const daysThisMonth = daysInMonth(d.getMonth(), d.getYear());
+  const { currentDate } = props; 
+  const daysThisMonth = daysInMonth(currentDate.month, currentDate.year);
   const daysToRoundOutRow = 7 - daysThisMonth%7;
+  //console.log(daysThisMonth, daysToRoundOutRow);
   let cells = [];
 
   for(let i=1; i<=daysThisMonth; i++){
@@ -42,7 +43,7 @@ function renderCategoryTitle(title){
 }
 
 function daysInMonth(month, year) {
-  return new Date(year, month + 1, 0).getDate();
+  return new Date(year, month, 0).getDate();
 }
 
 function getDay(date){

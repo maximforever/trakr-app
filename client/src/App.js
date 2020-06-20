@@ -141,6 +141,7 @@ class App extends Component {
       expenses={this.state.expenses}
       categories={this.state.categories}
       monthlyBudget={this.getCurrentBudget()}
+      currentDate={this.state.currentDate}
     />
   }
 
