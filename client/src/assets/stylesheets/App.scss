@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .App {
   width: 90%;
   max-width: 480px;
@@ -22,12 +24,16 @@ button {
 button.cancel {
   border: none;
   text-decoration: underline;
-  color: #585858;
+  color: $red-light;
   background: none;
+
+  &:hover{
+    color: $red-medium;
+  }
 }
 
 button.submit {
-  background: #78f178;
+  background: $green-light;
   border: none;
   border-radius: 5px;
   color: black;

@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .one-expense {
   border: 1px solid #e0e0e0;
   margin: 0.7rem 0;
@@ -35,15 +37,9 @@
   .lnr {
     font-size: 1rem;
     text-decoration: none;
-    color: #e47575;
     display: flex;
     align-items: center;
     padding: 0.5rem;
-
-    &:hover {
-      color: red;
-      cursor: pointer;
-    }
   }
 
   &.new {
