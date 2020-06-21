@@ -41,8 +41,8 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def categories
-    #TODO: fetch all the categories, not just from this month
-    expenses(params[:year]).map(&:category).reject(&:nil?).uniq
+    #TODO: make this a scope or something
+    current_user.expenses.map(&:category).uniq - ["uncategorized"]
   end
 
   private

@@ -218,6 +218,9 @@ class App extends Component {
   } 
 
   fetchSession() {
+    // TODO: session should return expenses & user data if the user is logged in
+    // this doesn't need to be a separate request
+
     fetch('/session', this.fetchOptions())
       .then(res => res.json())
       .then((response) => { 
