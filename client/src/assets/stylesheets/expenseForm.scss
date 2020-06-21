@@ -1,24 +1,11 @@
 .new-expense-form {
   margin-bottom: 1.7rem;
-
-  button.submit {
-    padding: 0.3rem 1rem;
-  }
 }
 
 .add-expense-toggle {
-    width: 100%;
-    margin: 1.7rem 0;
-    padding: 1rem 0;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .lnr-plus-circle {
-      margin-right: 1rem;
-    }
+  .lnr-plus-circle {
+    margin-right: 1rem;
+  }
 }
 
 h2 {

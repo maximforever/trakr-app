@@ -37,7 +37,7 @@ class ExpenseForm extends Component {
 
   renderAddExpenseToggle(){
     return (
-      <button className="submit add-expense-toggle" onClick={this.toggleExpenseForm}>
+      <button className="lg submit" onClick={this.toggleExpenseForm}>
         <span className="lnr lnr-plus-circle"></span>Add new expense
       </button>
     )
@@ -86,7 +86,7 @@ class ExpenseForm extends Component {
 
           <div className="button-wrapper">
             <button className="cancel" onClick={this.toggleExpenseForm}>Cancel</button>
-            <button className="submit" disabled={this.validExpense()}>Add Expense</button>
+            <button className="submit md" disabled={this.validExpense()}>Add Expense</button>
           </div>
         </form>
       </div>

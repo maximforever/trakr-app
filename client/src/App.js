@@ -18,7 +18,7 @@ class App extends Component {
     this.state = {
       status: "loading",
       user: null,
-      expenses: [],
+      expenses: {},
       categories: [],
       monthlyBudget: 0,
       currentDate: {
@@ -119,7 +119,7 @@ class App extends Component {
 
     return(
       <Dashboard
-        expenses={this.state.expenses}
+        expenses={this.currentMonthExpenses()}
         monthlyBudget={this.getCurrentBudget()}
         currentDate={this.state.currentDate}
       />
@@ -129,7 +129,7 @@ class App extends Component {
   renderExpenseList(){
     return(
       <ExpenseList 
-        expenses={this.state.expenses} 
+        expenses={this.currentMonthExpenses()} 
         deleteExpense={this.deleteExpense}
         editExpense={this.editExpense}
       />
@@ -138,7 +138,7 @@ class App extends Component {
 
   renderStats(){
     return <Stats 
-      expenses={this.state.expenses}
+      expenses={this.currentMonthExpenses()}
       categories={this.state.categories}
       monthlyBudget={this.getCurrentBudget()}
       currentDate={this.state.currentDate}
@@ -241,7 +241,7 @@ class App extends Component {
       .then(res => res.json())
       .then((response) => { 
         this.setState({
-          expenses: response.expenses,
+          expenses: this.updatedExpenseList(response.expenses),
           categories: response.categories,
         })
       })
@@ -272,10 +272,9 @@ class App extends Component {
       year: 1900 + d.getYear(),
     }
 
-    if(currentDate.month.length === 1){ currentDate.month = `0${currentDate.month}` }
     this.setState({
       currentDate
-    },  )
+    })
   }
 
   updateSettings(newSettings) {
@@ -334,27 +333,72 @@ class App extends Component {
   }
 
   nextMonth(){
-    // JS months run 0 to 11
+    // JS months run 0 to 11;
     let newMonth = this.state.currentDate.month < 12 ? this.state.currentDate.month + 1 : 1;
     let newYear = newMonth === 1 ? this.state.currentDate.year + 1 : this.state.currentDate.year;
-    const currentDate = {
-      month: newMonth,
-      year: newYear,
-    }
-
-    this.setState({currentDate}, () => this.fetchExpenses());
+    this.updateCurrentDate(newMonth, newYear);
   }
 
   previousMonth(){
     // JS months run 0 to 11
     let newMonth = this.state.currentDate.month > 1 ? this.state.currentDate.month - 1 : 12;
     let newYear = newMonth === 12 ? this.state.currentDate.year - 1 : this.state.currentDate.year;
+    this.updateCurrentDate(newMonth, newYear);
+  }
+
+  updateCurrentDate(newMonth, newYear){
     const currentDate = {
       month: newMonth,
       year: newYear,
     }
 
-    this.setState({currentDate}, () => this.fetchExpenses());
+    this.setState({currentDate}, () => {
+      if(!this.thisYearsExpensesAreAvailable()){ this.fetchExpenses() }
+    });
+  }
+
+  thisYearsExpensesAreAvailable() {
+    const thisYear = this.state.currentDate.year;
+    return typeof(this.state.expenses[thisYear]) !== 'undefined'
+  }
+
+  updatedExpenseList(incomingExpenses){
+    const year = this.formattedYear(this.state.currentDate.year);
+    let currentExpenses = {...this.state.expenses};
+    currentExpenses[year] = {};
+
+    incomingExpenses.forEach((expense) => {
+      const month = (new Date(expense.timestamp).getMonth() + 1);
+      // add trailing 0
+      const formattedMonth = this.formattedMonth(month);
+
+      if(typeof(currentExpenses[year][formattedMonth]) === 'undefined'){
+        currentExpenses[year][formattedMonth] = [expense];
+      } else {
+        currentExpenses[year][formattedMonth].push(expense);
+      }
+    });
+
+    return currentExpenses
+  }
+
+  currentMonthExpenses(){
+    if(typeof(this.state.expenses[this.formattedYear(this.state.currentDate.year)]) === 'undefined'){ 
+      return []; 
+    }
+
+    const thisYearsExpenses = this.state.expenses[this.formattedYear(this.state.currentDate.year)];
+    const thisMonthsExpenses = thisYearsExpenses[this.formattedMonth(this.state.currentDate.month)];  
+
+    return  thisMonthsExpenses || [];
+  }
+
+  formattedMonth(month){
+    return (month.toString().length === 1) ? `0${month}` : month.toString();
+  }
+
+  formattedYear(year){
+    return year.toString();
   }
 }
 

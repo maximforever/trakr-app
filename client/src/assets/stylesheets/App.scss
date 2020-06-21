@@ -16,6 +16,21 @@ button {
   margin: 0 0.5rem;
   user-select: none;
 
+  &.md {
+    padding: 0.3rem 1rem;
+  }
+
+  &.lg {
+    width: 100%;
+    margin: 1.7rem 0;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &:hover {
     cursor: pointer;
   }
