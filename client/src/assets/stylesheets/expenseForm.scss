@@ -47,6 +47,11 @@ span.category {
   border: 1px solid gray;
   border-radius: 5px;
 
+  &.selected, &.selected:hover{
+    background: #000000;
+    color: #FFFFFF;
+  }
+
   &:hover {
     cursor: pointer;
     color: #000000;

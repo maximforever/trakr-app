@@ -13,7 +13,6 @@ const defaultState = {
 }
 
 class ExpenseForm extends Component {
-
   constructor(props){
     super(props);
 
@@ -24,6 +23,7 @@ class ExpenseForm extends Component {
     this.setDateTimePickerToNow = this.setDateTimePickerToNow.bind(this);
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.populateCategory = this.populateCategory.bind(this);
+    this.setCategory = this.setCategory.bind(this);
     this.revealCategoryInput = this.revealCategoryInput.bind(this);
   }
 
@@ -118,7 +118,12 @@ class ExpenseForm extends Component {
 
     return this.props.categories.map((category) => {
       if(category != null && category.trim().length){
-        return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
+        return <span 
+          key={category} 
+          className="category" 
+          onClick={this.setCategory} 
+          className={this.getCategoryClass(category)}>{category}</span>
+        //return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
       }
 
       return null;
@@ -142,11 +147,25 @@ class ExpenseForm extends Component {
     });
   }
 
+  setCategory(e){
+    const category = e.target.innerHTML.trim().toLowerCase();
+
+    this.setState({
+      category,
+    })
+  }
+
   populateCategory(e){
     this.setState({
       category: e.target.innerHTML.trim(),
       showCategoryInput: true,
     })
+  }
+
+  getCategoryClass(category){
+    let className = "category"
+    if(category === this.state.category){ className += " selected"}
+    return className;
   }
 
   handleSubmit(e){
