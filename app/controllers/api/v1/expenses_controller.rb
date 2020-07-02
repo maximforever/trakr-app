@@ -10,9 +10,7 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def create
-    @expense = Expense.new(expense_params.merge({ 
-      user: current_user,
-      timestamp: expense_params[:timestamp].to_datetime(),
+    @expense = current_user.expenses.build(expense_params.merge({ 
       category: expense_params[:category].blank? ? 'uncategorized' : expense_params[:category].downcase()
     }))
 
@@ -50,5 +48,4 @@ class Api::V1::ExpensesController < ApplicationController
   def expense_params
     params.require(:expense).permit(:amount, :description, :merchant, :category, :timestamp)
   end
-
 end

@@ -114,8 +114,10 @@ class ExpenseForm extends Component {
   }
 
   renderCategoryList(){
+    if(!this.props.categories.length){ return null; }
+
     return this.props.categories.map((category) => {
-      if(category.trim().length){
+      if(category != null && category.trim().length){
         return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
       }
 

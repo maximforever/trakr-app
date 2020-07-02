@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
-
-
 import SignInPage from './components/signInPage'
 import ExpenseForm from './components/expenseForm'
 import ExpenseList from './components/expenseList'
@@ -177,7 +175,7 @@ class App extends Component {
       .then((response) => { 
         if(response.status === 200){
           let updatedCategories = this.state.categories;
-          let updatedExpenses = this.state.expenses.concat({...response.newExpense, new: true})
+          let updatedExpenses = this.insertOneExpense(response.newExpense);
 
           if(!updatedCategories.includes(expense.category)){
             updatedCategories = updatedCategories.concat(expense.category)
@@ -186,10 +184,10 @@ class App extends Component {
           this.setState({
             expenses: updatedExpenses,
             categories: updatedCategories,
-          })
-
-          this.toggleExpenseForm();
-          successCallback(true);
+          }, () => {
+            this.toggleExpenseForm();
+            successCallback(true);
+          });
         } else {
           console.log(response.message);
         }
@@ -363,6 +361,20 @@ class App extends Component {
   thisYearsExpensesAreAvailable() {
     const thisYear = this.state.currentDate.year;
     return typeof(this.state.expenses[thisYear]) !== 'undefined'
+  }
+
+  insertOneExpense(expense){
+    let currentExpenses = {...this.state.expenses};
+    const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
+    const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
+    
+    if (currentExpenses[year][month] === "undefined") {
+      currentExpenses[year][month] = {}
+    }
+
+    currentExpenses[year][month].push({...expense, new: true});
+
+    return currentExpenses;
   }
 
   updatedExpenseList(incomingExpenses){
