@@ -203,7 +203,7 @@ class App extends Component {
       .then(res => res.json())
       .then((response) => { 
         this.setState({
-          expenses: response.expenses,
+          expenses: this.generateUpdatedExpenseList(response.expenses),
           categories: response.categories,
         })
       })
@@ -242,7 +242,7 @@ class App extends Component {
       .then(res => res.json())
       .then((response) => { 
         this.setState({
-          expenses: this.updatedExpenseList(response.expenses),
+          expenses: this.generateUpdatedExpenseList(response.expenses),
           categories: response.categories,
         })
       })
@@ -363,21 +363,7 @@ class App extends Component {
     return typeof(this.state.expenses[thisYear]) !== 'undefined'
   }
 
-  insertOneExpense(expense){
-    let currentExpenses = {...this.state.expenses};
-    const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
-    const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
-    
-    if (currentExpenses[year][month] === "undefined") {
-      currentExpenses[year][month] = {}
-    }
-
-    currentExpenses[year][month].push({...expense, new: true});
-
-    return currentExpenses;
-  }
-
-  updatedExpenseList(incomingExpenses){
+  generateUpdatedExpenseList(incomingExpenses){
     const year = this.formattedYear(this.state.currentDate.year);
     let currentExpenses = {...this.state.expenses};
     currentExpenses[year] = {};
@@ -395,6 +381,20 @@ class App extends Component {
     });
 
     return currentExpenses
+  }
+
+  insertOneExpense(expense){
+    let currentExpenses = {...this.state.expenses};
+    const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
+    const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
+    
+    if (currentExpenses[year][month] === "undefined") {
+      currentExpenses[year][month] = {}
+    }
+
+    currentExpenses[year][month].push({...expense, new: true});
+
+    return currentExpenses;
   }
 
   currentMonthExpenses(){
