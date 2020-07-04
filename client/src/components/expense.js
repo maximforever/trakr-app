@@ -8,7 +8,7 @@ class Expense extends Component {
 
     this.state = {
       mouseDown: false,
-      touchtime: 1000,
+      touchtime: 1500,
     }
   
     //this.listenForLongPress = this.listenForLongPress.bind(this);
