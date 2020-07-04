@@ -59,7 +59,12 @@ class Expense extends Component {
   }
 
   getClass(newExpense){
-    return (newExpense !== "undefined" && newExpense) ? "one-expense new" : "one-expense";
+    let className = (newExpense !== "undefined" && newExpense) ? "one-expense new" : "one-expense";
+    if (this.state.showOptions) {
+      className += " stack-vertically"
+    }
+
+    return className;
   }
 
   handleMouseDown(e, id){
@@ -85,11 +90,12 @@ class Expense extends Component {
   }
 
   listenForLongPress(e, id){
+    if(this.state.mouseDown){ return }
+
     setTimeout(() => {
-      if(this.state.mouseDown){
-        window.navigator.vibrate(100);
-        this.props.editExpense(e, id);
-      }
+      this.setState({
+        showOptions: true,
+      })
     }, this.state.touchtime)
   }
 }
