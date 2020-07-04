@@ -33,13 +33,14 @@ class App extends Component {
     this.fetchExpenses = this.fetchExpenses.bind(this);
     this.fetchUserSettings = this.fetchUserSettings.bind(this);
     this.submitNewExpense = this.submitNewExpense.bind(this);
+    this.submitExpenseEdit = this.submitExpenseEdit.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
-    this.editExpense = this.editExpense.bind(this);
+    this.updateExpense = this.updateExpense.bind(this);
     this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
   }
 
@@ -94,6 +95,7 @@ class App extends Component {
         <ExpenseForm 
           key={this.state.expenseToUpdate.id  || 0 }
           submitNewExpense={this.submitNewExpense}
+          submitExpenseEdit={this.submitExpenseEdit}
           toggleExpenseForm={this.toggleExpenseForm}
           categories={this.state.categories}
           expenseToUpdate={this.state.expenseToUpdate}
@@ -135,7 +137,7 @@ class App extends Component {
       <ExpenseList 
         expenses={this.currentMonthExpenses()} 
         deleteExpense={this.deleteExpense}
-        editExpense={this.editExpense}
+        updateExpense={this.updateExpense}
       />
     )
   }
@@ -198,8 +200,42 @@ class App extends Component {
           console.log(response.message);
         }
       })
-      .catch((error) => { console.log("Error fetching data", error); })
+      .catch((error) => { console.log("Error submitting expense", error); })
   }
+
+  submitExpenseEdit(expense, successCallback){
+    fetch('/api/v1/expenses', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expense),
+    })
+      .then(res => res.json())
+      .then((response) => { 
+        if(response.status === 200){
+          let updatedCategories = this.state.categories;
+          let updatedExpenses = this.updateOneExpense(response.updatedExpense);
+
+          if(!updatedCategories.includes(expense.category)){
+            updatedCategories = updatedCategories.concat(expense.category)
+          }
+
+          this.setState({
+            expenses: updatedExpenses,
+            categories: updatedCategories,
+          }, () => {
+            this.toggleExpenseForm();
+            successCallback(true);
+          });
+        } else {
+          console.log(response.message);
+        }
+      })
+      .catch((error) => { console.log("Error updating expense", error); })
+  }
+
+
 
   deleteExpense(e, id){
     e.stopPropagation();
@@ -222,10 +258,11 @@ class App extends Component {
     })
   }
 
-  editExpense(e, id){
-    e.stopPropagation();
+  updateExpense(e, id){
+    //e.stopPropagation();
 
     let expenseToUpdate = this.findExpenseById(id);
+
     this.setState({ expenseToUpdate, showExpenseForm: true })
   } 
 
@@ -415,6 +452,21 @@ class App extends Component {
     }
 
     currentExpenses[year][month].push({...expense, new: true});
+    return currentExpenses;
+  }
+
+  updateOneExpense(updatedExpense){
+    let currentExpenses = {...this.state.expenses};
+    const month = this.formattedMonth(new Date(updatedExpense.timestamp).getMonth() + 1);
+    const year = this.formattedYear(new Date(updatedExpense.timestamp).getYear() + 1900);
+
+    currentExpenses[year][month] = currentExpenses[year][month].map((expense) => {
+      if(expense.id === updatedExpense.id){
+        return {...updatedExpense, new: true};
+      } else {
+        return expense;
+      }
+    })  
 
     return currentExpenses;
   }

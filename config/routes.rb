@@ -5,11 +5,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      
-
-      get 'expenses',         to: 'expenses#index'
-      post 'expenses',        to: 'expenses#create'
-      delete 'expenses/:id',  to: 'expenses#destroy'
+      get     'expenses',       to: 'expenses#index'
+      post    'expenses',       to: 'expenses#create'
+      patch   'expenses',       to: 'expenses#update'
+      delete  'expenses/:id',   to: 'expenses#destroy'
 
       get 'users/settings',   to: 'users#show_settings'
       post 'users/settings',   to: 'users#update_settings'

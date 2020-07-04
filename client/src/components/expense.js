@@ -5,7 +5,7 @@ function Expense(props){
   const { expense } = props;
     
   return(
-    <div className={getClass(expense.new)} key={expense.id} onClick={() => {props.editExpense(expense.id)}}>
+    <div className={getClass(expense.new)} key={expense.id}>
       <div className="spending-info-wrapper">
         <div className="amount-section">
           <span className="amount">${expense.amount}</span> 
@@ -15,7 +15,7 @@ function Expense(props){
           <div>{expense.description || "Undefined"}</div>
         </div>
       </div>
-      <button onClick={(e) => {props.editExpense(e, expense.id)}}className="cancel lnr lnr-pencil"></button>
+      <button onClick={(e) => {props.updateExpense(e, expense.id)}}className="cancel lnr lnr-pencil"></button>
       <button onClick={(e) => {props.deleteExpense(e, expense.id)}}className="cancel lnr lnr-cross-circle"></button>
     </div>
   )

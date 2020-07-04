@@ -27,6 +27,22 @@ class Api::V1::ExpensesController < ApplicationController
     end
   end
 
+  def update
+    @expense = Expense.find(params[:id])
+
+    if @expense.update(expense_params.except(:id))
+      render json: {
+        status: 200,
+        updatedExpense: @expense
+      }
+    else
+      render json:  {
+        status: 500,
+        message: @expense.errors.full_messages
+      }
+    end
+  end
+
   def destroy
     @expense = Expense.find(params[:id]);
     @expense.destroy

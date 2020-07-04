@@ -25,10 +25,11 @@ class ExpenseForm extends Component {
     this.populateCategory = this.populateCategory.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.revealCategoryInput = this.revealCategoryInput.bind(this);
+    this.successCallback = this.successCallback.bind(this);
   }
 
   componentDidMount(){
-    if(Object.keys(this.props.expenseToUpdate).length){
+    if(this.editingExpense()){
       this.setStateFromExistingExpense(this.props.expenseToUpdate)
     } else {
       this.resetState();
@@ -40,8 +41,6 @@ class ExpenseForm extends Component {
   }
 
   renderAddExpenseToggle(){
-    const label = ""
-
     return (
       <button className="add-expense-toggle lg submit" onClick={this.toggleExpenseForm}>
         <span className="lnr lnr-plus-circle"></span>Add new expense
@@ -92,7 +91,7 @@ class ExpenseForm extends Component {
 
           <div className="button-wrapper">
             <button className="cancel" onClick={this.toggleExpenseForm}>Cancel</button>
-            <button className="submit md" disabled={this.validExpense()}>Add Expense</button>
+            <button className="submit md" disabled={this.validExpense()}>{this.formLabel()}</button>
           </div>
         </form>
       </div>
@@ -184,11 +183,20 @@ class ExpenseForm extends Component {
       category: this.state.category,
     }
 
-    this.props.submitNewExpense(newExpense, (success) => {
-      if(success){
-        this.resetState();
-      }
-    });
+    if(this.editingExpense()){
+      newExpense.id = this.state.id;
+      this.props.submitExpenseEdit(newExpense, this.successCallback);
+    } else {
+      this.props.submitNewExpense(newExpense, this.successCallback);
+    }
+  }
+
+  successCallback(success){
+    if(success){ 
+      this.resetState(); 
+    } else {
+      console.log("something went wrong");
+    }
   }
 
   resetState(){
@@ -197,9 +205,12 @@ class ExpenseForm extends Component {
   }
 
   setStateFromExistingExpense(expense){
-    console.log(expense);
+    const expenseDatetime = new Date(expense.timestamp).toISOString().slice(0,16);
 
-    this.setState({ ...expense, displayForm: true })
+    this.setState({ 
+      ...expense, 
+      displayForm: true,
+      timestamp: expenseDatetime })
   }
 
   setDateTimePickerToNow(){
@@ -228,6 +239,14 @@ class ExpenseForm extends Component {
         this.resetState();
       }
     });
+  }
+
+  formLabel(){
+    return this.editingExpense() ? "Save changes" : "Add expense";
+  }
+
+  editingExpense(){
+    return Object.keys(this.props.expenseToUpdate).length
   }
 }
 

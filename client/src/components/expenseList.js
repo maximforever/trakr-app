@@ -8,19 +8,19 @@ function ExpenseList(props){
   return (
     <div>
       <h3 className="expense-heading">Expenses</h3>
-      {renderExpenses(props.expenses, props.deleteExpense, props.editExpense)}
+      {renderExpenses(props.expenses, props.deleteExpense, props.updateExpense)}
     </div>
   )
 }
 
-function renderExpenses(expenses, deleteExpense, editExpense){
+function renderExpenses(expenses, deleteExpense, updateExpense){
   if (!expenses.length){ return <p>No expenses recorded this month - you should add one!</p> }
 
   const uniqueSortedDates = getUniqueSortedDates(expenses);
 
   return uniqueSortedDates.map((date) => {
     const expensesOnThisDate = getExpensesOnThisDate(expenses, date)
-    const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense, editExpense);
+    const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense, updateExpense);
     const spentThisDay = moneySpentThisDay(expensesOnThisDate);
 
     return(
@@ -35,13 +35,13 @@ function renderExpenses(expenses, deleteExpense, editExpense){
   })
 }
 
-function expensesElements(expenses, date, deleteExpense, editExpense){
+function expensesElements(expenses, date, deleteExpense, updateExpense){
   return expenses.map((expense) => {
     return (<Expense 
             key={expense.id}
             expense={expense} 
             deleteExpense={deleteExpense}
-            editExpense={editExpense}
+            updateExpense={updateExpense}
           />)
   })
 }
