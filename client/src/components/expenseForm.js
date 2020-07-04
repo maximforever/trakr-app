@@ -28,7 +28,11 @@ class ExpenseForm extends Component {
   }
 
   componentDidMount(){
-    this.resetState();
+    if(Object.keys(this.props.expenseToUpdate).length){
+      this.setStateFromExistingExpense(this.props.expenseToUpdate)
+    } else {
+      this.resetState();
+    } 
   }
 
   render(){
@@ -36,6 +40,8 @@ class ExpenseForm extends Component {
   }
 
   renderAddExpenseToggle(){
+    const label = ""
+
     return (
       <button className="add-expense-toggle lg submit" onClick={this.toggleExpenseForm}>
         <span className="lnr lnr-plus-circle"></span>Add new expense
@@ -52,7 +58,7 @@ class ExpenseForm extends Component {
             <label>Amount</label>
             <div className="amount-spent-wrapper">
               $ <input 
-                  autofocus="true" 
+                  autoFocus={true} 
                   className="amount-spent"
                   min="1" 
                   value={this.state.amount} 
@@ -120,7 +126,6 @@ class ExpenseForm extends Component {
       if(category != null && category.trim().length){
         return <span 
           key={category} 
-          className="category" 
           onClick={this.setCategory} 
           className={this.getCategoryClass(category)}>{category}</span>
         //return <span key={category} className="category" onClick={this.populateCategory}>{category}</span>
@@ -191,6 +196,12 @@ class ExpenseForm extends Component {
     this.setDateTimePickerToNow();
   }
 
+  setStateFromExistingExpense(expense){
+    console.log(expense);
+
+    this.setState({ ...expense, displayForm: true })
+  }
+
   setDateTimePickerToNow(){
     const timezoneOffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
     const currentDatetime = new Date(Date.now() - timezoneOffset).toISOString().slice(0,16);
@@ -205,11 +216,18 @@ class ExpenseForm extends Component {
 
   toggleExpenseForm(){
     this.props.toggleExpenseForm();
+
     this.setState((prevState) => {
       return {
         displayForm: !prevState.displayForm
       }
-    })
+    }, () => {
+      // if we closed the form, clear it
+      if(!this.state.displayForm){
+        this.props.clearExpenseToUpdate();
+        this.resetState();
+      }
+    });
   }
 }
 

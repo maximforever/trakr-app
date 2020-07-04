@@ -17,6 +17,7 @@ class App extends Component {
       status: "loading",
       user: null,
       expenses: {},
+      expenseToUpdate: {},
       categories: [],
       monthlyBudget: 0,
       currentDate: {
@@ -38,6 +39,8 @@ class App extends Component {
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
+    this.editExpense = this.editExpense.bind(this);
+    this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
   }
 
   componentDidMount(){
@@ -89,9 +92,12 @@ class App extends Component {
       <div className="home">
         {this.renderDashboard()}
         <ExpenseForm 
+          key={this.state.expenseToUpdate.id  || 0 }
           submitNewExpense={this.submitNewExpense}
           toggleExpenseForm={this.toggleExpenseForm}
           categories={this.state.categories}
+          expenseToUpdate={this.state.expenseToUpdate}
+          clearExpenseToUpdate={this.clearExpenseToUpdate}
         />
         {this.renderExpenseList()}
       </div>
@@ -210,10 +216,26 @@ class App extends Component {
       .catch((error) => { console.log("Error fetching data", error); })
   } 
 
-  editExpense(id){
-    console.log(id);
-    
+  clearExpenseToUpdate(){
+    this.setState({
+      expenseToUpdate: {}
+    })
+  }
+
+  editExpense(e, id){
+    e.stopPropagation();
+
+    let expenseToUpdate = this.findExpenseById(id);
+    this.setState({ expenseToUpdate, showExpenseForm: true })
   } 
+
+  findExpenseById(id){
+    let expenses = this.currentMonthExpenses();
+
+    return expenses.filter((expense) => {
+      return expense.id === id;
+    })[0];
+  }
 
   fetchSession() {
     // TODO: session should return expenses & user data if the user is logged in

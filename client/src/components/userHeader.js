@@ -5,7 +5,7 @@ function UserHeader(props){
   return(
     <div className="user-header">
       <div className="user-header-data"> 
-        <img className = "user-photo" src={props.user.image} />
+        <img className = "user-photo" src={props.user.image} alt="profile-pic" />
         <span>Hey, {props.user.firstName}.</span> 
       </div>
       <div className="user-header-account">
