@@ -6,7 +6,7 @@ function UserHeader(props){
     <div className="user-header">
       <div className="user-header-data"> 
         <img className = "user-photo" src={props.user.image} alt="profile-pic" />
-        <span>Hey, {props.user.firstName}.</span> 
+        <span>{ greeting() }, {props.user.firstName}</span> 
       </div>
       <div className="user-header-account">
         <a className="logout" href = "/logout">
@@ -15,7 +15,12 @@ function UserHeader(props){
         </a>
       </div>
     </div> 
-  )
+  )  
+}
+
+function greeting(){
+  const greetings = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"]
+  return greetings[Math.floor(Math.random() * greetings.length)];
 }
 
 export default UserHeader;
