@@ -286,7 +286,7 @@ class App extends Component {
         }, () => {
           if(this.state.status === "loggedIn"){
             // TODO this is uglyyyy
-
+            this.setLastVisitedPage();
             this.fetchExpenses();
             this.fetchUserSettings();
           }
@@ -321,6 +321,16 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  setLastVisitedPage(){
+    const lastVisitedPage = window.localStorage.getItem('trakr-page');
+
+    if(lastVisitedPage !== null){
+      this.setState({
+        currentPage: lastVisitedPage,
+      })
+    }
   }
 
   setCurrentDate(){
@@ -360,6 +370,8 @@ class App extends Component {
   }
 
   navigateToPage(page){
+    window.localStorage.setItem("trakr-page", page)
+
     this.setState({
       currentPage: page
     })
