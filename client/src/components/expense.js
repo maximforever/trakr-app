@@ -15,7 +15,7 @@ function Expense(props){
           <div>{expense.description || "Undefined"}</div>
         </div>
       </div>
-      <button onClick={(e) => {props.updateExpense(e, expense.id)}}className="cancel lnr lnr-pencil"></button>
+      <button onClick={(e) => {props.editExpense(e, expense.id)}}className="cancel lnr lnr-pencil"></button>
       <button onClick={(e) => {props.deleteExpense(e, expense.id)}}className="cancel lnr lnr-cross-circle"></button>
     </div>
   )

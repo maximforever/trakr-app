@@ -40,7 +40,7 @@ class App extends Component {
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
-    this.updateExpense = this.updateExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
     this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
   }
 
@@ -93,7 +93,7 @@ class App extends Component {
       <div className="home">
         {this.renderDashboard()}
         <ExpenseForm 
-          key={this.state.expenseToUpdate.id  || 0 }
+          key={this.state.expenseToUpdate.updated_at  || 0 }
           submitNewExpense={this.submitNewExpense}
           submitExpenseEdit={this.submitExpenseEdit}
           toggleExpenseForm={this.toggleExpenseForm}
@@ -137,7 +137,7 @@ class App extends Component {
       <ExpenseList 
         expenses={this.currentMonthExpenses()} 
         deleteExpense={this.deleteExpense}
-        updateExpense={this.updateExpense}
+        editExpense={this.editExpense}
       />
     )
   }
@@ -258,9 +258,8 @@ class App extends Component {
     })
   }
 
-  updateExpense(e, id){
-    //e.stopPropagation();
-
+  editExpense(e, id){
+    e.stopPropagation();
     let expenseToUpdate = this.findExpenseById(id);
 
     this.setState({ expenseToUpdate, showExpenseForm: true })
