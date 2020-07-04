@@ -7,12 +7,8 @@ class Expense extends Component {
     super(props);
 
     this.state = {
-      mouseDown: false,
-      touchtime: 1500,
       showOptions: false,
     }
-  
-    //this.listenForLongPress = this.listenForLongPress.bind(this);
   }
 
   render(){
@@ -22,10 +18,6 @@ class Expense extends Component {
       <div 
         className={this.getClass(expense.new)} 
         key={expense.id} 
-        onMouseDown={(e) => this.handleMouseDown(e, expense.id)}
-        onMouseUp={() => this.handleMouseUp()}
-        onTouchStart={(e) => this.handleMouseDown(e, expense.id)}
-        onTouchEnd={() => this.handleMouseUp()}
       >
         <div className="spending-info-wrapper">
           <div className="amount-section">
@@ -48,12 +40,12 @@ class Expense extends Component {
         <div className="options-button-wrapper">
           <button onClick={(e) => {this.props.editExpense(e, expense.id)}} className="cancel lnr lnr-pencil"></button>
           <button onClick={(e) => {this.props.deleteExpense(e, expense.id)}} className="cancel lnr lnr-trash"></button>
-          <button onClick={() => this.toggleMenu() } className="cancel lnr lnr-cross-circle"></button>        
+          <button onClick={(e) => this.toggleMenu(e) } className="cancel lnr lnr-cross-circle"></button>        
         </div>
       )
     } else {
       return (
-        <button onClick={() => this.toggleMenu() }className="cancel lnr lnr-menu-circle"></button>
+        <button onClick={(e) => this.toggleMenu(e) }className="cancel lnr lnr-menu-circle"></button>
       )
     }
   }
@@ -67,36 +59,14 @@ class Expense extends Component {
     return className;
   }
 
-  handleMouseDown(e, id){
-    if(this.state.mouseDown){ return }
+  toggleMenu(e){
+    e.preventDefault();
 
-    this.setState({
-      mouseDown: true,
-    }, this.listenForLongPress(e, id))
-  }
-
-  toggleMenu(){
     this.setState((prevState) => {
       return {
         showOptions: !prevState.showOptions,
       }
     })
-  }
-
-  handleMouseUp(){
-    this.setState({
-      mouseDown: false,
-    });
-  }
-
-  listenForLongPress(e, id){
-    if(this.state.mouseDown){ return }
-
-    setTimeout(() => {
-      this.setState({
-        showOptions: true,
-      })
-    }, this.state.touchtime)
   }
 }
 
