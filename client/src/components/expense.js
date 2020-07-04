@@ -9,6 +9,7 @@ class Expense extends Component {
     this.state = {
       mouseDown: false,
       touchtime: 1500,
+      showOptions: false,
     }
   
     //this.listenForLongPress = this.listenForLongPress.bind(this);
@@ -35,10 +36,26 @@ class Expense extends Component {
             <div>{expense.description || "Undefined"}</div>
           </div>
         </div>
-        <button onClick={(e) => {this.props.editExpense(e, expense.id)}}className="cancel lnr lnr-pencil"></button>
-        <button onClick={(e) => {this.props.deleteExpense(e, expense.id)}}className="cancel lnr lnr-cross-circle"></button>
+
+        {this.renderOptions(expense)}
       </div>
     )
+  }
+
+  renderOptions(expense){
+    if(this.state.showOptions){
+      return (
+        <div className="options-button-wrapper">
+          <button onClick={(e) => {this.props.editExpense(e, expense.id)}} className="cancel lnr lnr-pencil"></button>
+          <button onClick={(e) => {this.props.deleteExpense(e, expense.id)}} className="cancel lnr lnr-trash"></button>
+          <button onClick={() => this.toggleMenu() } className="cancel lnr lnr-cross-circle"></button>        
+        </div>
+      )
+    } else {
+      return (
+        <button onClick={() => this.toggleMenu() }className="cancel lnr lnr-menu-circle"></button>
+      )
+    }
   }
 
   getClass(newExpense){
@@ -51,6 +68,14 @@ class Expense extends Component {
     this.setState({
       mouseDown: true,
     }, this.listenForLongPress(e, id))
+  }
+
+  toggleMenu(){
+    this.setState((prevState) => {
+      return {
+        showOptions: !prevState.showOptions,
+      }
+    })
   }
 
   handleMouseUp(){

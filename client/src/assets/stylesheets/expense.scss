@@ -22,7 +22,7 @@
       font-weight: 600;
       padding: 0 0.5rem;
       background: #ffffff;
-      min-width: 8%;
+      min-width: 32px;
       border-radius:5px 0 0 5px;
     }
 
@@ -34,6 +34,10 @@
     }
   }
 
+  .options-button-wrapper {
+    display: flex;
+  }
+
   .lnr {
     font-size: 1rem;
     text-decoration: none;
@@ -41,6 +45,11 @@
     align-items: center;
     padding: 0.5rem;
     margin: 0;
+
+    &.lnr-menu-circle, &.lnr-cross-circle {
+      font-size: 1.3rem;
+      color: gray;
+    }
   }
 
   &.new {

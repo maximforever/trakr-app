@@ -39,7 +39,7 @@ class Settings extends Component {
           </div>
 
           <div className="button-wrapper">
-            <button className="submit" disabled={this.validSettings()}>Update Settings</button>
+            <button className="submit md" disabled={this.validSettings()}>Update Settings</button>
           </div>
 
         </form>
