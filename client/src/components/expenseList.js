@@ -38,11 +38,11 @@ function renderExpenses(expenses, deleteExpense, editExpense){
 function expensesElements(expenses, date, deleteExpense, editExpense){
   return expenses.map((expense) => {
     return (<Expense 
-            key={expense.id}
-            expense={expense} 
-            deleteExpense={deleteExpense}
-            editExpense={editExpense}
-          />)
+              key={expense.id}
+              expense={expense} 
+              deleteExpense={deleteExpense}
+              editExpense={editExpense}
+            />)
   })
 }
 

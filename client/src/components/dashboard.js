@@ -39,7 +39,7 @@ class Dashboard extends Component {
 
   moneySpentToday(){
     return this.props.expenses.reduce((acc, expense) => {
-      return (this.isToday(new Date(), expense.timestamp)) ? (acc + expense.amount) : acc;
+      return (this.isToday(expense.timestamp)) ? (acc + expense.amount) : acc;
     }, 0);
   }
 
@@ -49,8 +49,13 @@ class Dashboard extends Component {
     }, 0)
   }
 
-  isToday(today, timestamp){
+  isToday(timestamp){
+    const today = new Date();
     timestamp = new Date(timestamp);
+    
+    // this corrects the timestamp timezone
+    timestamp.setHours(timestamp.getHours() + timestamp.getTimezoneOffset()/60)
+
     return (
       today.getYear() === timestamp.getYear() && 
       today.getMonth() === timestamp.getMonth() && 
