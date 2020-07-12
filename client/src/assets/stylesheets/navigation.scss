@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .nav-bar {
   display: flex;
   justify-content: space-around;  
@@ -25,7 +27,7 @@
 
   &:hover{
     cursor: pointer;
-    color: #1d82ff;
+    color: $blue-medium;
   }
 }
 

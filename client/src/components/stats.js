@@ -52,7 +52,7 @@ class Stats extends Component {
 
 
     return (
-      <div className="one-category-row header">
+      <div className="category-name-row">
         <span className="category-header-name">Category</span>
         <span className="category-amount">Sum</span>
         <span className="category-percentage">Budget %</span>
@@ -61,6 +61,8 @@ class Stats extends Component {
   }
 
   renderSpendingTable(spending){
+    if(!Object.keys(spending).length){ return }
+
     let spendingArray = [{
       category: "all",
       amount: this.sumOfAllExpenses(),
@@ -75,8 +77,11 @@ class Stats extends Component {
 
     return spendingArray.map((category) => {
       return (
-        <div className="one-category-row" key={category.category}>
-          <span className="category-name" onClick={() => this.handleClick(category.category)}>{category.category}</span>
+        <div className="one-category-row" 
+          key={category.category}
+          onClick={() => this.handleClick(category.category)}
+        >
+          <span className="category-name">{category.category}</span>
           <span className="category-amount">${category.amount}</span>
           <span className="category-percentage">{this.percentage(category.amount)}%</span>
         </div>

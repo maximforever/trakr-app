@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .occurence-calendar {
   background: #f5f5f5;
   padding: 0.4rem;
@@ -27,16 +29,15 @@
   align-items: center;
   font-size: 0.8rem;
   background: #e8e8e8;
-  border: 2px solid #e8e8e8;
-  transition: border-color 0.3s;
+  transition: background 0.3s;
 
   &.has-spending {
-    border-color: #c1636e;
+    background: $blue-medium;
+    color: $white;
   }
 
   &.invisible {
     background: none;
-    border-color: rgba(0,0,0,0);
   }
 }
 
