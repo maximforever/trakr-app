@@ -32,7 +32,7 @@ class Stats extends Component {
     return (
       <div>
         {this.renderSpendingHeaders(this.props.expenses.length)}
-        {this.renderSpendingTable(spending)}
+        {this.renderTableOfSpendingByCategory(spending)}
       </div>
     )
   }
@@ -52,7 +52,7 @@ class Stats extends Component {
 
 
     return (
-      <div className="category-name-row">
+      <div className="category-header-row">
         <span className="category-header-name">Category</span>
         <span className="category-amount">Sum</span>
         <span className="category-percentage">Budget %</span>
@@ -60,7 +60,7 @@ class Stats extends Component {
     )
   }
 
-  renderSpendingTable(spending){
+  renderTableOfSpendingByCategory(spending){
     if(!Object.keys(spending).length){ return }
 
     let spendingArray = [{
@@ -77,7 +77,7 @@ class Stats extends Component {
 
     return spendingArray.map((category) => {
       return (
-        <div className="one-category-row" 
+        <div className={this.getCategoryRowClass(category.category)}
           key={category.category}
           onClick={() => this.handleClick(category.category)}
         >
@@ -117,6 +117,11 @@ class Stats extends Component {
     return this.props.expenses.reduce((acc, expense) => {
       return acc + expense.amount;
     }, 0)
+  }
+
+  getCategoryRowClass(category){
+    console.log(this.state.currentCategory, category);
+    return "one-category-row" + (this.state.currentCategory === category ?  " selected" : "");
   }
 
 }

@@ -5,18 +5,26 @@
   margin: 0 auto;
 }
 
-.one-category-row, .category-name-row{
+.one-category-row, .category-header-row{
   display: flex;
   justify-content: space-between;
-  padding: 0.3rem 0;
+  padding: 0.3rem;
+  margin: 0.1rem 0;
+  border-radius: 5px;
+  user-select: none;
+
+  &.selected {
+    background: $blue-medium;
+    color: white;
+  }
 }
 
-.one-category-row:hover {
+.one-category-row:not(.selected):hover {
   cursor: pointer;
   color: $blue-medium;
 }
 
-.category-name-row {
+.category-header-row {
   font-weight: 600;
   text-decoration: underline;
 }
