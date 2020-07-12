@@ -9,7 +9,7 @@ class Stats extends Component {
     super(props);
 
     this.state = {
-      currentCategory: ""
+      currentCategory: "all"
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -20,6 +20,7 @@ class Stats extends Component {
       <div className="stats card">
         <div className="spending-by-category">
           {this.renderSpendingByCategory()}
+          {this.renderOccurenceCalendar()}
         </div>
       </div>
     )
@@ -32,14 +33,16 @@ class Stats extends Component {
       <div>
         {this.renderSpendingHeaders(this.props.expenses.length)}
         {this.renderSpendingTable(spending)}
-
-        <OccurenceCalendar 
-          currentDate={this.props.currentDate}
-          expenses={this.props.expenses} 
-          category={this.state.currentCategory}
-        />
       </div>
     )
+  }
+
+  renderOccurenceCalendar(){
+    return <OccurenceCalendar 
+      currentDate={this.props.currentDate}
+      expenses={this.props.expenses} 
+      category={this.state.currentCategory}
+    />
   }
 
   renderSpendingHeaders(countOfExpenses){
@@ -50,7 +53,7 @@ class Stats extends Component {
 
     return (
       <div className="one-category-row header">
-        <span className="category-name">Category</span>
+        <span className="category-header-name">Category</span>
         <span className="category-amount">Sum</span>
         <span className="category-percentage">Budget %</span>
       </div>
@@ -58,12 +61,17 @@ class Stats extends Component {
   }
 
   renderSpendingTable(spending){
-    let spendingArray = Object.keys(spending).map((category) => {
-      return {
-        category: category,
-        amount: Number(spending[category]),
-      }
-    }).sort((a, b) => (a.amount < b.amount) ? 1 : -1);
+    let spendingArray = [{
+      category: "all",
+      amount: this.sumOfAllExpenses(),
+    }].concat(
+      Object.keys(spending).map((category) => {
+        return {
+          category: category,
+          amount: Number(spending[category]),
+        }
+      }).sort((a, b) => (a.amount < b.amount) ? 1 : -1)
+    );
 
     return spendingArray.map((category) => {
       return (
@@ -98,6 +106,12 @@ class Stats extends Component {
 
   percentage(amount){
     return Math.floor(amount/this.props.monthlyBudget * 1000)/10
+  }
+
+  sumOfAllExpenses(){
+    return this.props.expenses.reduce((acc, expense) => {
+      return acc + expense.amount;
+    }, 0)
   }
 
 }

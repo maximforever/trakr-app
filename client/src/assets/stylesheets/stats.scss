@@ -14,14 +14,14 @@
   }
 }
 
-.category-name {
+.category-name, .category-header-name {
   font-weight: 600;
   flex-grow: 1;
+}
 
-  &:hover {
-    cursor: pointer;
-    color: #1d82ff;
-  }
+.category-name:hover {
+  cursor: pointer;
+  color: #1d82ff;
 }
 
 .category-amount {
