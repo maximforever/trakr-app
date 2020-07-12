@@ -9,6 +9,8 @@ import Settings from './components/settings'
 import Stats from './components/stats'
 import UserHeader from './components/userHeader'
 
+const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -20,6 +22,7 @@ class App extends Component {
       expenseToUpdate: {},
       categories: [],
       monthlyBudget: 0,
+      greeting: "Hi",
       currentDate: {
         month: null,
         year: null,
@@ -71,7 +74,10 @@ class App extends Component {
   renderLoggedInInterface() {
     return(
       <div>
-        <UserHeader user={this.state.user} />          
+        <UserHeader 
+          user={this.state.user} 
+          greeting={this.state.greeting}
+        />          
         {this.renderNavigation()}
         {this.renderLoggedInBodyContent()}
       </div>
@@ -289,6 +295,7 @@ class App extends Component {
             this.setLastVisitedPage();
             this.fetchExpenses();
             this.fetchUserSettings();
+            this.setGreeting();
           }
         })
       })
@@ -321,6 +328,12 @@ class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
+  }
+
+  setGreeting(){ 
+    this.setState({
+      greeting: GREETINGS[Math.floor(Math.random() * GREETINGS.length)]
+    })
   }
 
   setLastVisitedPage(){
