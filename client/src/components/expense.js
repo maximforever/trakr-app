@@ -25,7 +25,7 @@ class Expense extends Component {
           </div>
           <div className="spending-info">
             <div className="category">{expense.category}</div>
-            <div>{expense.description || "Undefined"}</div>
+            <div>{expense.description || "No description provided"}</div>
           </div>
         </div>
 
@@ -51,7 +51,7 @@ class Expense extends Component {
   }
 
   getClass(newExpense){
-    let className = (newExpense !== "undefined" && newExpense) ? "one-expense new" : "one-expense";
+    let className = (newExpense !== undefined && newExpense) ? "one-expense new" : "one-expense";
     if (this.state.showOptions) {
       className += " stack-vertically"
     }

@@ -471,8 +471,8 @@ class App extends Component {
     const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
     const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
     
-    if (currentExpenses[year][month] === "undefined") {
-      currentExpenses[year][month] = {}
+    if (currentExpenses[year][month] === undefined) {
+      currentExpenses[year][month] = [];
     }
 
     currentExpenses[year][month].push({...expense, new: true});

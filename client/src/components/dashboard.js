@@ -15,17 +15,17 @@ class Dashboard extends Component {
   render() {
     return(
       <div className="dashboard">
-        <div className={`square full-square card ${this.getMetricClass(this.leftToSpendToday())}`}>
-          <div className="label">Left to spend</div>
+        <div className={`square full-square card ${this.getMetricClass(this.moneySpentToday())}`}>
+          <div className="label">Spent today</div>
           <div className="metric">
-            {this.moneyFormat(this.leftToSpendToday())}
+            {this.moneyFormat(this.moneySpentToday())}
           </div>
         </div>
         <div className="half-square-wrapper">
-          <div className={`card square half-square ${this.getMetricClass(this.moneySpentToday())}`}>
-            <div className="label">Spent today</div>
+          <div className={`card square half-square ${this.getMetricClass(this.leftToSpendToday())}`}>
+            <div className="label">Left to spend</div>
             <div className="metric">
-              {this.moneyFormat(this.moneySpentToday())}
+              {this.moneyFormat(this.leftToSpendToday())}
             </div>
           </div>
           <div className={`card square half-square ${this.getMetricClass(this.monthlyBalance())}`}>
