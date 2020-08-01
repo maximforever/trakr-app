@@ -25,7 +25,7 @@ class ExpenseForm extends Component {
     this.populateCategory = this.populateCategory.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.revealCategoryInput = this.revealCategoryInput.bind(this);
-    this.successCallback = this.successCallback.bind(this);
+    this.resetExpenseFormOnResponse = this.resetExpenseFormOnResponse.bind(this);
   }
 
   componentDidMount(){
@@ -185,13 +185,13 @@ class ExpenseForm extends Component {
 
     if(this.editingExpense()){
       newExpense.id = this.state.id;
-      this.props.submitExpenseEdit(newExpense, this.successCallback);
+      this.props.submitExpenseEdit(newExpense, this.resetExpenseFormOnResponse);
     } else {
-      this.props.submitNewExpense(newExpense, this.successCallback);
+      this.props.submitNewExpense(newExpense, this.resetExpenseFormOnResponse);
     }
   }
 
-  successCallback(success){
+  resetExpenseFormOnResponse(success){
     if(success){ 
       this.resetState(); 
     } else {

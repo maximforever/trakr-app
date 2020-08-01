@@ -177,7 +177,7 @@ class App extends Component {
     return this.state.currentMonthlyBudget;
   }
   
-  submitNewExpense(expense, successCallback){
+  submitNewExpense(expense, resetExpenseFormOnResponse){
     fetch('/api/v1/expenses', {
       method: 'POST',
       headers: {
@@ -200,7 +200,7 @@ class App extends Component {
             categories: updatedCategories,
           }, () => {
             this.toggleExpenseForm();
-            successCallback(true);
+            resetExpenseFormOnResponse(true);
           });
         } else {
           console.log(response.message);
@@ -209,7 +209,7 @@ class App extends Component {
       .catch((error) => { console.log("Error submitting expense", error); })
   }
 
-  submitExpenseEdit(expense, successCallback){
+  submitExpenseEdit(expense, resetExpenseFormOnResponse){
     fetch('/api/v1/expenses', {
       method: 'PATCH',
       headers: {
@@ -232,7 +232,7 @@ class App extends Component {
             categories: updatedCategories,
           }, () => {
             this.toggleExpenseForm();
-            successCallback(true);
+            resetExpenseFormOnResponse(true);
           });
         } else {
           console.log(response.message);
@@ -470,7 +470,7 @@ class App extends Component {
     let currentExpenses = {...this.state.expenses};
     const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
     const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
-    
+
     if (currentExpenses[year][month] === undefined) {
       currentExpenses[year][month] = [];
     }
