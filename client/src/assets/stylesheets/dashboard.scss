@@ -8,6 +8,10 @@
 .card.square {
   text-align: center;
 
+  .negative {
+    color: $red-dark;
+  }
+
   .label {
     padding: 0.3rem;
   }
@@ -18,29 +22,32 @@
 
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
+
   }
 
-  &.negative {
-    color: $red-dark;
+  .submetric {
+    font-weight: 300;
+    color: gray;
+    font-size: 80%;
   }
 
   &.half-square {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    flex-grow: 1; 
-    max-width: 39%;
-  }
+    width: 49%;
+    box-sizing: border-box;
 
-  .submetric {
-    color: gray;
-    font-size: 1.5rem;
+    .metric {
+      font-size: 2.3rem;
+    }
   }
 }
 
 @media only screen and (max-width: 700px) {
   .card.square {
+    padding: 0.5rem;
+
     .label {
       font-size: 0.9rem;
       padding: 0.2rem;
@@ -48,13 +55,13 @@
     .metric {
       font-size: 2rem;
     }
-
-    .submetric {
-      font-size: 0.9rem;
-    }
-
+  
     &.half-square {
-      max-width: 38%;
+      padding: 1rem 0.5rem;
+
+      .metric {
+        font-size: 1.5rem;
+      }
     }
   }
 

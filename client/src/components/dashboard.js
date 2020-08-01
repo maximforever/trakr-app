@@ -13,24 +13,64 @@ class Dashboard extends Component {
   }
 
   render() {
-    return(
+    return (
       <div className="dashboard">
-        <div className={`square full-square card ${this.getMetricClass(this.moneySpentToday())}`}>
+        {this.displayingCurrentMonth() ? this.renderThisMonthsDashboard() : this.renderAnotherMonthsDashboard()}
+      </div>
+    )
+  }
+
+  renderThisMonthsDashboard(){
+    return(
+      <div>
+        <div className="square full-square card">
           <div className="label">Spent today</div>
           <div className="metric">
-            {this.moneyFormat(this.moneySpentToday())}
+            <span className={this.getMetricClass(this.dailyBudget() - this.moneySpentToday())}>
+              {this.moneyFormat(this.moneySpentToday())}
+            </span>
+            <span className="submetric">
+              |{this.moneyFormat(this.dailyBudget())}
+            </span>
           </div>
         </div>
         <div className="half-square-wrapper">
-          <div className={`card square half-square ${this.getMetricClass(this.leftToSpendToday())}`}>
-            <div className="label">Left to spend</div>
+          <div className="card square half-square">
+            <div className="label">Spent this month</div>
             <div className="metric">
-              {this.moneyFormat(this.leftToSpendToday())}
+              <span>
+                {this.moneyFormat(this.moneySpentThisMonth())}
+              </span>
+              <span className="submetric">
+                |{this.moneyFormat(this.props.monthlyBudget)}
+              </span>
             </div>
           </div>
-          <div className={`card square half-square ${this.getMetricClass(this.monthlyBalance())}`}>
+          <div className="card square half-square">
             <div className="label">Monthly balance</div>
-            <div className="metric">{this.moneyFormat(this.monthlyBalance())} <span className="submetric">/(${this.moneySpentThisMonth()})</span></div>
+            <div className="metric">
+              <span className={this.getMetricClass(this.monthlyBalance())}>
+                {this.moneyFormat(this.monthlyBalance())}
+              </span> 
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderAnotherMonthsDashboard(){
+    return (
+      <div>
+        <div className="square full-square card">
+          <div className="label">Spent this month</div>
+          <div className="metric">
+            <span>
+              {this.moneyFormat(this.moneySpentThisMonth())}
+            </span>
+            <span className="submetric">
+              |{this.moneyFormat(this.props.monthlyBudget)}
+            </span>
           </div>
         </div>
       </div>
@@ -45,7 +85,7 @@ class Dashboard extends Component {
 
   moneySpentThisMonth(){
     return this.props.expenses.reduce((acc, expense) => {
-      return (this.isThisMonth(new Date(), expense.timestamp)) ? acc + expense.amount : acc;
+      return (this.expenseIsInThisMonth(new Date(), expense.timestamp)) ? acc + expense.amount : acc;
     }, 0)
   }
 
@@ -63,11 +103,19 @@ class Dashboard extends Component {
     )
   }
 
-  isThisMonth(today, timestamp){
+  expenseIsInThisMonth(today, timestamp){
     timestamp = new Date(timestamp);
     return (
       this.props.currentDate.year === timestamp.getYear() + 1900 && 
       this.props.currentDate.month === timestamp.getMonth() + 1
+    )
+  }
+
+  displayingCurrentMonth(){
+    const currentDate = new Date();
+    return (
+      this.props.currentDate.year === currentDate.getYear() + 1900 && 
+      this.props.currentDate.month === currentDate.getMonth() + 1
     )
   }
 
