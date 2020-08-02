@@ -21,15 +21,15 @@ class Api::V1::UsersController < ApplicationController
 
   def user_settings 
     {
-      monthlyBudget: current_user.default_monthly_budget,
+      defaultMonthlyBudget: current_user.default_monthly_budget,
       currentMonthlyBudget: current_user.current_monthly_budget,
       preferredFirstName: current_user.preferred_first_name
     }
   end
 
   def update_default_monthly_budget
-    if current_user.default_monthly_budget != params[:monthlyBudget] 
-      current_user.default_monthly_budget = params[:monthlyBudget]
+    if current_user.default_monthly_budget != params[:defaultMonthlyBudget] 
+      current_user.default_monthly_budget = params[:defaultMonthlyBudget]
     end
   end
 

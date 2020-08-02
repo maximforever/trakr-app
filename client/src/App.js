@@ -21,14 +21,14 @@ class App extends Component {
       expenses: {},
       expenseToUpdate: {},
       categories: [],
-      monthlyBudget: 0,
+      defaultMonthlyBudget: 0,
+      currentMonthlyBudget: 0,
       greeting: "Hi",
       currentDate: {
         month: null,
         year: null,
       },
       showExpenseForm: false,
-      currentMonthlyBudget: 0,
       currentPage: "home",
       datepickerPages: ["home", "stats"],
     }
@@ -160,18 +160,18 @@ class App extends Component {
   renderSettings(){
     return (
       <Settings 
-        monthlyBudget={this.state.monthlyBudget}
+        defaultMonthlyBudget={this.state.defaultMonthlyBudget}
         currentMonthlyBudget={this.state.currentMonthlyBudget}
         preferredFirstName={this.state.user.firstName}
         updateSettings={this.updateSettings}
-        key={this.state.monthlyBudget + this.state.currentMonthlyBudget}
+        key={this.state.defaultMonthlyBudget + this.state.currentMonthlyBudget}
       />
     )
   }
 
   getCurrentBudget(){
-    if(this.state.currentMonthlyBudget === this.state.monthlyBudget){
-      return this.state.monthlyBudget;
+    if(this.state.currentMonthlyBudget === this.state.defaultMonthlyBudget){
+      return this.state.defaultMonthlyBudget;
     }
     
     return this.state.currentMonthlyBudget;
@@ -322,7 +322,7 @@ class App extends Component {
         user.firstName = response.preferredFirstName
 
         this.setState({
-          monthlyBudget: response.monthlyBudget,
+          defaultMonthlyBudget: response.defaultMonthlyBudget,
           currentMonthlyBudget: response.currentMonthlyBudget,
           user,
         })
@@ -373,7 +373,7 @@ class App extends Component {
         user.firstName = response.preferredFirstName
 
         this.setState({
-          monthlyBudget: response.monthlyBudget,
+          defaultMonthlyBudget: response.defaultMonthlyBudget,
           currentMonthlyBudget: response.currentMonthlyBudget,
           currentPage: "home",
           user,

@@ -8,7 +8,7 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      monthlyBudget: this.props.monthlyBudget,
+      defaultMonthlyBudget: this.props.defaultMonthlyBudget,
       currentMonthlyBudget: this.props.currentMonthlyBudget,
       preferredFirstName: this.props.preferredFirstName,
     }
@@ -25,7 +25,7 @@ class Settings extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="one-input">
             <label>Default budget</label>
-            <input value={this.state.monthlyBudget} type='number' name='monthlyBudget' onChange={this.handleInputChange}></input>
+            <input value={this.state.defaultMonthlyBudget} type='number' name='defaultMonthlyBudget' onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
@@ -58,7 +58,7 @@ class Settings extends Component {
     e.preventDefault(e);
     
     const newSettings = {
-      monthlyBudget: Number(this.state.monthlyBudget),
+      defaultMonthlyBudget: Number(this.state.defaultMonthlyBudget),
       currentMonthlyBudget: Number(this.state.currentMonthlyBudget),
       preferredFirstName: this.state.preferredFirstName.trim(),
     }
