@@ -23,7 +23,8 @@ class Api::V1::UsersController < ApplicationController
     {
       defaultMonthlyBudget: current_user.default_monthly_budget,
       currentMonthlyBudget: current_user.current_monthly_budget,
-      preferredFirstName: current_user.preferred_first_name
+      preferredFirstName: current_user.preferred_first_name,
+      pastBudgets: current_user.budgets
     }
   end
 

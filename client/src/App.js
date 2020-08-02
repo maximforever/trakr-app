@@ -22,7 +22,7 @@ class App extends Component {
       expenseToUpdate: {},
       categories: [],
       defaultMonthlyBudget: 0,
-      currentMonthlyBudget: 0,
+      pastBudgets: {},
       greeting: "Hi",
       currentDate: {
         month: null,
@@ -39,10 +39,11 @@ class App extends Component {
     this.submitExpenseEdit = this.submitExpenseEdit.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.navigateToPage = this.navigateToPage.bind(this);
-    this.updateSettings = this.updateSettings.bind(this);
+    this.updateUserSettings = this.updateUserSettings.bind(this);
     this.toggleExpenseForm = this.toggleExpenseForm.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
+    this.setCurrentDate = this.setCurrentDate.bind(this);
     this.editExpense = this.editExpense.bind(this);
     this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
   }
@@ -122,6 +123,7 @@ class App extends Component {
         date={this.state.currentDate}
         nextMonth={this.nextMonth}
         previousMonth={this.previousMonth}
+        setCurrentDate={this.setCurrentDate}
       />
     )
   }
@@ -132,7 +134,7 @@ class App extends Component {
     return(
       <Dashboard
         expenses={this.currentMonthExpenses()}
-        monthlyBudget={this.getCurrentBudget()}
+        monthlyBudget={this.getCurrentMonthlyBudget()}
         currentDate={this.state.currentDate}
       />
     )
@@ -152,7 +154,7 @@ class App extends Component {
     return <Stats 
       expenses={this.currentMonthExpenses()}
       categories={this.state.categories}
-      monthlyBudget={this.getCurrentBudget()}
+      monthlyBudget={this.getCurrentMonthlyBudget()}
       currentDate={this.state.currentDate}
     />
   }
@@ -161,20 +163,30 @@ class App extends Component {
     return (
       <Settings 
         defaultMonthlyBudget={this.state.defaultMonthlyBudget}
-        currentMonthlyBudget={this.state.currentMonthlyBudget}
+        currentMonthlyBudget={this.getCurrentMonthlyBudget()}
         preferredFirstName={this.state.user.firstName}
-        updateSettings={this.updateSettings}
-        key={this.state.defaultMonthlyBudget + this.state.currentMonthlyBudget}
+        updateUserSettings={this.updateUserSettings}
+        pastBudgets={this.state.pastBudgets}
+        key={this.state.defaultMonthlyBudget + this.getCurrentMonthlyBudget()}
       />
     )
   }
 
-  getCurrentBudget(){
-    if(this.state.currentMonthlyBudget === this.state.defaultMonthlyBudget){
+  getCurrentMonthlyBudget(){
+    if(this.state.pastBudgets === undefined){ return }
+
+    const formattedMonth = this.formattedMonth(this.state.currentDate.month);
+    const formattedYear = this.formattedYear(this.state.currentDate.year);
+    const formattedDate = `${formattedYear}-${formattedMonth}`;
+
+    console.log(formattedDate);
+
+
+    if(this.state.pastBudgets[formattedDate] === undefined){
       return this.state.defaultMonthlyBudget;
+    } else {
+      return this.state.pastBudgets[formattedDate];
     }
-    
-    return this.state.currentMonthlyBudget;
   }
   
   submitNewExpense(expense, resetExpenseFormOnResponse){
@@ -323,7 +335,7 @@ class App extends Component {
 
         this.setState({
           defaultMonthlyBudget: response.defaultMonthlyBudget,
-          currentMonthlyBudget: response.currentMonthlyBudget,
+          pastBudgets: response.pastBudgets,
           user,
         })
       })
@@ -359,7 +371,7 @@ class App extends Component {
     })
   }
 
-  updateSettings(newSettings) {
+  updateUserSettings(newSettings) {
     fetch('/api/v1/users/settings', {
       method: 'POST',
       headers: {
@@ -374,7 +386,7 @@ class App extends Component {
 
         this.setState({
           defaultMonthlyBudget: response.defaultMonthlyBudget,
-          currentMonthlyBudget: response.currentMonthlyBudget,
+          pastBudgets: response.pastBudgets,
           currentPage: "home",
           user,
         })

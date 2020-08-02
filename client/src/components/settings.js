@@ -63,7 +63,7 @@ class Settings extends Component {
       preferredFirstName: this.state.preferredFirstName.trim(),
     }
 
-    this.props.updateSettings(newSettings);
+    this.props.updateUserSettings(newSettings);
   }
 
   validSettings(){

@@ -83,6 +83,13 @@ form {
   }
 }
 
+.button-text {
+  &:hover {
+    color: $blue-medium;
+    cursor: pointer;
+  }
+}
+
 .button-wrapper {
   display: flex;
   justify-content: center;

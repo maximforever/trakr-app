@@ -24,11 +24,6 @@
   text-align: center;
   padding: 1rem 0;
   user-select: none
-
-  &:hover{
-    cursor: pointer;
-    color: $blue-medium;
-  }
 }
 
 .date-selector {
@@ -39,7 +34,6 @@
     align-items: center;
     width: 50%;
     font-weight: 600;
-
   }
 
   .lnr {
