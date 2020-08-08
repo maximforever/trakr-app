@@ -53,7 +53,7 @@ class SessionsController < ApplicationController
       validator = GoogleIDToken::Validator.new
 
       begin
-        payload = validator.check(token, decoded_token["aud"], ENV["GOOGLE_CLIENT_ID"])
+        payload = validator.check(token, decoded_token["aud"], Rails.application.credentials.google[:client_id])
         true
       rescue GoogleIDToken::ValidationError => e
         report "Cannot validate: #{e}"
