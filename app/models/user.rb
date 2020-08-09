@@ -9,6 +9,9 @@ class User < ApplicationRecord
 
   def self.find_or_create_from_token(token, provider)
     where(uid: token['sub']).first_or_initialize.tap do |user|
+      full_name = "#{token['given_name']} #{token['family_name']}"
+      stripe_customer = Stripe::Customer.create(email: token['email'], description: full_name)
+
       user.provider = provider
       user.uid = token['sub']
       user.first_name = token['given_name']
@@ -18,6 +21,7 @@ class User < ApplicationRecord
       user.budgets = {}
       user.default_monthly_budget = 1000
       user.preferred_first_name = token['given_name']
+      user.stripe_id = stripe_customer.id
       user.save!
     end
   end
