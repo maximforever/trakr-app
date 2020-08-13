@@ -17,19 +17,19 @@ class User < ApplicationRecord
       user.image = token['picture']
       user.budgets = {}
       user.default_monthly_budget = 1000
-      user.preferred_first_name = token['given_name']
-
-      if user.stripe_id.nil?
-        full_name = "#{token['given_name']} #{token['family_name']}"
-        stripe_customer = Stripe::Customer.create(email: token['email'], description: full_name)
-        user.stripe_id = stripe_customer.id
-      end
+      user.preferred_first_name = token['given_name']      
+      user.stripe_id = create_new_stripe_user(token).id if user.stripe_id.nil?
 
       user.save!
     end
   end
 
   private
+
+  def self.create_new_stripe_user(token)
+    full_name = "#{token['given_name']} #{token['family_name']}"
+    stripe_customer = Stripe::Customer.create(email: token['email'], description: full_name) 
+  end
 
   def this_month
     Time.new(Time.now.year, Time.now.month, Time.now.day).strftime("%Y-%m")
