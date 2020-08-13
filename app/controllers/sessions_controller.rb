@@ -35,7 +35,8 @@ class SessionsController < ApplicationController
       return {
         email: current_user.email,
         firstName: current_user.preferred_first_name,
-        image: current_user.image
+        image: current_user.image,
+        stripeId: current_user.stripe_id
       }
 
     end

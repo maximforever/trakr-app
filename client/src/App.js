@@ -1,15 +1,21 @@
 import './assets/stylesheets/App.scss';
+
+import Dashboard from './components/dashboard';
+import ExpenseForm from './components/expenseForm';
+import ExpenseList from './components/expenseList';
+import Navigation from './components/navigation';
 import React, { Component } from 'react';
-import SignInPage from './components/signInPage'
-import ExpenseForm from './components/expenseForm'
-import FilteredExpenseList from './components/filteredExpenseList'
-import Dashboard from './components/dashboard'
-import Navigation from './components/navigation'
-import Settings from './components/settings'
-import Analytics from './components/analytics'
-import UserHeader from './components/userHeader'
+import Settings from './components/settings';
+import SignInPage from './components/signInPage';
+import Analytics from './components/stats';
+import UserHeader from './components/userHeader';
+
+import StripeCheckoutForm from './components/stripe/stripeCheckoutForm';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
 const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
+const stripePromise = loadStripe("pk_test_51HBnPmGoqOAmrakRbd5XHPsukzH2zTF9slc8x8KS5uf4PizOhXxDVkyFa41MTqRGYRKT5AZkycnEKzQVfPUm3EZ400O2Mzlwvs");
 
 export default class App extends Component {
   constructor(props){
@@ -62,14 +68,21 @@ export default class App extends Component {
   }
 
   renderContent() {
-    switch (this.state.status){
-      case "loggedIn":
-        return this.renderLoggedInInterface();
-      case "loggedOut":
-        return <SignInPage />
-      default:
-        return null;
-    }
+    return (
+      <Elements stripe={stripePromise}>
+        <StripeCheckoutForm user = {this.state.user} />
+      </Elements>
+    )
+
+
+    // switch (this.state.status){
+    //   case "loggedIn":
+    //     return this.renderLoggedInInterface();
+    //   case "loggedOut":
+    //     return <SignInPage />
+    //   default:
+    //     return null;
+    // }
   }
 
   renderLoggedInInterface() {
