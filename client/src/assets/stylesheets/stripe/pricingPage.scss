@@ -1,21 +1,39 @@
+@import '../variables.scss';
+
 .subscription-options {
   display: flex;
   justify-content: space-between;
+  background: #f1f1f1;
+  padding: 1rem;
   
   .option {
-    background: #e0e0e0;
-    border: 1px solid #adadad;
+    background: $white;
+    border: 2px solid #c5c5c5;
+    user-select: none;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 
-    width: 48%;
+    width: 49%;
     border-radius: 5px;
     padding: 1.5rem 1rem;
     
     box-sizing: border-box;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.selected {
+      background: #e9f3ff;
+      border: 2px solid $blue-medium;
+
+      .period {
+        color: $blue-medium;
+      }
+    }
 
     .price {
       display: flex;
@@ -27,9 +45,13 @@
 
     .period {
       font-size: 1rem;
-      color: gray;
       font-weight: 600;
     }
   }
 }
 
+@media only screen and (max-width: 700px) {
+  .subscription-options {
+    padding: 0.5rem;
+  }
+}

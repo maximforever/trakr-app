@@ -3,9 +3,22 @@ class Billing::BillingsController < ApplicationController
 
 
   def pricing_options
+    annual_pricing = Stripe::Price.list({lookup_keys: ['annual']}).data[0]
+    monthly_pricing = Stripe::Price.list({lookup_keys: ['monthly']}).data[0]
+
     render json:  {
-      annual: Stripe::Price.list({lookup_keys: ['annual']}).data,
-      monthly: Stripe::Price.list({lookup_keys: ['monthly']}).data,
+      annual: {
+        price: annual_pricing.unit_amount/100, 
+        description: annual_pricing.metadata.description,
+        type: annual_pricing.nickname, 
+        id: annual_pricing.id
+      }, 
+      monthly: {
+        price: monthly_pricing.unit_amount/100, 
+        description: monthly_pricing.metadata.description,
+        type: monthly_pricing.nickname, 
+        id: monthly_pricing.id
+      },
     }
   end
 
