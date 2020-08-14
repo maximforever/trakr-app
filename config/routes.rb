@@ -3,8 +3,14 @@ Rails.application.routes.draw do
   get 'logout',                   to: 'sessions#destroy'
   get 'session',                  to: 'sessions#show'
   
+  
+
   post '/stripe-webhook',         to: 'billing#stripe_webhook'
-  post '/create-subscription',    to: 'billing#create_subscription'
+
+  namespace :billing do 
+    get '/pricing-options',         to: 'billings#pricing_options'
+    post '/create-subscription',    to: 'billings#create_subscription'
+  end
 
   namespace :api do
     namespace :v1 do

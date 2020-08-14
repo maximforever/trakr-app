@@ -4,6 +4,7 @@ import Dashboard from './components/dashboard';
 import ExpenseForm from './components/expenseForm';
 import ExpenseList from './components/expenseList';
 import Navigation from './components/navigation';
+import PricingPage from './components/stripe/pricingPage';
 import React, { Component } from 'react';
 import Settings from './components/settings';
 import SignInPage from './components/signInPage';
@@ -68,21 +69,26 @@ export default class App extends Component {
   }
 
   renderContent() {
-    return (
-      <Elements stripe={stripePromise}>
-        <StripeCheckoutForm user = {this.state.user} />
-      </Elements>
-    )
+
+    // return (
+    //   <PricingPage />
+    // )
+
+    // return (
+    //   <Elements stripe={stripePromise}>
+    //     <StripeCheckoutForm user = {this.state.user} />
+    //   </Elements>
+    // )
 
 
-    // switch (this.state.status){
-    //   case "loggedIn":
-    //     return this.renderLoggedInInterface();
-    //   case "loggedOut":
-    //     return <SignInPage />
-    //   default:
-    //     return null;
-    // }
+    switch (this.state.status){
+      case "loggedIn":
+        return this.renderLoggedInInterface();
+      case "loggedOut":
+        return <SignInPage />
+      default:
+        return null;
+    }
   }
 
   renderLoggedInInterface() {
@@ -91,9 +97,11 @@ export default class App extends Component {
         <UserHeader 
           user={this.state.user} 
           greeting={this.state.greeting}
-        />          
-        {this.renderNavigation()}
-        {this.renderLoggedInBodyContent()}
+        />    
+
+        <PricingPage />      
+{/*        {this.renderNavigation()}
+        {this.renderLoggedInBodyContent()}*/}
       </div>
     )
   }

@@ -1,5 +1,13 @@
-class BilllingController < ApplicationController
+class Billing::BillingsController < ApplicationController
   # TODO this is a super bloated controller - should refactor
+
+
+  def pricing_options
+    render json:  {
+      annual: Stripe::Price.list({lookup_keys: ['annual']}).data,
+      monthly: Stripe::Price.list({lookup_keys: ['monthly']}).data,
+    }
+  end
 
   def create_subscription
     content_type 'application/json'
