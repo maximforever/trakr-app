@@ -38,7 +38,7 @@ class Dashboard extends Component {
           <div className="card square half-square">
             <div className="label">Spent this month</div>
             <div className="metric">
-              <span>
+              <span className={this.getMetricClass(this.props.monthlyBudget - this.moneySpentThisMonth())}>
                 {this.moneyFormat(this.moneySpentThisMonth())}
               </span>
               <span className="submetric">
@@ -147,6 +147,7 @@ class Dashboard extends Component {
   }
 
   getMetricClass(amount){
+    console.log(amount);
     return amount < 0 ? 'negative' : '';
   }
 }
