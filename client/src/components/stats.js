@@ -53,9 +53,9 @@ class Stats extends Component {
 
     return (
       <div className="category-header-row">
-        <span className="category-header-name">Category</span>
+        <span className="category-name">Category</span>
         <span className="category-amount">Sum</span>
-        <span className="category-percentage">Budget %</span>
+        <span className="category-percentage">%</span>
       </div>
     )
   }
@@ -83,7 +83,7 @@ class Stats extends Component {
         >
           <span className="category-name">{category.category}</span>
           <span className="category-amount">${category.amount}</span>
-          <span className="category-percentage">{this.percentage(category.amount)}%</span>
+          <span className="category-percentage">{this.percentageOfMonthlySpending(category.amount)}%</span>
         </div>
       )
     })
@@ -109,8 +109,8 @@ class Stats extends Component {
     })
   }
 
-  percentage(amount){
-    return Math.floor(amount/this.props.monthlyBudget * 1000)/10
+  percentageOfMonthlySpending(amount){
+    return Math.floor(amount/this.sumOfAllExpenses() * 1000)/10
   }
 
   sumOfAllExpenses(){
