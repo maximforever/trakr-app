@@ -147,7 +147,6 @@ class Dashboard extends Component {
   }
 
   getMetricClass(amount){
-    console.log(amount);
     return amount < 0 ? 'negative' : '';
   }
 }

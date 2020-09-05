@@ -1,5 +1,6 @@
 import '../assets/stylesheets/stats.scss';
 import OccurenceCalendar from './occurenceCalendar'
+import Charts from './charts'
 
 import React, { Component } from 'react';
 
@@ -21,6 +22,7 @@ class Stats extends Component {
         <div className="spending-by-category">
           {this.renderSpendingByCategory()}
           {this.renderOccurenceCalendar()}
+          {this.renderStats()}
         </div>
       </div>
     )
@@ -42,6 +44,12 @@ class Stats extends Component {
       currentDate={this.props.currentDate}
       expenses={this.props.expenses} 
       category={this.state.currentCategory}
+    />
+  }
+
+  renderStats(){
+    return <Charts 
+      data={this.props.expenses}
     />
   }
 
@@ -120,7 +128,6 @@ class Stats extends Component {
   }
 
   getCategoryRowClass(category){
-    console.log(this.state.currentCategory, category);
     return "one-category-row" + (this.state.currentCategory === category ?  " selected" : "");
   }
 

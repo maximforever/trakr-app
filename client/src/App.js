@@ -179,9 +179,6 @@ class App extends Component {
     const formattedYear = this.formattedYear(this.state.currentDate.year);
     const formattedDate = `${formattedYear}-${formattedMonth}`;
 
-    console.log(formattedDate);
-
-
     if(this.state.pastBudgets[formattedDate] === undefined){
       return this.state.defaultMonthlyBudget;
     } else {

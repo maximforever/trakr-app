@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/maximforever/trakr-app/issues"
   },
-  "homepage": "https://github.com/maximforever/trakr-app#readme"
+  "homepage": "https://github.com/maximforever/trakr-app#readme",
+  "dependencies": {
+    "victory": "^35.0.8"
+  }
 }
