@@ -23,7 +23,7 @@ class Stats extends Component {
         <div className="spending-by-category">
           {this.renderSpendingByCategory()}
           {this.renderOccurenceCalendar()}
-          {this.renderStats()}
+          {this.renderCharts()}
         </div>
       </div>
     )
@@ -48,10 +48,11 @@ class Stats extends Component {
     />
   }
 
-  renderStats(){
+  renderCharts(){
     return <Charts 
       data={this.props.expenses}
       daysThisMonth={this.state.daysThisMonth}
+      monthlyBudget={this.props.monthlyBudget}
     />
   }
 

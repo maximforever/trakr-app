@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 
-export default function Charts({data, daysThisMonth}) {
+export default function Charts({data, daysThisMonth, monthlyBudget}) {
 
   if(!data.length){
     return "no data yet..."
@@ -14,14 +14,13 @@ export default function Charts({data, daysThisMonth}) {
 
   return (
     <div className="chart card opaque">
-        <VictoryChart 
+      <VictoryChart 
         domainPadding={30} 
         theme={VictoryTheme.material}
+        maxDomain={{ x: 31, y: dailyBalance(daysThisMonth, monthlyBudget) * 2}}
         //range={{x: [1, 31]}}
       >
-        <VictoryAxis
-          tickFormat={(x) => (`${x}`)}
-        />
+        <VictoryAxis />
         <VictoryAxis
           dependentAxis
           tickFormat={(x) => (`$${x}`)}
@@ -38,6 +37,23 @@ export default function Charts({data, daysThisMonth}) {
           y="amount"
         />
 
+         <VictoryLine 
+          data={[
+            {x: 0, y: dailyBalance(daysThisMonth, monthlyBudget)},
+            {x: daysThisMonth, y: dailyBalance(daysThisMonth, monthlyBudget)}
+          ]}
+          style={{
+            data: {
+              stroke: "#e47575",
+            },
+            labels: {
+              fill: "#e47575",
+            }
+          }}
+          labels={({ datum }) => {
+            if(datum.x) { return `$${datum.y}`} } 
+          }
+         />
 
       </VictoryChart>
     </div>
@@ -66,4 +82,8 @@ function aggregateExpenseData(data, daysThisMonth){
   }
 
   return formattedData;
+}
+
+function dailyBalance(daysThisMonth, monthlyBudget){
+  return Math.floor(monthlyBudget/daysThisMonth);
 }
