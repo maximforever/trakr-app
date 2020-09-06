@@ -50,7 +50,7 @@ class Stats extends Component {
 
   renderCharts(){
     return <Charts 
-      data={this.props.expenses}
+      expenses={this.props.expenses}
       daysThisMonth={this.state.daysThisMonth}
       monthlyBudget={this.props.monthlyBudget}
     />

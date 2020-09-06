@@ -4,20 +4,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 
-export default function Charts({data, daysThisMonth, monthlyBudget}) {
+export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
 
-  if(!data.length){
+  if(!expenses.length){
     return "no data yet..."
   }
 
-  let formattedData = aggregateExpenseData(data, daysThisMonth);
+  let formattedExpenses = aggregateExpenses(expenses, daysThisMonth);
 
   return (
     <div className="chart card opaque">
       <VictoryChart 
         domainPadding={30} 
         theme={VictoryTheme.material}
-        maxDomain={{ x: 31, y: dailyBalance(daysThisMonth, monthlyBudget) * 2}}
+        //maxDomain={{ x: 31, y: averageSpending(formattedExpenses) * 1.5}}
         //range={{x: [1, 31]}}
       >
         <VictoryAxis />
@@ -29,7 +29,7 @@ export default function Charts({data, daysThisMonth, monthlyBudget}) {
         <VictoryBar
           barRatio={0.5}
           style={{ labels: { fontSize: "10px" } }}
-          data={formattedData}  
+          data={formattedExpenses}  
           labels={({ datum }) => { 
             return datum.amount ? `$${datum.amount}` : ''
           }}
@@ -51,7 +51,25 @@ export default function Charts({data, daysThisMonth, monthlyBudget}) {
             }
           }}
           labels={({ datum }) => {
-            if(datum.x) { return `$${datum.y}`} } 
+            if(datum.x) { return `daily budget: $${datum.y}`} } 
+          }
+         />
+
+         <VictoryLine 
+          data={[
+            {x: 0, y: averageSpending(formattedExpenses)},
+            {x: daysThisMonth, y: averageSpending(formattedExpenses)}
+          ]}
+          style={{
+            data: {
+              stroke: "#1d82ff",
+            },
+            labels: {
+              fill: "#1d82ff",
+            }
+          }}
+          labels={({ datum }) => {
+            if(datum.x) { return `average: $${datum.y}`} } 
           }
          />
 
@@ -60,13 +78,13 @@ export default function Charts({data, daysThisMonth, monthlyBudget}) {
   )
 } 
 
-function aggregateExpenseData(data, daysThisMonth){
-  let formattedData = [];
+function aggregateExpenses(expenses, daysThisMonth){
+  let formattedExpenses = [];
 
   for(let i=1; i <= daysThisMonth; i++){
     let totalSpending = 0;
 
-    data.forEach((expense) => {
+    expenses.forEach((expense) => {
       const parsedDate = new Date(expense.timestamp);
       const createdAtDate = parsedDate.getDate()
 
@@ -75,15 +93,29 @@ function aggregateExpenseData(data, daysThisMonth){
       }
     });
 
-    formattedData.push({
+    formattedExpenses.push({
       amount: totalSpending,
       date: i,
     })
   }
 
-  return formattedData;
+  return formattedExpenses;
 }
 
 function dailyBalance(daysThisMonth, monthlyBudget){
   return Math.floor(monthlyBudget/daysThisMonth);
+}
+
+function averageSpending(days){
+  let spending = days.map((day) => {
+    return day.amount ? day.amount : '';
+  });
+
+  spending = spending.filter((day) =>{ 
+    return day !== "";
+  })
+
+  const averageSpending = spending.reduce((a, b) => (a + b)) / spending.length;
+
+  return Math.floor(averageSpending);
 }
