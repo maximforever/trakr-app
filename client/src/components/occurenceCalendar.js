@@ -4,7 +4,7 @@ import React from 'react';
 
 function OccurenceCalendar(props){
   return (
-    <div className="occurence-calendar">
+    <div className="card opaque occurence-calendar">
       <h3>{ props.category }</h3>
       <div className="cell-wrapper">
         {renderCells(props)}
@@ -14,12 +14,10 @@ function OccurenceCalendar(props){
 }
 
 function renderCells(props) {
-  const { currentDate } = props; 
-  const daysThisMonth = daysInMonth(currentDate.month, currentDate.year);
-  const daysToRoundOutRow = 7 - daysThisMonth%7;
+  const daysToRoundOutRow = 7 - props.daysThisMonth%7;
   let cells = [];
 
-  for(let i=1; i<=daysThisMonth; i++){
+  for(let i=1; i <= props.daysThisMonth; i++){
 
     const matchingExpenses = props.expenses.filter((expense) => {
       const expenseBelongsToSelectedCategory = props.category === "all" || (props.category === expense.category);
@@ -36,10 +34,6 @@ function renderCells(props) {
   }
 
   return cells;
-}
-
-function daysInMonth(month, year) {
-  return new Date(year, month, 0).getDate();
 }
 
 function getDay(date){

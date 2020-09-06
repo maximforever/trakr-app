@@ -2,26 +2,19 @@ import '../assets/stylesheets/charts.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 
-export default function Charts({data}) {
+export default function Charts({data, daysThisMonth}) {
 
   if(!data.length){
     return "no data yet..."
   }
 
-  let dataWithDate = data.map((d) => {
-    const parsedDate = new Date(d.timestamp);
-    const createdAtDate = parsedDate.getDate()
-    return {
-      ...d,
-      date: createdAtDate,
-    }
-  })
+  let formattedData = aggregateExpenseData(data, daysThisMonth);
 
   return (
-    <div className="chart">
-      <VictoryChart 
+    <div className="chart card opaque">
+        <VictoryChart 
         domainPadding={30} 
         theme={VictoryTheme.material}
         //range={{x: [1, 31]}}
@@ -35,24 +28,42 @@ export default function Charts({data}) {
         />
 
         <VictoryBar
-          padding={{right: 5, left: 5}}
-          barWidth={12}
-          categories={{
-            x: [1,2,3,4,5]
+          barRatio={0.5}
+          style={{ labels: { fontSize: "10px" } }}
+          data={formattedData}  
+          labels={({ datum }) => { 
+            return datum.amount ? `$${datum.amount}` : ''
           }}
-
-
-          data={dataWithDate}
-          labels={({ datum }) => `$${datum.amount}`}
-          // data accessor for x values
           x="date"
-          // data accessor for y values
           y="amount"
         />
 
 
       </VictoryChart>
-
     </div>
   )
 } 
+
+function aggregateExpenseData(data, daysThisMonth){
+  let formattedData = [];
+
+  for(let i=1; i <= daysThisMonth; i++){
+    let totalSpending = 0;
+
+    data.forEach((expense) => {
+      const parsedDate = new Date(expense.timestamp);
+      const createdAtDate = parsedDate.getDate()
+
+      if(createdAtDate === i){
+        totalSpending += expense.amount;
+      }
+    });
+
+    formattedData.push({
+      amount: totalSpending,
+      date: i,
+    })
+  }
+
+  return formattedData;
+}

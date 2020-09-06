@@ -10,7 +10,8 @@ class Stats extends Component {
     super(props);
 
     this.state = {
-      currentCategory: "all"
+      currentCategory: "all",
+      daysThisMonth: this.daysInMonth(this.props.currentDate.month, this.props.currentDate.year)
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -41,7 +42,7 @@ class Stats extends Component {
 
   renderOccurenceCalendar(){
     return <OccurenceCalendar 
-      currentDate={this.props.currentDate}
+      daysThisMonth={this.state.daysThisMonth}
       expenses={this.props.expenses} 
       category={this.state.currentCategory}
     />
@@ -50,6 +51,7 @@ class Stats extends Component {
   renderStats(){
     return <Charts 
       data={this.props.expenses}
+      daysThisMonth={this.state.daysThisMonth}
     />
   }
 
@@ -129,6 +131,10 @@ class Stats extends Component {
 
   getCategoryRowClass(category){
     return "one-category-row" + (this.state.currentCategory === category ?  " selected" : "");
+  }
+
+  daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
   }
 
 }
