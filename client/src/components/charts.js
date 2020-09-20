@@ -2,7 +2,15 @@ import '../assets/stylesheets/charts.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import { 
+  VictoryArea, 
+  VictoryAxis, 
+  VictoryBar, 
+  VictoryChart, 
+  VictoryLine,
+  VictoryLegend, 
+  VictoryTheme 
+} from 'victory';
 
 export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
 
@@ -17,18 +25,79 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
       <VictoryChart 
         domainPadding={30} 
         theme={VictoryTheme.material}
-        //maxDomain={{ x: 31, y: averageSpending(formattedExpenses) * 1.5}}
-        //range={{x: [1, 31]}}
+        maxDomain={{ x: 31, y: calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth)}}
       >
-        <VictoryAxis />
+        <VictoryAxis 
+          tickCount={daysThisMonth/2}
+          style={{
+            tickLabels: { 
+              fontSize: 10,
+            },
+          }}
+        />
         <VictoryAxis
           dependentAxis
+          range={{x: [1, daysThisMonth]}}
           tickFormat={(x) => (`$${x}`)}
+        />
+
+        <VictoryArea
+          style={{ 
+            data: { fill: "rgb(29, 130, 255, 0.09)" },
+            strokeWidth: 0,
+          }}
+          data={[
+            { x: 0, y: daysThisMonth},
+            { x: 0, y: dailyBalance(daysThisMonth, monthlyBudget)},
+            { x: daysThisMonth, y: dailyBalance(daysThisMonth, monthlyBudget)},
+            { x: daysThisMonth, y: 0},
+          ]}
+        />
+
+        <VictoryLine 
+          data={[
+            {x: 0, y: averageSpending(formattedExpenses)},
+            {x: daysThisMonth, y: averageSpending(formattedExpenses)}
+          ]}
+          style={{
+            data: {
+              stroke: "#e47575",
+              strokeWidth: 1,
+              strokeDasharray: [5, 5]
+            },
+            labels: {
+              fill: "#e47575",
+            }
+          }}
+          labels={({ datum }) => {
+            if(datum.x) { return `$${datum.y}`} } 
+          }
+         />
+
+        <VictoryLine 
+          data={[
+            {x: 0, y: dailyBalance(daysThisMonth, monthlyBudget)},
+            {x: daysThisMonth, y: dailyBalance(daysThisMonth, monthlyBudget)}
+          ]}
+          style={{
+            data: {
+              stroke: "#1d82ff",
+              strokeWidth: 1,
+            },
+            labels: {
+              fill: "#1d82ff",
+            }
+          }}
+          labels={({ datum }) => {
+            if(datum.x) { return `$${datum.y}`} } 
+          }
         />
 
         <VictoryBar
           barRatio={0.5}
-          style={{ labels: { fontSize: "10px" } }}
+          style={{ 
+            labels: { fontSize: 8} 
+          }}
           data={formattedExpenses}  
           labels={({ datum }) => { 
             return datum.amount ? `$${datum.amount}` : ''
@@ -36,42 +105,14 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           x="date"
           y="amount"
         />
-
-         <VictoryLine 
+        <VictoryLegend 
+          x={60}
+          orientation="horizontal"
           data={[
-            {x: 0, y: dailyBalance(daysThisMonth, monthlyBudget)},
-            {x: daysThisMonth, y: dailyBalance(daysThisMonth, monthlyBudget)}
+            { name: "Average spending", symbol: { fill: "#e47575" } },
+            { name: "Daily budget", symbol: { fill: "#1d82ff" } }
           ]}
-          style={{
-            data: {
-              stroke: "#e47575",
-            },
-            labels: {
-              fill: "#e47575",
-            }
-          }}
-          labels={({ datum }) => {
-            if(datum.x) { return `daily budget: $${datum.y}`} } 
-          }
-         />
-
-         <VictoryLine 
-          data={[
-            {x: 0, y: averageSpending(formattedExpenses)},
-            {x: daysThisMonth, y: averageSpending(formattedExpenses)}
-          ]}
-          style={{
-            data: {
-              stroke: "#1d82ff",
-            },
-            labels: {
-              fill: "#1d82ff",
-            }
-          }}
-          labels={({ datum }) => {
-            if(datum.x) { return `average: $${datum.y}`} } 
-          }
-         />
+        />
 
       </VictoryChart>
     </div>
@@ -100,6 +141,14 @@ function aggregateExpenses(expenses, daysThisMonth){
   }
 
   return formattedExpenses;
+}
+
+function calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth){
+  const expenses = formattedExpenses.map((expense) => expense.amount);
+  const highestExpense = Math.max(...expenses);
+
+  // limit the chart at eiher 1.2 the allowed daily spending or the highest expense
+  return Math.max(monthlyBudget/daysThisMonth * 1.2, highestExpense *1.1);
 }
 
 function dailyBalance(daysThisMonth, monthlyBudget){
