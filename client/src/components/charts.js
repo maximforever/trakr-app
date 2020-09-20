@@ -73,6 +73,29 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           ]}
         />
 
+        <VictoryBar
+          barRatio={0.7}
+          data={formattedExpenses}  
+          labels={({ datum }) => { 
+            return ""// datum.amount ? `$${datum.amount}` : ''
+          }}
+          labelComponent={
+            <VictoryLabel
+              backgroundStyle={{ fill: "white", opacity: 0.6 }}
+              backgroundPadding={{ left: 3, right: 4, }}
+              style={[
+                { 
+                  fill: "rgb(69, 90, 100)",
+                  fontSize: 9,
+                  fontFamily: "sans-serif",
+                },
+              ]}
+            />
+          }
+          x="date"
+          y="amount"
+        />
+
         <VictoryLine 
           data={[
             {x: 0, y: averageSpending(formattedExpenses)},
@@ -129,29 +152,6 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           labels={({ datum }) => {
             if(datum.x) { return `$${datum.y}`} } 
           }
-        />
-
-        <VictoryBar
-          barRatio={0.7}
-          data={formattedExpenses}  
-          labels={({ datum }) => { 
-            return datum.amount ? `$${datum.amount}` : ''
-          }}
-          labelComponent={
-            <VictoryLabel
-              backgroundStyle={{ fill: "white", opacity: 0.6 }}
-              backgroundPadding={{ left: 3, right: 4, }}
-              style={[
-                { 
-                  fill: "rgb(69, 90, 100)",
-                  fontSize: 9,
-                  fontFamily: "sans-serif",
-                },
-              ]}
-            />
-          }
-          x="date"
-          y="amount"
         />
       </VictoryChart>
     </div>
