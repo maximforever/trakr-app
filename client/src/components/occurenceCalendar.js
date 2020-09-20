@@ -5,7 +5,7 @@ import React from 'react';
 function OccurenceCalendar(props){
   return (
     <div className="card opaque occurence-calendar">
-      <h3>{ props.category }</h3>
+      <h3>Spending on: { props.category }</h3>
       <div className="cell-wrapper">
         {renderCells(props)}
       </div>

@@ -31,7 +31,7 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
         maxDomain={{ x: 31, y: calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth)}}
       >
         <VictoryLegend 
-          x={18}
+          x={45}
           gutter={30}
           orientation="horizontal"
           data={[
@@ -40,7 +40,7 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           ]}
           style={{
             labels: {
-              fontSize: 16,
+              fontSize: 12,
             }
           }}
         />
@@ -64,7 +64,6 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           style={{ 
             data: { fill: "rgb(29, 130, 255, 0.09)" },
             strokeWidth: 0,
-            strokeDasharray: [5, 5],
           }}
           data={[
             { x: 0, y: daysThisMonth},
@@ -103,6 +102,7 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
             data: {
               stroke: "#1d82ff",
               strokeWidth: 1,
+              strokeDasharray: [5, 5],
             },
             labels: {
               fill: "#1d82ff",
@@ -115,12 +115,6 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
 
         <VictoryBar
           barRatio={0.7}
-          style={{ 
-            labels: { 
-              fontSize: 8,
-              //angle: -45,
-            } 
-          }}
           data={formattedExpenses}  
           labels={({ datum }) => { 
             return datum.amount ? `$${datum.amount}` : ''
@@ -128,7 +122,14 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           labelComponent={
             <VictoryLabel
               backgroundStyle={{ fill: "white", opacity: 0.6 }}
-              backgroundPadding={{ bottom: 1, top: 1, left: 3, right: 4, }}
+              backgroundPadding={{ left: 3, right: 4, }}
+              style={[
+                { 
+                  fill: "rgb(69, 90, 100)",
+                  fontSize: 9,
+                  fontFamily: "sans-serif",
+                },
+              ]}
             />
           }
           x="date"
