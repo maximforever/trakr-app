@@ -35,7 +35,7 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
           gutter={30}
           orientation="horizontal"
           data={[
-            { name: "Average spending", symbol: { fill: "#e47575" } },
+            { name: `Average spending`, symbol: { fill: "#e47575" } },
             { name: "Daily budget", symbol: { fill: "#1d82ff" } }
           ]}
           style={{
@@ -84,10 +84,19 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
               strokeWidth: 1,
               strokeDasharray: [5, 5],
             },
-            labels: {
-              fill: "#e47575",
-            }
           }}
+          labelComponent={<VictoryLabel
+            backgroundStyle={{ fill: "#e47575", opacity: 0.1 }}
+            backgroundPadding={{ left: 3, right: 4, bottom: 1 }}
+            style={[
+              { 
+                fill: "#e47575",
+                fontSize: 11,
+                fontFamily: "sans-serif",
+              },
+            ]}
+            dx={-10}
+          />}
           labels={({ datum }) => {
             if(datum.x) { return `$${datum.y}`} } 
           }
@@ -104,10 +113,19 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
               strokeWidth: 1,
               strokeDasharray: [5, 5],
             },
-            labels: {
-              fill: "#1d82ff",
-            }
           }}
+          labelComponent={<VictoryLabel
+            backgroundStyle={{ fill: "#1d82ff", opacity: 0.1 }}
+            backgroundPadding={{ left: 3, right: 4, bottom: 1 }}
+            style={[
+              { 
+                fill: "#1d82ff",
+                fontSize: 11,
+                fontFamily: "sans-serif",
+              },
+            ]}
+            dx={-10}
+          />}
           labels={({ datum }) => {
             if(datum.x) { return `$${datum.y}`} } 
           }
