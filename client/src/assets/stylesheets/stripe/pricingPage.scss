@@ -1,14 +1,17 @@
 @import '../variables.scss';
 
+.pricing-wrapper {
+  background: #f1f1f1;
+  padding: 1rem;
+}
+
 .subscription-options {
   display: flex;
   justify-content: space-between;
-  background: #f1f1f1;
-  padding: 1rem;
   
   .option {
     background: $white;
-    border: 2px solid #c5c5c5;
+    border: 2px solid $gray-medium;
     user-select: none;
 
     display: flex;
@@ -37,7 +40,7 @@
 
     .price {
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
       font-size: 3rem;
       font-weight: 600;
       padding: 1rem 0;
@@ -47,11 +50,27 @@
       font-size: 1rem;
       font-weight: 600;
     }
+
+    .subtext {
+      font-size: 1rem;
+      color: gray;
+    }
   }
 }
 
-@media only screen and (max-width: 700px) {
-  .subscription-options {
-    padding: 0.5rem;
+.cc-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px solid $gray-medium;
+  border-radius: 5px;
+  background: white;
+  
+  .StripeElement {
+    box-sizing: border-box;
+    margin: 1rem 0;
+  }
+
+  .btn.lg {
+    margin-bottom: 0;
   }
 }

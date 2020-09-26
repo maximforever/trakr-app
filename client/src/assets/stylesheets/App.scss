@@ -39,30 +39,39 @@ button {
   &:active, &:focus {
     outline: none;
   }
-}
 
-button.cancel {
-  border: none;
-  text-decoration: underline;
-  color: $red-light;
-  background: none;
+  &.submit {
+    background: $green-light;
+    border: none;
+    border-radius: 5px;
+    color: black;
+
+    &:disabled {
+      background: #e8e8e8;
+      color: #5f5f5f;
+
+      &:hover {
+        cursor: initial;
+      }
+    }
+  }
+
+  &.cancel {
+    border: none;
+    text-decoration: underline;
+    color: $red-light;
+    background: none;
+
+  &:disabled {
+    background: #e8e8e8;
+    color: $gray-light;
+  }
 
   &:hover{
     color: $red-medium;
   }
 }
 
-button.submit {
-  background: $green-light;
-  border: none;
-  border-radius: 5px;
-  color: black;
-
-  &:disabled {
-    background: #e8e8e8;
-    color: $gray-light;
-  }
-}
 
 form {
   label {

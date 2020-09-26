@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import StripeCheckoutForm from './stripeCheckoutForm'
 import '../../assets/stylesheets/stripe/pricingPage.scss';
 
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+
+const stripePromise = loadStripe("pk_test_51HBnPmGoqOAmrakRbd5XHPsukzH2zTF9slc8x8KS5uf4PizOhXxDVkyFa41MTqRGYRKT5AZkycnEKzQVfPUm3EZ400O2Mzlwvs");
 
 export default class pricingPage extends Component {
   constructor(props){
@@ -10,7 +14,7 @@ export default class pricingPage extends Component {
     this.state = {
       annualPlan: {},
       monthlyPlan: {},
-      selected: null,
+      selectedPrice: null,
     }
   }
 
@@ -24,25 +28,39 @@ export default class pricingPage extends Component {
     }
 
     return (
-      <div>
+      <div className="pricing-wrapper">
         <h2>Pricing options:</h2>
         <div className="subscription-options">
-          { this.renderOnePrice(this.state.monthlyPlan) }
-          { this.renderOnePrice(this.state.annualPlan) }
+          { this.renderOnePrice(this.state.monthlyPlan, "month") }
+          { this.renderOnePrice(this.state.annualPlan, "year") }
         </div>
+        {this.renderCheckoutForm()}
       </div>
     )
   }
 
-  renderOnePrice(price){
+  renderOnePrice(price, duration){
     return(
-      <div className={this.getOptionClass(price.id)} key={price.id} onClick={() => this.togglePlan(price.id)}>
+      <div className={this.getOptionClass(price.id)} key={price.id} onClick={() => this.handleClick(price.id)}>
         <div className="period">{ price.type }</div>
         <div className="price">
-          $<span>{ price.price }</span>
+          <div>${ price.price }</div>
+          <div className="subtext">per {duration}</div>
         </div>
         <div className="description">{ price.description }</div>
       </div>
+    )
+  }
+
+  renderCheckoutForm(){
+    return (
+      <Elements stripe={stripePromise}>
+        <StripeCheckoutForm 
+          stripeId = {this.props.stripeId}
+          priceId = {this.state.selectedPrice}
+          
+        />
+      </Elements>
     )
   }
 
@@ -59,14 +77,14 @@ export default class pricingPage extends Component {
   }
 
   getOptionClass(id){
-    return `option${this.state.selected === id ? ' selected' : ''}`
+    return `option${this.state.selectedPrice === id ? ' selected' : ''}`
   }
 
-  togglePlan(id){
-    const newSelected = this.state.selected == id ? null : id;
+  handleClick(id){
+    const newSelectedPrice = this.state.selectedPrice === id ? null : id;
 
     this.setState({
-      selected: newSelected,    
+      selectedPrice: newSelectedPrice,    
     });
   }
 }

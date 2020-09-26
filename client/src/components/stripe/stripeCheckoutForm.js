@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 import CardSection from './cardSection';
 
-export default function StripeCheckoutForm(user) {
+export default function StripeCheckoutForm(props) {
   const stripe = useStripe();
   const elements = useElements();
-  const customerId = user.stripeId;
-  
-  // TODO: obviously the price ID is not 12 😐
-  const priceId = 12;
+
+  const customerId = props.stripeId;
+  const priceId = props.priceId;
+  const priceSelected = priceId !== null;
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -38,6 +38,7 @@ export default function StripeCheckoutForm(user) {
     });
 
     if (error) {
+      console.log(paymentMethod)
       console.log('[createPaymentMethod error]', error);
     } else {
       console.log('[PaymentMethod]', paymentMethod);
@@ -63,7 +64,7 @@ export default function StripeCheckoutForm(user) {
 
   const createSubscription = ({ customerId, paymentMethodId, priceId }) => {
     return (
-      fetch('/create-subscription', {
+      fetch('/billing/create-subscription', {
         method: 'post',
         headers: {
           'Content-type': 'application/json',
@@ -75,6 +76,7 @@ export default function StripeCheckoutForm(user) {
         }),
       })
         .then((response) => {
+          console.log(response);
           return response.json();
         })
         // If the card is declined, display an error to the user.
@@ -83,11 +85,13 @@ export default function StripeCheckoutForm(user) {
             // The card had an error when trying to attach it to a customer.
             throw result;
           }
+          console.log(result);
           return result;
         })
         // Normalize the result to contain the object returned by Stripe.
         // Add the additional details we need.
         .then((result) => {
+          console.log(result);
           return {
             paymentMethodId: paymentMethodId,
             priceId: priceId,
@@ -255,9 +259,9 @@ export default function StripeCheckoutForm(user) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="cc-form" onSubmit={handleSubmit}>
       <CardSection />
-      <button disabled={!stripe}>Confirm order</button>
+      <button className="btn lg submit" disabled={!stripe || !priceSelected }>Subscribe</button>
     </form>
   );
 }

@@ -11,10 +11,6 @@ import SignInPage from './components/signInPage';
 import Analytics from './components/stats';
 import UserHeader from './components/userHeader';
 
-import StripeCheckoutForm from './components/stripe/stripeCheckoutForm';
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
-
 const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
 const stripePromise = loadStripe("pk_test_51HBnPmGoqOAmrakRbd5XHPsukzH2zTF9slc8x8KS5uf4PizOhXxDVkyFa41MTqRGYRKT5AZkycnEKzQVfPUm3EZ400O2Mzlwvs");
 
@@ -69,18 +65,6 @@ export default class App extends Component {
   }
 
   renderContent() {
-
-    // return (
-    //   <PricingPage />
-    // )
-
-    // return (
-    //   <Elements stripe={stripePromise}>
-    //     <StripeCheckoutForm user = {this.state.user} />
-    //   </Elements>
-    // )
-
-
     switch (this.state.status){
       case "loggedIn":
         return this.renderLoggedInInterface();
@@ -99,7 +83,7 @@ export default class App extends Component {
           greeting={this.state.greeting}
         />    
 
-        <PricingPage />      
+        <PricingPage stripeId = {this.state.user.stripeId} />      
 {/*        {this.renderNavigation()}
         {this.renderLoggedInBodyContent()}*/}
       </div>

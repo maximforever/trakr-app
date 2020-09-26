@@ -1,10 +1,11 @@
 class Billing::BillingsController < ApplicationController
   # TODO this is a super bloated controller - should refactor
 
-
   def pricing_options
     annual_pricing = Stripe::Price.list({lookup_keys: ['annual']}).data[0]
     monthly_pricing = Stripe::Price.list({lookup_keys: ['monthly']}).data[0]
+    cards = Stripe::Customer.list_sources(current_user.stripe_id, {object: 'card'})
+
 
     render json:  {
       annual: {
@@ -19,22 +20,22 @@ class Billing::BillingsController < ApplicationController
         type: monthly_pricing.nickname, 
         id: monthly_pricing.id
       },
+      cards: cards
     }
   end
 
   def create_subscription
-    content_type 'application/json'
-    data = JSON.parse request.body.read
 
-    puts "REQUEST BODY"
-    puts "=========="
-    puts data
-    puts "=========="
+    current_subscriptions = Stripe::Subscription.list()
 
-    begin
+    puts "===========CURRENT SUBSCRIPTION==========="
+    puts current_subscriptions
+    puts "=========================================="
+
+    begin 
       Stripe::PaymentMethod.attach(
-        data['paymentMethodId'],
-        { customer: data['customerId'] }
+        params['paymentMethodId'],
+        { customer: params['customerId'] }
       )
     rescue Stripe::CardError => e
       halt 200,
@@ -44,15 +45,15 @@ class Billing::BillingsController < ApplicationController
 
     # Set the default payment method on the customer
     Stripe::Customer.update(
-      data['customerId'],
-      invoice_settings: { default_payment_method: data['paymentMethodId'] }
+      params['customerId'],
+      invoice_settings: { default_payment_method: params['paymentMethodId'] }
     )
 
     # Create the subscription
     subscription =
       Stripe::Subscription.create(
-        customer: data['customerId'],
-        items: [{ price: ENV[data['priceId']] }],
+        customer: params['customerId'],
+        items: [{ price: params['priceId'] }],
         expand: %w[latest_invoice.payment_intent]
       )
 
