@@ -25,9 +25,13 @@
 }
 
 .StripeElement--invalid {
-  border-color: #fa755a;
+  border-color: #e23232;
 }
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+.InputElement.is-invalid {
+  color: #820303;
 }

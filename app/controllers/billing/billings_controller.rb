@@ -25,12 +25,15 @@ class Billing::BillingsController < ApplicationController
   end
 
   def create_subscription
-
     current_subscriptions = Stripe::Subscription.list()
 
-    puts "===========CURRENT SUBSCRIPTION==========="
-    puts current_subscriptions
-    puts "=========================================="
+    if current_subscriptions['data'].length > 0
+      current_plan = current_subscriptions['data'][0]['plan']['nickname']
+      render json:  {
+        status: "error",
+        message: "You already have a subscription for the #{current_plan}"
+      }
+    end
 
     begin 
       Stripe::PaymentMethod.attach(

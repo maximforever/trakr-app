@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Loader from '../loader';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 import CardSection from './cardSection';
@@ -6,21 +7,17 @@ import CardSection from './cardSection';
 export default function StripeCheckoutForm(props) {
   const stripe = useStripe();
   const elements = useElements();
+  const [error, setError] = useState('');
+  const [status, setStatus] = useState('ready');
 
   const customerId = props.stripeId;
   const priceId = props.priceId;
   const priceSelected = priceId !== null;
 
-  const handleSubmit = async (event) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
+    if (!stripe || !elements) { return; }
 
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
@@ -40,10 +37,12 @@ export default function StripeCheckoutForm(props) {
     if (error) {
       console.log(paymentMethod)
       console.log('[createPaymentMethod error]', error);
+      setError(error.message)
     } else {
       console.log('[PaymentMethod]', paymentMethod);
       const paymentMethodId = paymentMethod.id;
 
+      // TODO: figure out how invoices work
       if (latestInvoicePaymentIntentStatus === 'requires_payment_method') {
         // Update the payment method and retry invoice payment
         const invoiceId = localStorage.getItem('latestInvoiceId');
@@ -56,13 +55,13 @@ export default function StripeCheckoutForm(props) {
           priceId,
         });
       } else {
-        // Create the subscription
         createSubscription({ customerId, paymentMethodId, priceId });
       }
     }
   };
 
   const createSubscription = ({ customerId, paymentMethodId, priceId }) => {
+    setStatus('waiting');
     return (
       fetch('/billing/create-subscription', {
         method: 'post',
@@ -76,7 +75,7 @@ export default function StripeCheckoutForm(props) {
         }),
       })
         .then((response) => {
-          console.log(response);
+          setStatus('ready');
           return response.json();
         })
         // If the card is declined, display an error to the user.
@@ -85,7 +84,8 @@ export default function StripeCheckoutForm(props) {
             // The card had an error when trying to attach it to a customer.
             throw result;
           }
-          console.log(result);
+          setError(result.message);
+          console.log(result.message);
           return result;
         })
         // Normalize the result to contain the object returned by Stripe.
@@ -258,10 +258,24 @@ export default function StripeCheckoutForm(props) {
     }
   }
 
+  const renderError = () => {
+    if(!error.length) { return null }
+    return (<div className="error">{error}</div>);
+  }
+
+  const CTAtext = () => {
+    if(status === 'waiting'){ return <Loader /> }
+    return "Subscribe"
+  }
+
+
   return (
-    <form className="cc-form" onSubmit={handleSubmit}>
-      <CardSection />
-      <button className="btn lg submit" disabled={!stripe || !priceSelected }>Subscribe</button>
-    </form>
+    <div>
+      {renderError()}
+      <form className="cc-form" onSubmit={handleSubmit}>
+        <CardSection />
+        <button className="btn lg submit" disabled={!stripe || !priceSelected }>{CTAtext()}</button>
+      </form>
+    </div>
   );
 }
