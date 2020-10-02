@@ -83,9 +83,9 @@ export default class App extends Component {
           greeting={this.state.greeting}
         />    
 
-        <PricingPage stripeId = {this.state.user.stripeId} />      
-{/*        {this.renderNavigation()}
-        {this.renderLoggedInBodyContent()}*/}
+        {/*<PricingPage stripeId = {this.state.user.stripeId} />      */}
+        {this.renderNavigation()}
+        {this.renderLoggedInBodyContent()}
       </div>
     )
   }
@@ -254,8 +254,6 @@ export default class App extends Component {
       })
       .catch((error) => { console.log("Error updating expense", error); })
   }
-
-
 
   deleteExpense(e, id){
     e.stopPropagation();

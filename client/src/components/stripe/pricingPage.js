@@ -23,8 +23,14 @@ export default class pricingPage extends Component {
   }
 
   render(){
-    if (!Object.keys(this.state.monthlyPlan).length || !Object.keys(this.state.annualPlan).length){
-      return null;
+    console.log(this.state);
+
+    if (this.state.monthlyPlan  === undefined || !Object.keys(this.state.monthlyPlan).length || !Object.keys(this.state.annualPlan).length){
+      return(
+        <div className="card">
+          <p>Looks like we're having trouble fetching some pricing details - sorry about that!</p>
+        </div>
+      ) 
     }
 
     return (
