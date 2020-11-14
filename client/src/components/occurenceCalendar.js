@@ -2,7 +2,7 @@ import '../assets/stylesheets/occurenceCalendar.scss';
 
 import React from 'react';
 
-function OccurenceCalendar(props){
+export default function OccurenceCalendar(props){
   return (
     <div className="card opaque occurence-calendar">
       <h3>Spending on: { props.category }</h3>
@@ -43,5 +43,3 @@ function getDay(date){
 
   return timestamp.getDate();
 }
-
-export default OccurenceCalendar;

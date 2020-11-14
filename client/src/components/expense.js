@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/expense.scss';
 
-
-class Expense extends Component {
+export default class Expense extends Component {
   constructor(props){
     super(props);
 
@@ -69,5 +68,3 @@ class Expense extends Component {
     })
   }
 }
-
-export default Expense;
