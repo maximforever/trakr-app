@@ -1,45 +1,24 @@
 import Expense from './expense';
-import ExpenseFilter from './expenseFilter';
-import React, { Component } from 'react';
+import React from 'react';
 import '../assets/stylesheets/expenseList.scss';
 
+export default function ExpenseList(props){
+  return (
+    <div>
+      <h3 className="expense-heading">Expenses</h3>
+      {renderExpenses(props.expenses, props.deleteExpense, props.editExpense)}
+    </div>
+  )
 
-export default class ExpenseList extends Component {
-  constructor(props){
-    super(props);
+  function renderExpenses(expenses, deleteExpense, editExpense){
+    if (!expenses.length){ return <p>No expenses - you should add one!</p> }
 
-    this.state = {
-      filteredCategory: "",
-      filteredDescription: "",
-      filteredMinAmount: 0,
-      filteredMaxAmount: Infinity,
-    }
-
-    this.updateCategory = this.updateCategory.bind(this);
-  }
-
-  render(){
-    return (
-      <div>
-        <h3 className="expense-heading">Expenses</h3>
-        <ExpenseFilter 
-          updateCategory = {(newValue) => this.updateCategory(newValue)}
-          updateDescription = {(newValue) => this.updateDescription(newValue)}
-        />
-        {this.renderExpenses(this.filteredExpenses(), this.props.deleteExpense, this.props.editExpense)}
-      </div>
-    )
-  }
-
-  renderExpenses(expenses, deleteExpense, editExpense){
-    if (!expenses.length){ return <p>No expenses recorded this month - you should add one!</p> }
-
-    const uniqueSortedDates = this.getUniqueSortedDates(expenses);
+    const uniqueSortedDates = getUniqueSortedDates(expenses);
 
     return uniqueSortedDates.map((date) => {
-      const expensesOnThisDate = this.getExpensesOnThisDate(expenses, date)
-      const expenseElements = this.expensesElements(expensesOnThisDate, date, deleteExpense, editExpense);
-      const spentThisDay = this.moneySpentThisDay(expensesOnThisDate);
+      const expensesOnThisDate = getExpensesOnThisDate(expenses, date)
+      const expenseElements = expensesElements(expensesOnThisDate, date, deleteExpense, editExpense);
+      const spentThisDay = moneySpentThisDay(expensesOnThisDate);
 
       return(
         <div className="day-of-expenses" key={date}>
@@ -53,7 +32,7 @@ export default class ExpenseList extends Component {
     })
   }
 
-  expensesElements(expenses, date, deleteExpense, editExpense){
+  function expensesElements(expenses, date, deleteExpense, editExpense){
     return expenses.map((expense) => {
       return (<Expense 
                 key={expense.id}
@@ -64,51 +43,31 @@ export default class ExpenseList extends Component {
     })
   }
 
-  getExpensesOnThisDate(expenses, date){
+  function getExpensesOnThisDate(expenses, date){
     return expenses.filter((expense)=> {
-      return this.readableDate(expense.timestamp) === date;
+      return readableDate(expense.timestamp) === date;
     })
   }
 
-  getUniqueSortedDates(expenses) {
+  function getUniqueSortedDates(expenses) {
     expenses = expenses.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     const dates = expenses.map((expense) => {
-      return this.readableDate(expense.timestamp);
+      return readableDate(expense.timestamp);
     });
 
     return [...new Set(dates)];
   }
 
-  filteredExpenses(){
-    if(!this.state.filteredCategory.length && !this.state.filteredDescription.length ){ return this.props.expenses }
-
-    return this.props.expenses.filter((expense) => {
-      return (
-        expense.category.includes(this.state.filteredCategory) &&
-        expense.description.includes(this.state.filteredDescription)
-      ) 
-    });
-  }
-
-  updateCategory(filteredCategory){
-    this.setState({ filteredCategory });
-  }
-
-  updateDescription(filteredDescription){
-    this.setState({ filteredDescription });
-  }
-
-  moneySpentThisDay(expenses){
+  function moneySpentThisDay(expenses){
     return expenses.reduce((acc, expense) => {
       return acc + expense.amount;
     }, 0);
   }
 
-  readableDate(dateString){
+  function readableDate(dateString){
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const dateComponents = dateString.substring(0, 10).split("-");
     return`${months[Number(dateComponents[1]) - 1]} ${dateComponents[2]}, ${dateComponents[0]}`
   }
-
 }

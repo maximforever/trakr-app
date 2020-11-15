@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
 import SignInPage from './components/signInPage'
 import ExpenseForm from './components/expenseForm'
-import ExpenseList from './components/expenseList'
+import FilteredExpenseList from './components/filteredExpenseList'
 import Dashboard from './components/dashboard'
 import Navigation from './components/navigation'
 import Settings from './components/settings'
@@ -142,7 +142,7 @@ class App extends Component {
 
   renderExpenseList(){
     return(
-      <ExpenseList 
+      <FilteredExpenseList 
         expenses={this.currentMonthExpenses()} 
         deleteExpense={this.deleteExpense}
         editExpense={this.editExpense}
