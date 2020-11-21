@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 const defaultState = {
   amount: "",
   description: "",
-  merchant: "",
   timestamp: "",
   category: "",
   displayForm: false,
@@ -71,11 +70,6 @@ class ExpenseForm extends Component {
           <div className="one-input">
             <label>Description</label>
             <input value={this.state.description} type='text' name='description' onChange={this.handleInputChange}></input>
-          </div>
-
-          <div className="one-input">
-            <label>Merchant</label>
-            <input value={this.state.merchant} type='text' name='merchant' onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
@@ -178,7 +172,6 @@ class ExpenseForm extends Component {
     const newExpense = {
       amount: this.state.amount,
       description: this.state.description,
-      merchant: this.state.merchant,
       timestamp: this.state.timestamp,
       category: this.state.category,
     }
