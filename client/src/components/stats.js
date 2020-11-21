@@ -43,14 +43,15 @@ class Stats extends Component {
   renderOccurenceCalendar(){
     return <OccurenceCalendar 
       daysThisMonth={this.state.daysThisMonth}
-      expenses={this.props.expenses} 
       category={this.state.currentCategory}
+      expenses={this.filteredExpenses()} 
     />
   }
 
   renderCharts(){
     return <Charts 
-      expenses={this.props.expenses}
+      expenses={this.filteredExpenses()}
+      category={this.state.currentCategory}
       daysThisMonth={this.state.daysThisMonth}
       monthlyBudget={this.props.monthlyBudget}
     />
@@ -118,6 +119,12 @@ class Stats extends Component {
     this.setState({
       currentCategory: category,
     })
+  }
+
+  filteredExpenses(){
+    if(this.state.currentCategory === "all"){ return this.props.expenses; }
+
+    return this.props.expenses.filter((expense) => expense.category === this.state.currentCategory);
   }
 
   percentageOfMonthlySpending(amount){

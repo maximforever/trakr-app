@@ -5,7 +5,7 @@ import React from 'react';
 export default function OccurenceCalendar(props){
   return (
     <div className="card opaque occurence-calendar">
-      <h3>Spending on: { props.category }</h3>
+      <h3>{getCalendarTitle(props.category)}</h3>
       <div className="cell-wrapper">
         {renderCells(props)}
       </div>
@@ -18,14 +18,8 @@ function renderCells(props) {
   let cells = [];
 
   for(let i=1; i <= props.daysThisMonth; i++){
-
-    const matchingExpenses = props.expenses.filter((expense) => {
-      const expenseBelongsToSelectedCategory = props.category === "all" || (props.category === expense.category);
-      return i === getDay(expense.timestamp) && expenseBelongsToSelectedCategory;
-    })
-
-    const thisClass = matchingExpenses.length ? "cell has-spending  " : "cell";
-
+    const todaysExpenses = props.expenses.filter((expense) => i === getDay(expense.timestamp))
+    const thisClass = todaysExpenses.length ? "cell has-spending  " : "cell";
     cells.push(<div className={thisClass} key={i}>{i}</div>);      
   }
 
@@ -42,4 +36,8 @@ function getDay(date){
   timestamp.setHours(timestamp.getHours() + timestamp.getTimezoneOffset()/60)
 
   return timestamp.getDate();
+}
+
+function getCalendarTitle(category){
+  return "Days I bought" + (category === "all" ? " anything" : ` ${category}`)
 }

@@ -1,7 +1,6 @@
 import '../assets/stylesheets/charts.scss';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { 
   VictoryArea, 
   VictoryAxis, 
@@ -13,7 +12,7 @@ import {
   VictoryTheme 
 } from 'victory';
 
-export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
+export default function Charts({expenses, daysThisMonth, monthlyBudget, category}) {
 
   if(!expenses.length){
     return "no data yet..."
@@ -23,9 +22,9 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget}) {
 
   return (
     <div className="chart card opaque">
-      <h3 className="chart-title">Daily spending</h3>
+      <h3 className="chart-title">{getChartTitle(category)}</h3>
       <VictoryChart 
-        title={"Daily spending"}
+        title={getChartTitle(category)}
         domainPadding={30} 
         theme={VictoryTheme.material}
         maxDomain={{ x: 31, y: calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth)}}
@@ -206,4 +205,8 @@ function averageSpending(days){
   const averageSpending = spending.reduce((a, b) => (a + b)) / spending.length;
 
   return Math.floor(averageSpending);
+}
+
+function getChartTitle(category){
+  return "Daily spending" + (category === "all" ? "" : ` on ${category}`)
 }
