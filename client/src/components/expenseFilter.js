@@ -76,7 +76,6 @@ export default class FilteredExpenseList extends Component {
   }
 
   getCategoryName(category){
-    console.log(category, this.state.filteredCategory);
     return category === this.state.filteredCategory ? "category selected" : "category";
   }
 

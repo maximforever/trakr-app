@@ -70,16 +70,25 @@ form {
     font-weight: 600;
   }
 
-  input {
-    width: 100%;
-    border: 1px solid gray;
-    padding: 0.3rem;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-  }
-
   .one-input {
     margin: 1rem 0;
+  }
+}
+
+input, form input {
+  background: inherit;
+  
+  width: 100%;
+  border: 1px solid gray;
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+
+  border: none;
+  border-bottom: 1px solid gray;
+
+  &:focus {
+    outline: none;
   }
 }
 

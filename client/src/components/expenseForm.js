@@ -57,6 +57,7 @@ class ExpenseForm extends Component {
             <div className="amount-spent-wrapper">
               $ <input 
                   autoFocus={true} 
+                  placeholder="Amount"
                   className="amount-spent"
                   min="1" 
                   value={this.state.amount} 
@@ -69,7 +70,7 @@ class ExpenseForm extends Component {
 
           <div className="one-input">
             <label>Description</label>
-            <input value={this.state.description} type='text' name='description' onChange={this.handleInputChange}></input>
+            <input value={this.state.description} type='text' name='description' placeholder="What did you buy?" onChange={this.handleInputChange}></input>
           </div>
 
           <div className="one-input">
