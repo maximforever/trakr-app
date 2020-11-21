@@ -19,6 +19,8 @@ export default class FilteredExpenseList extends Component {
   }
 
   render(){
+    const filteredExpenses = this.filteredExpenses();
+
     return (
       <div>
         <h3 className="expense-heading" id="expense-section-heading">Expenses</h3>
@@ -26,9 +28,10 @@ export default class FilteredExpenseList extends Component {
           updateCategory = {(newValue) => this.updateCategory(newValue)}
           updateDescription = {(newValue) => this.updateDescription(newValue)}
           categories = {this.getExpenseCategories()}
+          expenseCount = {filteredExpenses.length}
         />
         <ExpenseList 
-          expenses = {this.filteredExpenses()} 
+          expenses = {filteredExpenses} 
           deleteExpense={this.props.deleteExpense}
           editExpense={this.props.editExpense}
         />
@@ -37,7 +40,9 @@ export default class FilteredExpenseList extends Component {
   }
 
   filteredExpenses(){
-    if(!this.state.filteredCategory.length && !this.state.filteredDescription.length ){ return this.props.expenses }
+    if(!this.state.filteredCategory.length && !this.state.filteredDescription.length ){ 
+      return this.props.expenses;
+    } 
 
     return this.props.expenses.filter((expense) => {
       return (

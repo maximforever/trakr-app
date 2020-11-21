@@ -14,10 +14,17 @@ label {
   padding: 0.8rem 0;
 
   .lnr {
-    padding-right: 0.3rem;
+    padding-right: 0.6rem;
   }
 
   &:hover {
     cursor: pointer;
   }
+}
+
+.matching-expenses-found {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 0 0.3rem 0;
+  margin-top: 1.5rem;
 }

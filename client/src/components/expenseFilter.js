@@ -28,31 +28,35 @@ export default class FilteredExpenseList extends Component {
 
   renderOpenFilter() {
     return (
-      <div>
+      <form>
         <div className="toggle-wrapper" onClick={this.toggleDisplayFilter}>
-          <span className="lnr lnr-cross"></span> Close filter
+          <span className="lnr lnr-cross"></span> close filter
         </div>
 
-        { this.renderCategories() }
-
-        <label>
+        <div>
+          <label>Category</label>
+          { this.renderCategories() }
+        </div>
+        <div>
+          <label>Description</label>
           <input 
             type="text" 
-            placeholder="Description" 
+            placeholder="Expense name" 
             onChange={(e) => {
               this.props.updateDescription(e.target.value.trim())
             }}>
           </input>
           <br />
-        </label>
-      </div>
+        </div>
+        <div className="matching-expenses-found">{this.props.expenseCount} matching expenses found</div>
+      </form>
     )
   }
 
   renderClosedFilter(){
     return (
       <div className="toggle-wrapper" onClick={this.toggleDisplayFilter}>
-        <span className="lnr lnr-list"></span> Filter expenses
+        <span className="lnr lnr-list"></span> filter expenses
       </div>
     )
   }
