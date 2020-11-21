@@ -21,14 +21,16 @@ export default class FilteredExpenseList extends Component {
   render(){
     return (
       <div>
+        <h3 className="expense-heading" id="expense-section-heading">Expenses</h3>
         <ExpenseFilter 
           updateCategory = {(newValue) => this.updateCategory(newValue)}
           updateDescription = {(newValue) => this.updateDescription(newValue)}
+          categories = {this.getExpenseCategories()}
         />
         <ExpenseList 
           expenses = {this.filteredExpenses()} 
-          deleteExpense={this.deleteExpense}
-          editExpense={this.editExpense}
+          deleteExpense={this.props.deleteExpense}
+          editExpense={this.props.editExpense}
         />
       </div>
     )
@@ -43,6 +45,10 @@ export default class FilteredExpenseList extends Component {
         expense.description.includes(this.state.filteredDescription)
       ) 
     });
+  }
+
+  getExpenseCategories(){
+    return [...new Set(this.props.expenses.map((e) => e.category))]
   }
 
   updateCategory(filteredCategory){
