@@ -300,8 +300,6 @@ class App extends Component {
           user: response.loggedInUser
         }, () => {
           if(this.state.status === "loggedIn"){
-            // TODO this is uglyyyy
-            this.setLastVisitedPage();
             this.fetchExpenses();
             this.fetchUserSettings();
             this.setGreeting();
@@ -345,16 +343,6 @@ class App extends Component {
     })
   }
 
-  setLastVisitedPage(){
-    const lastVisitedPage = window.localStorage.getItem('trakr-page');
-
-    if(lastVisitedPage !== null){
-      this.setState({
-        currentPage: lastVisitedPage,
-      })
-    }
-  }
-
   setCurrentDate(){
     const d = new Date();
 
@@ -392,8 +380,6 @@ class App extends Component {
   }
 
   navigateToPage(page){
-    window.localStorage.setItem("trakr-page", page)
-
     this.setState({
       currentPage: page
     })
