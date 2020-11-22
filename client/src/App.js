@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
 import './assets/stylesheets/App.scss';
+import React, { Component } from 'react';
 import SignInPage from './components/signInPage'
 import ExpenseForm from './components/expenseForm'
 import FilteredExpenseList from './components/filteredExpenseList'
 import Dashboard from './components/dashboard'
 import Navigation from './components/navigation'
 import Settings from './components/settings'
-import Stats from './components/stats'
+import Analytics from './components/analytics'
 import UserHeader from './components/userHeader'
 
 const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
 
-class App extends Component {
+export default class App extends Component {
   constructor(props){
     super(props);
 
@@ -25,12 +25,12 @@ class App extends Component {
       pastBudgets: {},
       greeting: "Hi",
       currentDate: {
-        month: null,
-        year: null,
+        month: 1,
+        year: 1990,
       },
       showExpenseForm: false,
-      currentPage: "home",
-      datepickerPages: ["home", "stats"],
+      currentPage: "analytics",
+      datepickerPages: ["home", "analytics"],
     }
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
@@ -88,8 +88,8 @@ class App extends Component {
   renderLoggedInBodyContent() {
     if(this.state.currentPage === "home"){
       return this.renderHome();
-    } else if (this.state.currentPage === "stats"){
-      return this.renderStats();
+    } else if (this.state.currentPage === "analytics"){
+      return this.renderAnalytics();
     } else if (this.state.currentPage === "settings"){
       return this.renderSettings();
     }
@@ -150,12 +150,12 @@ class App extends Component {
     )
   }
 
-  renderStats(){
-    return <Stats 
+  renderAnalytics(){
+    return <Analytics 
       expenses={this.currentMonthExpenses()}
       categories={this.state.categories}
       monthlyBudget={this.getCurrentMonthlyBudget()}
-      currentDate={this.state.currentDate}
+      daysThisMonth={this.daysThisMonth()}
     />
   }
 
@@ -508,6 +508,8 @@ class App extends Component {
   formattedYear(year){
     return year.toString();
   }
-}
 
-export default App;
+  daysThisMonth() {
+    return new Date(this.state.currentDate.year, this.state.currentDate.month, 0).getDate()
+  }
+}

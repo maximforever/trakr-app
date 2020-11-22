@@ -16,7 +16,7 @@ export default class FilteredExpenseList extends Component {
 
   render(){
     return (
-      <div className="card opaque">
+      <div className="card opaque filter">
         {this.renderFilterContent()}
       </div>
     )

@@ -16,7 +16,7 @@ function renderNavbar(props){
       <div className="nav-button button-text" onClick={() => props.navigateToPage("home")}>
         <span className="lnr lnr-home"></span>
       </div>
-      <div className="nav-button button-text" onClick={() => props.navigateToPage("stats")}>
+      <div className="nav-button button-text" onClick={() => props.navigateToPage("analytics")}>
         <span className="lnr lnr-chart-bars"></span>
       </div>
       <div className="nav-button button-text" onClick={() => props.navigateToPage("settings")}>

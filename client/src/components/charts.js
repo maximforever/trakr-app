@@ -13,9 +13,8 @@ import {
 } from 'victory';
 
 export default function Charts({expenses, daysThisMonth, monthlyBudget, category}) {
-
   if(!expenses.length){
-    return "no data yet..."
+    return <div className="chart card opaque">Not enough expense data to render chart</div>
   }
 
   let formattedExpenses = aggregateExpenses(expenses, daysThisMonth);
@@ -190,7 +189,7 @@ function calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMo
 }
 
 function dailyBalance(daysThisMonth, monthlyBudget){
-  return Math.floor(monthlyBudget/daysThisMonth);
+  return Math.round(monthlyBudget/daysThisMonth);
 }
 
 function averageSpending(days){
@@ -204,7 +203,7 @@ function averageSpending(days){
 
   const averageSpending = spending.reduce((a, b) => (a + b)) / spending.length;
 
-  return Math.floor(averageSpending);
+  return Math.round(averageSpending);
 }
 
 function getChartTitle(category){

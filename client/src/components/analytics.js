@@ -1,17 +1,16 @@
-import '../assets/stylesheets/stats.scss';
+import '../assets/stylesheets/analytics.scss';
 import OccurenceCalendar from './occurenceCalendar'
+import SpendingStatistics from './spendingStatistics'
 import Charts from './charts'
 
 import React, { Component } from 'react';
 
-class Stats extends Component {
-
+export default class Analytics extends Component {
   constructor(props){
     super(props);
 
     this.state = {
       currentCategory: "all",
-      daysThisMonth: this.daysInMonth(this.props.currentDate.month, this.props.currentDate.year)
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -21,7 +20,8 @@ class Stats extends Component {
     return (
       <div className="stats card">
         <div className="spending-by-category">
-          {this.renderSpendingByCategory()}
+          {this.renderCategorySelector()}
+          {this.renderSpendingStatistics()}
           {this.renderOccurenceCalendar()}
           {this.renderCharts()}
         </div>
@@ -29,11 +29,11 @@ class Stats extends Component {
     )
   }
 
-  renderSpendingByCategory(){
+  renderCategorySelector(){
     let spending = this.sortExpensesByCategory();
 
     return (
-      <div>
+      <div className="card category-selector">
         {this.renderSpendingHeaders(this.props.expenses.length)}
         {this.renderTableOfSpendingByCategory(spending)}
       </div>
@@ -42,9 +42,17 @@ class Stats extends Component {
 
   renderOccurenceCalendar(){
     return <OccurenceCalendar 
-      daysThisMonth={this.state.daysThisMonth}
+      daysThisMonth={this.props.daysThisMonth}
       category={this.state.currentCategory}
       expenses={this.filteredExpenses()} 
+    />
+  }
+
+  renderSpendingStatistics() {
+    return <SpendingStatistics 
+      expenses={this.filteredExpenses()}
+      category={this.state.currentCategory}
+      daysThisMonth={this.props.daysThisMonth}
     />
   }
 
@@ -52,7 +60,7 @@ class Stats extends Component {
     return <Charts 
       expenses={this.filteredExpenses()}
       category={this.state.currentCategory}
-      daysThisMonth={this.state.daysThisMonth}
+      daysThisMonth={this.props.daysThisMonth}
       monthlyBudget={this.props.monthlyBudget}
     />
   }
@@ -140,11 +148,4 @@ class Stats extends Component {
   getCategoryRowClass(category){
     return "one-category-row" + (this.state.currentCategory === category ?  " selected" : "");
   }
-
-  daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-  }
-
 }
-
-export default Stats;
