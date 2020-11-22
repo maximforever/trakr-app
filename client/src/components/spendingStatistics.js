@@ -20,18 +20,23 @@ export default function SpendingStatistics(props){
       </div>
 
       <div className="one-statistic">
-        <span className="name">Average purchase</span> 
+        <span className="name">Average $ per purchase</span> 
         <span className="value">${getAverageSpending(props.expenses)}</span>
       </div>
 
       <div className="one-statistic">
-        <span className="name">Average spending per day</span> 
+        <span className="name">Average $ per day</span> 
         <span className="value">${getSpendingPerDay(props.expenses, props.daysThisMonth)}</span>
       </div>
 
       <div className="one-statistic">
-        <span className="name">Average purchases per day</span> 
-        <span className="value">{getAverageOccurence(props.expenses, props.daysThisMonth)}</span>
+        <span className="name">Purchases per day</span> 
+        <span className="value">{getPurchasesPerDay(props.expenses, props.daysThisMonth)}</span>
+      </div>
+
+      <div className="one-statistic">
+        <span className="name">Average purchase is every</span> 
+        <span className="value">{getAverageOccurence(props.expenses, props.daysThisMonth)} days</span>
       </div>
     </div>
   )
@@ -48,31 +53,15 @@ function getAverageSpending(expenses){
 }
 
 function getSpendingPerDay(expenses, daysThisMonth){
-  // if this is a past month, we need to account for days in the past month
-  // if it's a current month, we count days till now
-
-  const currentDate = new Date();
-  const expenseDate = new Date(expenses[0].timestamp);
-
-  if(currentDate.getMonth() === expenseDate.getMonth() && currentDate.getYear() === expenseDate.getYear()){
-    return formatAmount(sumOfAllExpenses(expenses)/currentDate.getDate());
-  }
-
-  return formatAmount(sumOfAllExpenses(expenses)/daysThisMonth);
+  return formatAmount(sumOfAllExpenses(expenses)/uniquePurchaseDays(expenses));
 }
 
 function getAverageOccurence(expenses, daysThisMonth) {
-  // if this is a past month, we need to account for days in the past month
-  // if it's a current month, we count days till now
+  return Math.floor(daysInSelectedMonth(expenses[0], daysThisMonth)/uniquePurchaseDays(expenses) * 10)/10;
+}
 
-  const currentDate = new Date();
-  const expenseDate = new Date(expenses[0].timestamp);
-
-  if(currentDate.getMonth() === expenseDate.getMonth() && currentDate.getYear() === expenseDate.getYear()){
-    return Math.floor(expenses.length/currentDate.getDate() * 10)/10;
-  }
-
-  return Math.floor(expenses.length/daysThisMonth * 10)/10;
+function getPurchasesPerDay(expenses, daysThisMonth) {
+  return Math.floor(expenses.length/uniquePurchaseDays(expenses) * 10)/10;
 }
 
 function sumOfAllExpenses(expenses){
@@ -83,4 +72,28 @@ function sumOfAllExpenses(expenses){
 
 function formatAmount(amount){
   return (Math.round(amount * 100)/100).toFixed(2);
+}
+
+function displayingCurrentMonth(expense){
+  const currentDate = new Date();
+  const expenseDate = new Date(expense.timestamp);
+
+  return (currentDate.getMonth() === expenseDate.getMonth() && currentDate.getYear() === expenseDate.getYear())
+}
+
+function uniquePurchaseDays(expenses){
+  const dates = expenses.map((expense) => {
+    const parsedDate = new Date(expense.timestamp);
+    return parsedDate.getDate();
+  });
+
+  return [...new Set(dates)].length
+}
+
+function daysInSelectedMonth(expense, daysThisMonth){
+  // if this is a past month, we need to account for days in the past month
+  // if it's a current month, we count days till now
+
+  const currentDate = new Date();
+  return displayingCurrentMonth(expense) ? currentDate.getDate() : daysThisMonth;
 }
