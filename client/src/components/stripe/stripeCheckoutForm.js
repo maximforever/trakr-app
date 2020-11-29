@@ -16,6 +16,7 @@ export default function StripeCheckoutForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("")
 
     if (!stripe || !elements) { return; }
 
@@ -272,10 +273,12 @@ export default function StripeCheckoutForm(props) {
   return (
     <div>
       {renderError()}
-      <form className="cc-form" onSubmit={handleSubmit}>
-        <CardSection />
-        <button className="btn lg submit" disabled={!stripe || !priceSelected }>{CTAtext()}</button>
-      </form>
+      <div className="overlay">
+        <form className="cc-form" onSubmit={handleSubmit}>
+          <CardSection />
+          <button className="btn lg submit" disabled={!stripe || !priceSelected }>{CTAtext()}</button>
+        </form>
+      </div>
     </div>
   );
 }

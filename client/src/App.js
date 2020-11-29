@@ -2,17 +2,17 @@ import './assets/stylesheets/App.scss';
 
 import Dashboard from './components/dashboard';
 import ExpenseForm from './components/expenseForm';
-import ExpenseList from './components/expenseList';
+import FilteredExpenseList from './components/filteredExpenseList';
 import Navigation from './components/navigation';
 import PricingPage from './components/stripe/pricingPage';
 import React, { Component } from 'react';
 import Settings from './components/settings';
 import SignInPage from './components/signInPage';
-import Analytics from './components/stats';
+import Analytics from './components/analytics';
 import UserHeader from './components/userHeader';
 
 const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
-const stripePromise = loadStripe("pk_test_51HBnPmGoqOAmrakRbd5XHPsukzH2zTF9slc8x8KS5uf4PizOhXxDVkyFa41MTqRGYRKT5AZkycnEKzQVfPUm3EZ400O2Mzlwvs");
+//const stripePromise = loadStripe("pk_test_51HBnPmGoqOAmrakRbd5XHPsukzH2zTF9slc8x8KS5uf4PizOhXxDVkyFa41MTqRGYRKT5AZkycnEKzQVfPUm3EZ400O2Mzlwvs");
 
 export default class App extends Component {
   constructor(props){
@@ -83,9 +83,9 @@ export default class App extends Component {
           greeting={this.state.greeting}
         />    
 
-        {/*<PricingPage stripeId = {this.state.user.stripeId} />      */}
-        {this.renderNavigation()}
-        {this.renderLoggedInBodyContent()}
+      <PricingPage stripeId = {this.state.user.stripeId} />
+{/*        {this.renderNavigation()}
+        {this.renderLoggedInBodyContent()}*/}
       </div>
     )
   }

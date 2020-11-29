@@ -61,14 +61,11 @@ button {
     text-decoration: underline;
     color: $red-light;
     background: none;
+  }
 
   &:disabled {
     background: #e8e8e8;
     color: $gray-light;
-  }
-
-  &:hover{
-    color: $red-medium;
   }
 }
 
@@ -139,7 +136,6 @@ input, form input {
   color: gray;
   padding-bottom: 0.3rem;
 }
-
 
 @media only screen and (max-width: 700px) {
   .App {

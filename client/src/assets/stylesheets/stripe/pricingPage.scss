@@ -75,6 +75,11 @@
   }
 }
 
+.overlay {
+  z-index: 2;
+  background: rgba(10,10,10, 0.1);
+}
+
 .error {
   text-align: center;
   padding: 0.5rem 1.5rem;

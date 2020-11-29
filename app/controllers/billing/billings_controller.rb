@@ -6,7 +6,6 @@ class Billing::BillingsController < ApplicationController
     monthly_pricing = Stripe::Price.list({lookup_keys: ['monthly']}).data[0]
     cards = Stripe::Customer.list_sources(current_user.stripe_id, {object: 'card'})
 
-
     render json:  {
       annual: {
         price: annual_pricing.unit_amount/100, 
@@ -25,7 +24,9 @@ class Billing::BillingsController < ApplicationController
   end
 
   def create_subscription
-    current_subscriptions = Stripe::Subscription.list()
+    current_subscriptions = Stripe::Customer.retrieve(current_user.stripe_id).subscriptions
+
+    puts "this user has #{current_subscriptions.count} subscription(s)"
 
     if current_subscriptions['data'].length > 0
       current_plan = current_subscriptions['data'][0]['plan']['nickname']
@@ -33,6 +34,8 @@ class Billing::BillingsController < ApplicationController
         status: "error",
         message: "You already have a subscription for the #{current_plan}"
       }
+
+      return
     end
 
     begin 
