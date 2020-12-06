@@ -12,13 +12,18 @@ import {
   VictoryTheme 
 } from 'victory';
 
-export default function Charts({expenses, daysThisMonth, monthlyBudget, category}) {
-  if(!expenses.length){
+export default function Charts(props) {
+  if(!props.expenses.length){
     return <div className="chart card opaque">Not enough expense data to render chart</div>
   }
 
-  let formattedExpenses = aggregateExpenses(expenses, daysThisMonth);
+  let expensesByDay = aggregateExpenses(props.expenses, props.daysThisMonth);
 
+  return renderCharts({
+    ...props,
+    expenses: expensesByDay,
+  });
+} 
   return (
     <div className="chart card opaque">
       <h3 className="chart-title">{getChartTitle(category)}</h3>
@@ -96,8 +101,6 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget, category
 
         <VictoryLine 
           data={[
-            {x: 0, y: averageSpending(formattedExpenses)},
-            {x: daysThisMonth, y: averageSpending(formattedExpenses)}
           ]}
           style={{
             data: {
@@ -154,10 +157,10 @@ export default function Charts({expenses, daysThisMonth, monthlyBudget, category
       </VictoryChart>
     </div>
   )
-} 
+}
 
 function aggregateExpenses(expenses, daysThisMonth){
-  let formattedExpenses = [];
+  let expensesByDay = [];
 
   for(let i=1; i <= daysThisMonth; i++){
     let totalSpending = 0;
@@ -171,13 +174,13 @@ function aggregateExpenses(expenses, daysThisMonth){
       }
     });
 
-    formattedExpenses.push({
+    expensesByDay.push({
       amount: totalSpending,
       date: i,
     })
   }
 
-  return formattedExpenses;
+  return expensesByDay;
 }
 
 function calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth){

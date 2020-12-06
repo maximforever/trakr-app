@@ -29,7 +29,7 @@ export default class App extends Component {
         year: 1990,
       },
       showExpenseForm: false,
-      currentPage: "home",
+      currentPage: "analytics",
       datepickerPages: ["home", "analytics"],
     }
 
