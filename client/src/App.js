@@ -152,10 +152,12 @@ export default class App extends Component {
 
   renderAnalytics(){
     return <Analytics 
-      expenses={this.currentMonthExpenses()}
+      currentMonthExpenses={this.currentMonthExpenses()}
+      currentYearExpenses={this.currentYearExpenses()}
       categories={this.state.categories}
       monthlyBudget={this.getCurrentMonthlyBudget()}
       daysThisMonth={this.daysThisMonth()}
+      displayYear={this.state.currentDate.year}
     />
   }
 
@@ -499,6 +501,15 @@ export default class App extends Component {
     const thisMonthsExpenses = thisYearsExpenses[this.formattedMonth(this.state.currentDate.month)];  
 
     return  thisMonthsExpenses || [];
+  }
+
+  currentYearExpenses(){
+    if(typeof(this.state.expenses[this.formattedYear(this.state.currentDate.year)]) === 'undefined'){ 
+      return []; 
+    }
+
+    return this.state.expenses[this.formattedYear(this.state.currentDate.year)] || [];
+
   }
 
   formattedMonth(month){

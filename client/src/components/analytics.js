@@ -42,13 +42,13 @@ export default class Analytics extends Component {
     return <OccurenceCalendar 
       daysThisMonth={this.props.daysThisMonth}
       category={this.state.currentCategory}
-      expenses={this.filteredExpenses()} 
+      expenses={this.filteredExpenses(this.props.currentMonthExpenses)} 
     />
   }
 
   renderSpendingStatistics() {
     return <SpendingStatistics 
-      expenses={this.filteredExpenses()}
+      expenses={this.filteredExpenses(this.props.currentMonthExpenses)}
       category={this.state.currentCategory}
       daysThisMonth={this.props.daysThisMonth}
     />
@@ -56,10 +56,12 @@ export default class Analytics extends Component {
 
   renderCharts(){
     return <Charts 
-      expenses={this.filteredExpenses()}
+      currentMonthExpenses={this.filteredExpenses(this.props.currentMonthExpenses)}
+      currentYearExpenses={this.filteredExpenses(this.aggregateYearlyExpenses())}
       category={this.state.currentCategory}
       daysThisMonth={this.props.daysThisMonth}
       monthlyBudget={this.props.monthlyBudget}
+      displayYear={this.props.displayYear}
     />
   }
 
@@ -109,7 +111,7 @@ export default class Analytics extends Component {
 
   sortExpensesByCategory(){
     let spending = {};
-    this.props.expenses.forEach((expense) => {
+    this.props.currentMonthExpenses.forEach((expense) => {
       const category = expense.category;
       if(typeof(spending[category]) === 'undefined'){
         spending[category] = expense.amount;
@@ -127,10 +129,20 @@ export default class Analytics extends Component {
     })
   }
 
-  filteredExpenses(){
-    if(this.state.currentCategory === "all"){ return this.props.expenses; }
+  aggregateYearlyExpenses(){
+    let thisYearsExpenses = [];
 
-    return this.props.expenses.filter((expense) => expense.category === this.state.currentCategory);
+    for(const month in this.props.currentYearExpenses){
+      thisYearsExpenses = thisYearsExpenses.concat(this.props.currentYearExpenses[month]);
+    }
+    
+    return thisYearsExpenses;
+  }
+
+  filteredExpenses(expenses){
+    if(this.state.currentCategory === "all"){ return expenses; }
+
+    return expenses.filter((expense) => expense.category === this.state.currentCategory);
   }
 
   percentageOfMonthlySpending(amount){
@@ -138,7 +150,7 @@ export default class Analytics extends Component {
   }
 
   sumOfAllExpenses(){
-    return this.props.expenses.reduce((acc, expense) => {
+    return this.props.currentMonthExpenses.reduce((acc, expense) => {
       return acc + expense.amount;
     }, 0)
   }

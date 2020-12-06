@@ -13,25 +13,92 @@ import {
 } from 'victory';
 
 export default function Charts(props) {
-  if(!props.expenses.length){
+  if(!props.currentMonthExpenses.length){
     return <div className="chart card opaque">Not enough expense data to render chart</div>
   }
 
-  let expensesByDay = aggregateExpenses(props.expenses, props.daysThisMonth);
-
-  return renderCharts({
-    ...props,
-    expenses: expensesByDay,
-  });
+  return renderCharts(props);
 } 
+
+function renderCharts(props){
+  let expensesByDay = aggregateDailyExpenses(props.currentMonthExpenses, props.daysThisMonth);
+  let expensesByMonth = aggregateMonthlyExpenses(props.currentYearExpenses, props.displayYear);
+
+  return (
+    <div className="charts">
+      {renderDailySpendingChart({...props, expenses: expensesByDay})}
+      {renderMonthlyChart({...props, expenses: expensesByMonth})}
+    </div>
+  )
+}
+
+function renderMonthlyChart({expenses, daysThisMonth, monthlyBudget, category}){
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  console.log(expenses);
+
   return (
     <div className="chart card opaque">
-      <h3 className="chart-title">{getChartTitle(category)}</h3>
+      <h3 className="chart-title">{monthlyChartTitle(category)}</h3>
       <VictoryChart 
-        title={getChartTitle(category)}
+        title={monthlyChartTitle(category)} 
+        theme={VictoryTheme.material}
+        maxDomain={{ x: 12 }}
+        domainPadding={30}
+      >
+
+        <VictoryAxis 
+          tickCount={13}
+          style={{
+            tickLabels: { 
+              fontSize: 10,
+            },
+          }}
+          tickFormat={(x) => (months[x])}
+        />
+
+        <VictoryAxis
+          dependentAxis
+          tickFormat={(x) => (`$${x}`)}
+        />
+
+        <VictoryBar
+          alignment="start"
+          data={expenses}  
+          labels={({ datum }) => { 
+            return ""// datum.amount ? `$${datum.amount}` : ''
+          }}
+          labels={({ datum }) => datum.amount > 0 ? `$${datum.amount}` : "" }
+          labelComponent={
+            <VictoryLabel
+              backgroundStyle={{ fill: "white", opacity: 0.6 }}
+              backgroundPadding={{ left: 3, right: 4, }}
+              style={[
+                { 
+                  fill: "rgb(69, 90, 100)",
+                  fontSize: 9,
+                  fontFamily: "sans-serif",
+                },
+              ]}
+            />
+          }
+          x="date"
+          y="amount"
+        />
+      </VictoryChart>
+    </div>
+  )
+}
+
+function renderDailySpendingChart({expenses, daysThisMonth, monthlyBudget, category}){
+  return (
+    <div className="chart card opaque">
+      <h3 className="chart-title">{dailyChartTitle(category)}</h3>
+      <VictoryChart 
+        title={dailyChartTitle(category)}
         domainPadding={30} 
         theme={VictoryTheme.material}
-        maxDomain={{ x: 31, y: calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth)}}
+        maxDomain={{ x: 31, y: calculateHighestChartValue(expenses, monthlyBudget, daysThisMonth)}}
       >
         <VictoryLegend 
           x={45}
@@ -49,7 +116,7 @@ export default function Charts(props) {
         />
 
         <VictoryAxis 
-          tickCount={daysThisMonth/2}
+          tickCount={Math.floor(daysThisMonth/2)}
           style={{
             tickLabels: { 
               fontSize: 10,
@@ -78,7 +145,7 @@ export default function Charts(props) {
 
         <VictoryBar
           barRatio={0.7}
-          data={formattedExpenses}  
+          data={expenses}  
           labels={({ datum }) => { 
             return ""// datum.amount ? `$${datum.amount}` : ''
           }}
@@ -101,6 +168,8 @@ export default function Charts(props) {
 
         <VictoryLine 
           data={[
+            {x: 0, y: averageSpending(expenses)},
+            {x: daysThisMonth, y: averageSpending(expenses)}
           ]}
           style={{
             data: {
@@ -159,7 +228,7 @@ export default function Charts(props) {
   )
 }
 
-function aggregateExpenses(expenses, daysThisMonth){
+function aggregateDailyExpenses(expenses, daysThisMonth){
   let expensesByDay = [];
 
   for(let i=1; i <= daysThisMonth; i++){
@@ -167,9 +236,9 @@ function aggregateExpenses(expenses, daysThisMonth){
 
     expenses.forEach((expense) => {
       const parsedDate = new Date(expense.timestamp);
-      const createdAtDate = parsedDate.getDate()
+      const expenseDate = parsedDate.getDate()
 
-      if(createdAtDate === i){
+      if(expenseDate === i){
         totalSpending += expense.amount;
       }
     });
@@ -182,6 +251,34 @@ function aggregateExpenses(expenses, daysThisMonth){
 
   return expensesByDay;
 }
+
+// TODO: we're iterating over expenses twice. we should combine this with iterating over daily expenses
+// TODO: also, let's not use a for loop
+function aggregateMonthlyExpenses(expenses, currentYear){
+  let expensesByMonth = [];
+
+  for(let i=0; i <= 11; i++){
+    let totalSpending = 0;
+
+    expenses.forEach((expense) => {
+      const parsedDate = new Date(expense.timestamp);
+      const expenseMonth = parsedDate.getMonth();
+      const expenseYear = parsedDate.getYear() + 1900;
+
+      if(expenseMonth === i && expenseYear === currentYear){
+        totalSpending += expense.amount;
+      }
+    });
+
+    expensesByMonth.push({
+      amount: totalSpending,
+      month: i,
+    })
+  }
+
+  return expensesByMonth;
+}
+
 
 function calculateHighestChartValue(formattedExpenses, monthlyBudget, daysThisMonth){
   const expenses = formattedExpenses.map((expense) => expense.amount);
@@ -209,6 +306,10 @@ function averageSpending(days){
   return Math.round(averageSpending);
 }
 
-function getChartTitle(category){
+function dailyChartTitle(category){
   return "Daily spending" + (category === "all" ? "" : ` on ${category}`)
+}
+
+function monthlyChartTitle(category){
+  return "Month-over-month spending" + (category === "all" ? "" : ` on ${category}`)
 }
