@@ -33,10 +33,11 @@ class SessionsController < ApplicationController
       return nil unless user_signed_in?
 
       return {
-        email: current_user.email,
-        firstName: current_user.preferred_first_name,
-        image: current_user.image,
-        stripeId: current_user.stripe_id
+        email:                current_user.email,
+        firstName:            current_user.preferred_first_name,
+        image:                current_user.image,
+        stripeId:             current_user.stripe_id,
+        subscriptionStatus:   current_user.subscription_status
       }
 
     end

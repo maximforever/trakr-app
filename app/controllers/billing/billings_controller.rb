@@ -26,8 +26,6 @@ class Billing::BillingsController < ApplicationController
   def create_subscription
     current_subscriptions = Stripe::Customer.retrieve(current_user.stripe_id).subscriptions
 
-    puts "this user has #{current_subscriptions.count} subscription(s)"
-
     if current_subscriptions['data'].length > 0
       current_plan = current_subscriptions['data'][0]['plan']['nickname']
       render json:  {
@@ -62,6 +60,11 @@ class Billing::BillingsController < ApplicationController
         items: [{ price: params['priceId'] }],
         expand: %w[latest_invoice.payment_intent]
       )
+
+    if subscription&.status == "active"
+      current_user.subscription_status = "subscribed"
+      current_user.save!
+    end
 
     subscription.to_json
   end

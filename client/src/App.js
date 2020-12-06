@@ -49,6 +49,7 @@ export default class App extends Component {
     this.setCurrentDate = this.setCurrentDate.bind(this);
     this.editExpense = this.editExpense.bind(this);
     this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
+    this.renderLoggedInInterface = this.renderLoggedInInterface.bind(this);
   }
 
   componentDidMount(){
@@ -76,6 +77,19 @@ export default class App extends Component {
   }
 
   renderLoggedInInterface() {
+    let content;
+
+    if(this.state.user.subscriptionStatus === "subscribed"){
+      content = (
+        <div> 
+          {this.renderNavigation()}
+          {this.renderLoggedInBodyContent()}
+        </div>
+      )
+    } else {
+      content = <PricingPage stripeId = {this.state.user.stripeId} />
+    }
+
     return(
       <div>
         <UserHeader 
@@ -83,9 +97,7 @@ export default class App extends Component {
           greeting={this.state.greeting}
         />    
 
-      <PricingPage stripeId = {this.state.user.stripeId} />
-{/*        {this.renderNavigation()}
-        {this.renderLoggedInBodyContent()}*/}
+        { content }
       </div>
     )
   }
@@ -302,7 +314,7 @@ export default class App extends Component {
           status: response.status,
           user: response.loggedInUser
         }, () => {
-          if(this.state.status === "loggedIn"){
+          if(this.state.status === "loggedIn" && this.state.user.subscriptionStatus === "subscribed"){
             this.fetchExpenses();
             this.fetchUserSettings();
             this.setGreeting();

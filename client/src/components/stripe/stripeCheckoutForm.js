@@ -77,6 +77,7 @@ export default function StripeCheckoutForm(props) {
       })
         .then((response) => {
           setStatus('ready');
+          console.log(response, response.json())
           return response.json();
         })
         // If the card is declined, display an error to the user.
@@ -247,8 +248,6 @@ export default function StripeCheckoutForm(props) {
   }
 
   const onSubscriptionComplete = (result) => {
-    // TODO: be professional here
-    console.log("HOORAY WE GOT A PAYMENT WHEEE");
     // Payment was successful.
     if (result.subscription.status === 'active') {
       console.log("Your subscription is a success");
@@ -256,6 +255,8 @@ export default function StripeCheckoutForm(props) {
       // Change your UI to show a success message to your customer.
       // Call your backend to grant access to your service based on
       // `result.subscription.items.data[0].price.product` the customer subscribed to.
+
+      window.location.reload();
     }
   }
 
