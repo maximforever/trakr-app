@@ -13,10 +13,6 @@ import {
 } from 'victory';
 
 export default function Charts(props) {
-  if(!props.currentMonthExpenses.length){
-    return <div className="chart card opaque">Not enough expense data to render chart</div>
-  }
-
   return renderCharts(props);
 } 
 
@@ -24,9 +20,12 @@ function renderCharts(props){
   let expensesByDay = aggregateDailyExpenses(props.currentMonthExpenses, props.daysThisMonth);
   let expensesByMonth = aggregateMonthlyExpenses(props.currentYearExpenses, props.displayYear);
 
+  const noDailyData = <div className="chart card opaque">There are no expenses in this month</div>
+  const dailyDataChart = props.currentMonthExpenses.length ? renderDailySpendingChart({...props, expenses: expensesByDay}) : noDailyData
+
   return (
     <div className="charts">
-      {renderDailySpendingChart({...props, expenses: expensesByDay})}
+      {dailyDataChart}
       {renderMonthlyChart({...props, expenses: expensesByMonth})}
     </div>
   )
@@ -34,8 +33,6 @@ function renderCharts(props){
 
 function renderMonthlyChart({expenses, daysThisMonth, monthlyBudget, category}){
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  console.log(expenses);
 
   return (
     <div className="chart card opaque">

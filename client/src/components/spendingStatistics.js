@@ -3,13 +3,7 @@ import '../assets/stylesheets/spendingStatistics.scss';
 import React from 'react';
 
 export default function SpendingStatistics(props){
-
-  if(!props.expenses.length){
-    if(!props.expenses.length){
-      return <div className="chart card opaque">Not enough expense data to render chart</div>
-    }
-  }
-
+  if(!props.expenses.length){ return null }
 
   return (
     <div className="card opaque">

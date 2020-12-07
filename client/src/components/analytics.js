@@ -28,17 +28,21 @@ export default class Analytics extends Component {
   }
 
   renderCategorySelector(){
+    if(!this.props.currentMonthExpenses.length){ return null }
+
     let spending = this.sortExpensesByCategory();
 
     return (
       <div className="card thin">
-        {this.renderSpendingHeaders(this.props.expenses.length)}
+        {this.renderSpendingHeaders(this.props.currentMonthExpenses.length)}
         {this.renderTableOfSpendingByCategory(spending)}
       </div>
     )
   }
 
   renderOccurenceCalendar(){
+    if(!this.props.currentMonthExpenses.length){ return null }
+
     return <OccurenceCalendar 
       daysThisMonth={this.props.daysThisMonth}
       category={this.state.currentCategory}
@@ -65,12 +69,7 @@ export default class Analytics extends Component {
     />
   }
 
-  renderSpendingHeaders(countOfExpenses){
-    if(!countOfExpenses){
-      return <div>No expenses recorded this month</div>
-    }
-
-
+  renderSpendingHeaders(){
     return (
       <div className="category-header-row">
         <span className="category-name">Category</span>
