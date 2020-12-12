@@ -108,7 +108,13 @@ input, form input {
 .card {
   padding: 1.3rem;
   margin-bottom: 0.3rem;
-  border: 2px solid #000000;
+  border: 2px solid $black;
+
+  &.thin {
+    border: 1px solid $gray-lightest;
+    border-radius: 0.3rem;
+    padding: calc(1rem - 1px);
+  }
 
   &.opaque {
     border: none;

@@ -18,13 +18,11 @@ export default class Analytics extends Component {
 
   render(){
     return (
-      <div className="stats card">
-        <div className="spending-by-category">
-          {this.renderCategorySelector()}
-          {this.renderSpendingStatistics()}
-          {this.renderOccurenceCalendar()}
-          {this.renderCharts()}
-        </div>
+      <div className="analytics">
+        {this.renderCategorySelector()}
+        {this.renderSpendingStatistics()}
+        {this.renderOccurenceCalendar()}
+        {this.renderCharts()}
       </div>
     )
   }
@@ -33,7 +31,7 @@ export default class Analytics extends Component {
     let spending = this.sortExpensesByCategory();
 
     return (
-      <div className="card category-selector">
+      <div className="card thin">
         {this.renderSpendingHeaders(this.props.expenses.length)}
         {this.renderTableOfSpendingByCategory(spending)}
       </div>

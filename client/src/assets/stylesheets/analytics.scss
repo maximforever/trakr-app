@@ -1,13 +1,7 @@
 @import './variables.scss';
 
-.card .spending-by-category {
+.analytics {
   margin: 0 auto;
-}
-
-.card.category-selector {
-  border: 1px solid $gray-lightest;
-  border-radius: 0.3rem;
-  padding: calc(1rem - 1px);
 }
 
 .one-category-row, .category-header-row{

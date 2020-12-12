@@ -23,7 +23,7 @@ class Dashboard extends Component {
   renderThisMonthsDashboard(){
     return(
       <div>
-        <div className="square full-square card">
+        <div className="card thin square full-square">
           <div className="label">Spent today</div>
           <div className="metric">
             <span className={this.getMetricClass(this.dailyBudget() - this.moneySpentToday())}>
@@ -35,7 +35,7 @@ class Dashboard extends Component {
           </div>
         </div>
         <div className="half-square-wrapper">
-          <div className="card square half-square">
+          <div className="card thin square half-square">
             <div className="label">Spent this month</div>
             <div className="metric">
               <span className={this.getMetricClass(this.props.monthlyBudget - this.moneySpentThisMonth())}>
@@ -46,7 +46,7 @@ class Dashboard extends Component {
               </span>
             </div>
           </div>
-          <div className="card square half-square">
+          <div className="card thin square half-square">
             <div className="label">Monthly balance</div>
             <div className="metric">
               <span className={this.getMetricClass(this.monthlyBalance())}>
@@ -62,7 +62,7 @@ class Dashboard extends Component {
   renderAnotherMonthsDashboard(){
     return (
       <div>
-        <div className="square full-square card">
+        <div className="card thin square full-square">
           <div className="label">Spent this month</div>
           <div className="metric">
             <span>
