@@ -19,30 +19,38 @@ class Settings extends Component {
 
   render(){
     return (
-      <div className="setting card">
-        <h3>Settings</h3>
-        
-        <form onSubmit={this.handleSubmit}>
-          <div className="one-input">
-            <label>Default budget</label>
-            <input value={this.state.defaultMonthlyBudget} type='number' name='defaultMonthlyBudget' onChange={this.handleInputChange}></input>
-          </div>
+      <div>
+        <div className="setting card">
+          <h3>Settings</h3>
+          
+          <form onSubmit={this.handleSubmit}>
+            <div className="one-input">
+              <label>Default budget</label>
+              <input value={this.state.defaultMonthlyBudget} type='number' name='defaultMonthlyBudget' onChange={this.handleInputChange}></input>
+            </div>
 
-          <div className="one-input">
-            <label>This month's budget</label>
-            <input value={this.state.currentMonthlyBudget} type='number' name='currentMonthlyBudget' onChange={this.handleInputChange}></input>
-          </div>
+            <div className="one-input">
+              <label>This month's budget</label>
+              <input value={this.state.currentMonthlyBudget} type='number' name='currentMonthlyBudget' onChange={this.handleInputChange}></input>
+            </div>
 
-          <div className="one-input">
-            <label>Preferred first name</label>
-            <input value={this.state.preferredFirstName} type='text' name='preferredFirstName' onChange={this.handleInputChange}></input>
-          </div>
+            <div className="one-input">
+              <label>Preferred first name</label>
+              <input value={this.state.preferredFirstName} type='text' name='preferredFirstName' onChange={this.handleInputChange}></input>
+            </div>
 
-          <div className="button-wrapper">
-            <button className="submit md" disabled={this.validSettings()}>Update Settings</button>
-          </div>
+            <div className="button-wrapper">
+              <button className="submit md" disabled={this.validSettings()}>Update Settings</button>
+            </div>
 
-        </form>
+          </form>
+        </div>
+        <div className="settings card borderless logout">
+          <a href = "/logout">
+            <span>Log out</span>
+            <span className   ="lnr lnr-arrow-right"></span>
+          </a>
+        </div>
       </div>
     )
   }

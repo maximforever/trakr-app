@@ -1,12 +1,20 @@
 @import './variables.scss';
 
+.navigation-full-width-wrapper {
+  background: $gray-light;
+  min-width: 320px;
+}
+
+
 .nav-bar {
   display: flex;
   justify-content: space-around;  
-  border: 2px solid black;
+  max-width: 480px;
+  min-width: 320px;
+  margin: 0 auto 0.3rem auto;
 
   &.card {
-    padding: 0;
+    padding: 0.7rem 0;
   }
 
   &.borderless {
@@ -14,7 +22,7 @@
   }
 
   .lnr {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
 
@@ -22,8 +30,12 @@
   border: none;
   background: none;
   text-align: center;
-  padding: 1rem 0;
   user-select: none
+}
+
+.user-photo {
+  height: 2rem;
+  border-radius: 100%;
 }
 
 .date-selector {

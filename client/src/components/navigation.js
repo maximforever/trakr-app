@@ -3,7 +3,7 @@ import '../assets/stylesheets/navigation.scss';
 
 function Navigation(props){
   return(
-    <div>
+    <div className="navigation-section">
       {renderNavbar(props)}
       {renderDateSelector(props)}
     </div>
@@ -12,17 +12,20 @@ function Navigation(props){
 
 function renderNavbar(props){
   return (
-    <div className="nav-bar card">
-      <div className="nav-button button-text" onClick={() => props.navigateToPage("home")}>
-        <span className="lnr lnr-home"></span>
+      <div className="navigation-full-width-wrapper">
+        <div className="nav-bar borderless card navigation-icon-bar">
+          <div className="nav-button button" onClick={() => props.navigateToPage("home")}>
+            {/*<span className="lnr lnr-home"></span>*/}
+            <img className = "user-photo" src={props.userImage} alt="profile pic" />
+          </div>
+          <div className="nav-button button" onClick={() => props.navigateToPage("analytics")}>
+            <span className="lnr lnr-pie-chart"></span>
+          </div>
+          <div className="nav-button button" onClick={() => props.navigateToPage("settings")}>
+            <span className="lnr lnr-menu"></span>
+          </div>
+        </div>
       </div>
-      <div className="nav-button button-text" onClick={() => props.navigateToPage("analytics")}>
-        <span className="lnr lnr-chart-bars"></span>
-      </div>
-      <div className="nav-button button-text" onClick={() => props.navigateToPage("settings")}>
-        <span className="lnr lnr-cog"></span>
-      </div>
-    </div>
   )
 }
 
@@ -30,9 +33,9 @@ function renderDateSelector(props){
   if(!props.renderDateSelector){ return null; }
   return (
     <div className="nav-bar borderless date-selector card">
-      <div className="nav-button button-text" onClick={() => props.previousMonth()}><span className="lnr lnr-chevron-left"></span></div>
-      <div className="date button-text" onClick={() => props.setCurrentDate()}>{formattedDate(props.date)}</div>
-      <div className="nav-button button-text" onClick={() => props.nextMonth()}><span className="lnr lnr-chevron-right"></span></div>
+      <div className="nav-button button" onClick={() => props.previousMonth()}><span className="lnr lnr-chevron-left"></span></div>
+      <div className="date button" onClick={() => props.setCurrentDate()}>{formattedDate(props.date)}</div>
+      <div className="nav-button button" onClick={() => props.nextMonth()}><span className="lnr lnr-chevron-right"></span></div>
     </div>
   )
 }
