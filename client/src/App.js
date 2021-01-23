@@ -7,9 +7,6 @@ import Dashboard from './components/dashboard'
 import Navigation from './components/navigation'
 import Settings from './components/settings'
 import Analytics from './components/analytics'
-import UserHeader from './components/userHeader'
-
-const GREETINGS = ["Hi", "Hello", "Hola", "Sup", "Heya", "Ciao", "Howdy", "Aloha"];
 
 export default class App extends Component {
   constructor(props){
@@ -74,13 +71,11 @@ export default class App extends Component {
 
   renderLoggedInInterface() {
     return(
-      <div>
-        <UserHeader 
-          user={this.state.user} 
-          greeting={this.state.greeting}
-        />          
+      <div>        
         {this.renderNavigation()}
-        {this.renderLoggedInBodyContent()}
+        <div className="non-navigation-content">
+          {this.renderLoggedInBodyContent()}
+        </div>
       </div>
     )
   }
@@ -124,6 +119,7 @@ export default class App extends Component {
         nextMonth={this.nextMonth}
         previousMonth={this.previousMonth}
         setCurrentDate={this.setCurrentDate}
+        userImage={this.state.user.image}
       />
     )
   }
@@ -304,7 +300,6 @@ export default class App extends Component {
           if(this.state.status === "loggedIn"){
             this.fetchExpenses();
             this.fetchUserSettings();
-            this.setGreeting();
           }
         })
       })
@@ -337,12 +332,6 @@ export default class App extends Component {
         })
       })
       .catch((error) => { console.log("Error fetching data", error); })
-  }
-
-  setGreeting(){ 
-    this.setState({
-      greeting: GREETINGS[Math.floor(Math.random() * GREETINGS.length)]
-    })
   }
 
   setCurrentDate(){

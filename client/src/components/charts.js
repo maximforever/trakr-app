@@ -21,23 +21,25 @@ function renderCharts(props){
   let expensesByDay = aggregateDailyExpenses(props.currentMonthExpenses, props.daysThisMonth);
   let expensesByMonth = aggregateMonthlyExpenses(props.currentYearExpenses, props.displayYear);
 
-  const noDailyData = <div className="chart card opaque">There are no expenses in this month</div>
-  const dailyDataChart = props.currentMonthExpenses.length ? renderDailySpendingChart({...props, expenses: expensesByDay}) : noDailyData
+  const noDailyData = noExpensesSection(props.category, "month");
+  const noMonthlyData = noExpensesSection(props.category, "year");
+  const dailySpendingChart = props.currentMonthExpenses.length ? renderDailySpendingChart({...props, expenses: expensesByDay}) : noDailyData;
+  const monthlySpendingChart = props.currentYearExpenses.length ? renderMonthlySpendingChart({...props, expenses: expensesByMonth}) : noMonthlyData;
 
   return (
     <div className="charts">
-      {dailyDataChart}
-      {renderMonthlyChart({...props, expenses: expensesByMonth})}
+      {dailySpendingChart}
+      {monthlySpendingChart}
     </div>
   )
 }
 
-function renderMonthlyChart({expenses, daysThisMonth, monthlyBudget, category}){
+function renderMonthlySpendingChart({expenses, daysThisMonth, monthlyBudget, category, displayYear}){
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   return (
     <div className="chart card opaque">
-      <h3 className="chart-title">{monthlyChartTitle(category)}</h3>
+      <h3 className="chart-title">{monthlyChartTitle(category, displayYear)}</h3>
       <VictoryChart 
         title={monthlyChartTitle(category)} 
         theme={VictoryTheme.material}
@@ -72,9 +74,6 @@ function renderMonthlyChart({expenses, daysThisMonth, monthlyBudget, category}){
         <VictoryBar
           alignment="start"
           data={expenses}  
-          labels={({ datum }) => { 
-            return ""// datum.amount ? `$${datum.amount}` : ''
-          }}
           labels={({ datum }) => datum.amount > 0 ? `$${datum.amount}` : "" }
           labelComponent={
             <VictoryLabel
@@ -322,10 +321,16 @@ function averageSpending(days){
   return Math.round(averageSpending);
 }
 
-function dailyChartTitle(category){
-  return "Daily spending" + (category === "all" ? "" : ` on ${category}`)
+function noExpensesSection(category, period){
+  const categoryWording = category === "all" ? "" : category;
+
+  return <div className="chart card opaque">There are no recorded {categoryWording} expenses this {period}</div>
 }
 
-function monthlyChartTitle(category){
-  return "Month-over-month spending" + (category === "all" ? "" : ` on ${category}`)
+function dailyChartTitle(category){
+  return `Daily spending` + (category === "all" ? "" : ` on ${category}`)
+}
+
+function monthlyChartTitle(category, year){
+  return `Month-over-month spending` + (category === "all" ? "" : ` on ${category}`) + ` in ${year}`;
 }
