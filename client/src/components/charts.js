@@ -6,6 +6,7 @@ import {
   VictoryAxis, 
   VictoryBar, 
   VictoryChart,
+  VictoryContainer,
   VictoryLabel, 
   VictoryLine,
   VictoryLegend, 
@@ -42,6 +43,15 @@ function renderMonthlyChart({expenses, daysThisMonth, monthlyBudget, category}){
         theme={VictoryTheme.material}
         maxDomain={{ x: 12 }}
         domainPadding={30}
+        containerComponent={
+          <VictoryContainer
+            style={{
+              pointerEvents: "auto",
+              userSelect: "auto",
+              touchAction: "auto"
+            }}
+          />
+        }
       >
 
         <VictoryAxis 
@@ -96,6 +106,15 @@ function renderDailySpendingChart({expenses, daysThisMonth, monthlyBudget, categ
         domainPadding={30} 
         theme={VictoryTheme.material}
         maxDomain={{ x: 31, y: calculateHighestChartValue(expenses, monthlyBudget, daysThisMonth)}}
+        containerComponent={
+          <VictoryContainer
+            style={{
+              pointerEvents: "auto",
+              userSelect: "auto",
+              touchAction: "auto"
+            }}
+          />
+        }      
       >
         <VictoryLegend 
           x={45}
