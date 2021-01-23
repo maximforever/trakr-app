@@ -147,7 +147,8 @@ class ExpenseForm extends Component {
   }
 
   setCategory(e){
-    const category = e.target.innerHTML.trim().toLowerCase();
+    const clickedCategory = e.target.innerHTML.trim().toLowerCase()
+    const category = clickedCategory === this.state.category ? "" : clickedCategory;
 
     this.setState({
       category,
