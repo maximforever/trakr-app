@@ -20,7 +20,7 @@ class Settings extends Component {
   render(){
     return (
       <div>
-        <div className="setting card">
+        <div className="settings card">
           <h3>Settings</h3>
           
           <form onSubmit={this.handleSubmit}>
