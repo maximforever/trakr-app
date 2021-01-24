@@ -32,7 +32,7 @@ function renderNavbar(props){
 function renderDateSelector(props){
   if(!props.renderDateSelector){ return null; }
   return (
-    <div className="nav-bar borderless date-selector card">
+    <div className="nav-bar borderless card date-selector">
       <div className="nav-button button" onClick={() => props.previousMonth()}><span className="lnr lnr-chevron-left"></span></div>
       <div className="date button" onClick={() => props.setCurrentDate()}>{formattedDate(props.date)}</div>
       <div className="nav-button button" onClick={() => props.nextMonth()}><span className="lnr lnr-chevron-right"></span></div>

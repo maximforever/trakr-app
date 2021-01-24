@@ -1,10 +1,14 @@
 @import './variables.scss';
 
+.navigation-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .navigation-full-width-wrapper {
   background: $gray-light;
   min-width: 320px;
 }
-
 
 .nav-bar {
   display: flex;
@@ -35,6 +39,8 @@
 }
 
 .date-selector {
+  background: $white;
+
   .date {
     display: flex;
     flex-direction: column;
@@ -54,15 +60,32 @@
   }
 }
 @media only screen and (max-width: 700px) {
-  .navigation-full-width-wrapper {
+  .navigation-section {
     position: fixed;
     width: 100%;
     bottom: 0;
-    z-index: 2;
+    flex-direction: column-reverse;
+    z-index: 2
+  }
+
+  .date-selector {
+    width: 100%;
+
+    .lnr {
+      font-size: 1rem;
+    }
+
+    .nav-button {
+      padding: 0;
+    }
   }
 
   .nav-bar {
     justify-content: space-around;
     margin: 0 auto;
+    &.card {
+      padding: 0.7rem;
+      box-sizing: border-box;
+    }
   }
 }
