@@ -1,21 +1,24 @@
 import React from "react";
 import "../assets/stylesheets/sign-in-page.scss";
+import "../assets/stylesheets/app.scss";
 import { GoogleLogin } from "react-google-login";
 
 function SignInPage() {
   return (
-    <div className="logged-out-page card">
-      <h1>Welcome to Trakr</h1>
-      <h3>Trakr helps you</h3>
-      <ul>
-        <li>stay mindful of your spending</li>
-        <li>prevent impulse purchases</li>
-        <li>find holes in your budget</li>
-      </ul>
+    <div className="non-navigation-content">
+      <div className="logged-out-page card">
+        <h1>Welcome to Trakr</h1>
+        <h3>Trakr helps you</h3>
+        <ul>
+          <li>stay mindful of your spending</li>
+          <li>prevent impulse purchases</li>
+          <li>find holes in your budget</li>
+        </ul>
 
-      <div>
-        <p>To get started, sign in with your Google account</p>
-        <div className="button-wrapper">{renderGoogleLoginButton()}</div>
+        <div>
+          <p>To get started, sign in with your Google account</p>
+          <div className="button-wrapper">{renderGoogleLoginButton()}</div>
+        </div>
       </div>
     </div>
   );

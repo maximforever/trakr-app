@@ -1,4 +1,4 @@
-import "./assets/stylesheets/App.scss";
+import "./assets/stylesheets/app.scss";
 import React, { Component } from "react";
 import SignInPage from "./components/signInPage";
 import ExpenseForm from "./components/expenseForm";
