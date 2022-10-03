@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 .App {
   margin: 0 0 2rem 0;
@@ -13,7 +13,7 @@
 }
 
 * {
-  font-family: 'Anonymous Pro', monospace;
+  font-family: "Anonymous Pro", monospace;
 }
 
 button {
@@ -40,7 +40,8 @@ button {
     cursor: pointer;
   }
 
-  &:active, &:focus {
+  &:active,
+  &:focus {
     outline: none;
   }
 }
@@ -51,7 +52,7 @@ button.cancel {
   color: $red-light;
   background: none;
 
-  &:hover{
+  &:hover {
     color: $red-medium;
   }
 }
@@ -79,9 +80,10 @@ form {
   }
 }
 
-input, form input {
+input,
+form input {
   background: inherit;
-  
+
   width: 100%;
   border: 1px solid gray;
   padding: 0.3rem 0.1rem;
@@ -141,10 +143,9 @@ input, form input {
   font-size: 0.8rem;
   text-transform: uppercase;
   color: gray;
-  padding-bottom: 0.3rem; 
+  padding-bottom: 0.3rem;
   user-select: none;
 }
-
 
 @media only screen and (max-width: 700px) {
   .non-navigation-content {
