@@ -1,15 +1,15 @@
-import './assets/stylesheets/App.scss';
-import React, { Component } from 'react';
-import SignInPage from './components/signInPage'
-import ExpenseForm from './components/expenseForm'
-import FilteredExpenseList from './components/filteredExpenseList'
-import Dashboard from './components/dashboard'
-import Navigation from './components/navigation'
-import Settings from './components/settings'
-import Analytics from './components/analytics'
+import "./assets/stylesheets/App.scss";
+import React, { Component } from "react";
+import SignInPage from "./components/signInPage";
+import ExpenseForm from "./components/expenseForm";
+import FilteredExpenseList from "./components/filteredExpenseList";
+import Dashboard from "./components/dashboard";
+import Navigation from "./components/navigation";
+import Settings from "./components/settings";
+import Analytics from "./components/analytics";
 
 export default class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -28,7 +28,7 @@ export default class App extends Component {
       showExpenseForm: false,
       currentPage: "home",
       datepickerPages: ["home", "analytics"],
-    }
+    };
 
     this.fetchExpenses = this.fetchExpenses.bind(this);
     this.fetchUserSettings = this.fetchUserSettings.bind(this);
@@ -45,57 +45,53 @@ export default class App extends Component {
     this.clearExpenseToUpdate = this.clearExpenseToUpdate.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setCurrentDate();
     this.fetchSession();
   }
 
   render() {
-    return(
-      <div className="App">
-        {this.renderContent()}
-      </div>
-    )
+    return <div className="App">{this.renderContent()}</div>;
   }
 
   renderContent() {
-    switch (this.state.status){
+    switch (this.state.status) {
       case "loggedIn":
         return this.renderLoggedInInterface();
       case "loggedOut":
-        return <SignInPage />
+        return <SignInPage />;
       default:
         return null;
     }
   }
 
   renderLoggedInInterface() {
-    return(
-      <div>        
+    return (
+      <div>
         {this.renderNavigation()}
         <div className="non-navigation-content">
           {this.renderLoggedInBodyContent()}
         </div>
       </div>
-    )
+    );
   }
 
   renderLoggedInBodyContent() {
-    if(this.state.currentPage === "home"){
+    if (this.state.currentPage === "home") {
       return this.renderHome();
-    } else if (this.state.currentPage === "analytics"){
+    } else if (this.state.currentPage === "analytics") {
       return this.renderAnalytics();
-    } else if (this.state.currentPage === "settings"){
+    } else if (this.state.currentPage === "settings") {
       return this.renderSettings();
     }
   }
 
-  renderHome(){
+  renderHome() {
     return (
       <div className="home">
         {this.renderDashboard()}
-        <ExpenseForm 
-          key={this.state.expenseToUpdate.updated_at  || 0 }
+        <ExpenseForm
+          key={this.state.expenseToUpdate.updated_at || 0}
           submitNewExpense={this.submitNewExpense}
           submitExpenseEdit={this.submitExpenseEdit}
           toggleExpenseForm={this.toggleExpenseForm}
@@ -108,12 +104,14 @@ export default class App extends Component {
     );
   }
 
-  renderNavigation(){
-    if(this.state.showExpenseForm){ return null; }
+  renderNavigation() {
+    if (this.state.showExpenseForm) {
+      return null;
+    }
 
-    return(
-      <Navigation 
-        navigateToPage={this.navigateToPage} 
+    return (
+      <Navigation
+        navigateToPage={this.navigateToPage}
         renderDateSelector={this.pageShouldIncludeDatepicker()}
         date={this.state.currentDate}
         nextMonth={this.nextMonth}
@@ -121,45 +119,49 @@ export default class App extends Component {
         setCurrentDate={this.setCurrentDate}
         userImage={this.state.user.image}
       />
-    )
+    );
   }
 
-  renderDashboard(){
-    if(this.state.showExpenseForm){ return null; }
+  renderDashboard() {
+    if (this.state.showExpenseForm) {
+      return null;
+    }
 
-    return(
+    return (
       <Dashboard
         expenses={this.currentMonthExpenses()}
         monthlyBudget={this.getCurrentMonthlyBudget()}
         currentDate={this.state.currentDate}
       />
-    )
+    );
   }
 
-  renderExpenseList(){
-    return(
-      <FilteredExpenseList 
-        expenses={this.currentMonthExpenses()} 
+  renderExpenseList() {
+    return (
+      <FilteredExpenseList
+        expenses={this.currentMonthExpenses()}
         deleteExpense={this.deleteExpense}
         editExpense={this.editExpense}
       />
-    )
+    );
   }
 
-  renderAnalytics(){
-    return <Analytics 
-      currentMonthExpenses={this.currentMonthExpenses()}
-      currentYearExpenses={this.currentYearExpenses()}
-      categories={this.state.categories}
-      monthlyBudget={this.getCurrentMonthlyBudget()}
-      daysThisMonth={this.daysThisMonth()}
-      displayYear={this.state.currentDate.year}
-    />
-  }
-
-  renderSettings(){
+  renderAnalytics() {
     return (
-      <Settings 
+      <Analytics
+        currentMonthExpenses={this.currentMonthExpenses()}
+        currentYearExpenses={this.currentYearExpenses()}
+        categories={this.state.categories}
+        monthlyBudget={this.getCurrentMonthlyBudget()}
+        daysThisMonth={this.daysThisMonth()}
+        displayYear={this.state.currentDate.year}
+      />
+    );
+  }
+
+  renderSettings() {
+    return (
+      <Settings
         defaultMonthlyBudget={this.state.defaultMonthlyBudget}
         currentMonthlyBudget={this.getCurrentMonthlyBudget()}
         preferredFirstName={this.state.user.firstName}
@@ -167,118 +169,130 @@ export default class App extends Component {
         pastBudgets={this.state.pastBudgets}
         key={this.state.defaultMonthlyBudget + this.getCurrentMonthlyBudget()}
       />
-    )
+    );
   }
 
-  getCurrentMonthlyBudget(){
-    if(this.state.pastBudgets === undefined){ return }
+  getCurrentMonthlyBudget() {
+    if (this.state.pastBudgets === undefined) {
+      return;
+    }
 
     const formattedMonth = this.formattedMonth(this.state.currentDate.month);
     const formattedYear = this.formattedYear(this.state.currentDate.year);
     const formattedDate = `${formattedYear}-${formattedMonth}`;
 
-    if(this.state.pastBudgets[formattedDate] === undefined){
+    if (this.state.pastBudgets[formattedDate] === undefined) {
       return this.state.defaultMonthlyBudget;
     } else {
       return this.state.pastBudgets[formattedDate];
     }
   }
-  
-  submitNewExpense(expense, resetExpenseFormOnResponse){
-    fetch('/api/v1/expenses', {
-      method: 'POST',
+
+  submitNewExpense(expense, resetExpenseFormOnResponse) {
+    fetch("/api/v1/expenses", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(expense),
     })
-      .then(res => res.json())
-      .then((response) => { 
-        if(response.status === 200){
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.status === 200) {
           let updatedCategories = this.state.categories;
           let updatedExpenses = this.insertOneExpense(response.newExpense);
 
-          if(!updatedCategories.includes(expense.category)){
-            updatedCategories = updatedCategories.concat(expense.category)
+          if (!updatedCategories.includes(expense.category)) {
+            updatedCategories = updatedCategories.concat(expense.category);
           }
 
-          this.setState({
-            expenses: updatedExpenses,
-            categories: updatedCategories,
-          }, () => {
-            this.toggleExpenseForm();
-            resetExpenseFormOnResponse(true);
-          });
+          this.setState(
+            {
+              expenses: updatedExpenses,
+              categories: updatedCategories,
+            },
+            () => {
+              this.toggleExpenseForm();
+              resetExpenseFormOnResponse(true);
+            }
+          );
         } else {
           console.log(response.message);
         }
       })
-      .catch((error) => { console.log("Error submitting expense", error); })
+      .catch((error) => {
+        console.log("Error submitting expense", error);
+      });
   }
 
-  submitExpenseEdit(expense, resetExpenseFormOnResponse){
-    fetch('/api/v1/expenses', {
-      method: 'PATCH',
+  submitExpenseEdit(expense, resetExpenseFormOnResponse) {
+    fetch("/api/v1/expenses", {
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(expense),
     })
-      .then(res => res.json())
-      .then((response) => { 
-        if(response.status === 200){
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.status === 200) {
           let updatedCategories = this.state.categories;
           let updatedExpenses = this.updateOneExpense(response.updatedExpense);
 
-          if(!updatedCategories.includes(expense.category)){
-            updatedCategories = updatedCategories.concat(expense.category)
+          if (!updatedCategories.includes(expense.category)) {
+            updatedCategories = updatedCategories.concat(expense.category);
           }
 
-          this.setState({
-            expenses: updatedExpenses,
-            categories: updatedCategories,
-          }, () => {
-            this.toggleExpenseForm();
-            resetExpenseFormOnResponse(true);
-          });
+          this.setState(
+            {
+              expenses: updatedExpenses,
+              categories: updatedCategories,
+            },
+            () => {
+              this.toggleExpenseForm();
+              resetExpenseFormOnResponse(true);
+            }
+          );
         } else {
           console.log(response.message);
         }
       })
-      .catch((error) => { console.log("Error updating expense", error); })
+      .catch((error) => {
+        console.log("Error updating expense", error);
+      });
   }
 
-
-
-  deleteExpense(e, id){
+  deleteExpense(e, id) {
     e.stopPropagation();
     fetch(`/api/v1/expenses/${id}${this.yearParams()}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
-      .then(res => res.json())
-      .then((response) => { 
+      .then((res) => res.json())
+      .then((response) => {
         this.setState({
           expenses: this.generateUpdatedExpenseList(response.expenses),
           categories: response.categories,
-        })
+        });
       })
-      .catch((error) => { console.log("Error fetching data", error); })
-  } 
-
-  clearExpenseToUpdate(){
-    this.setState({
-      expenseToUpdate: {}
-    })
+      .catch((error) => {
+        console.log("Error fetching data", error);
+      });
   }
 
-  editExpense(e, id){
+  clearExpenseToUpdate() {
+    this.setState({
+      expenseToUpdate: {},
+    });
+  }
+
+  editExpense(e, id) {
     e.stopPropagation();
     let expenseToUpdate = this.findExpenseById(id);
 
-    this.setState({ expenseToUpdate, showExpenseForm: true })
-  } 
+    this.setState({ expenseToUpdate, showExpenseForm: true });
+  }
 
-  findExpenseById(id){
+  findExpenseById(id) {
     let expenses = this.currentMonthExpenses();
 
     return expenses.filter((expense) => {
@@ -290,226 +304,272 @@ export default class App extends Component {
     // TODO: session should return expenses & user data if the user is logged in
     // this doesn't need to be a separate request
 
-    fetch('/session', this.fetchOptions())
-      .then(res => res.json())
-      .then((response) => { 
-        this.setState({
-          status: response.status,
-          user: response.loggedInUser
-        }, () => {
-          if(this.state.status === "loggedIn"){
-            this.fetchExpenses();
-            this.fetchUserSettings();
+    fetch("/session", this.fetchOptions())
+      .then((res) => res.json())
+      .then((response) => {
+        this.setState(
+          {
+            status: response.status,
+            user: response.loggedInUser,
+          },
+          () => {
+            if (this.state.status === "loggedIn") {
+              this.fetchExpenses();
+              this.fetchUserSettings();
+            }
           }
-        })
+        );
       })
-      .catch((error) => { console.log("Error fetching session data", error); })
+      .catch((error) => {
+        console.log("Error fetching session data", error);
+      });
   }
 
   fetchExpenses() {
     fetch(`/api/v1/expenses/${this.yearParams()}`)
-      .then(res => res.json())
-      .then((response) => { 
+      .then((res) => res.json())
+      .then((response) => {
         this.setState({
           expenses: this.generateUpdatedExpenseList(response.expenses),
           categories: response.categories,
-        })
+        });
       })
-      .catch((error) => { console.log("Error fetching data", error); })
+      .catch((error) => {
+        console.log("Error fetching data", error);
+      });
   }
 
   fetchUserSettings() {
-    fetch('/api/v1/users/settings')
-      .then(res => res.json())
-      .then((response) => { 
-        let user = {...this.state.user}
-        user.firstName = response.preferredFirstName
+    fetch("/api/v1/users/settings")
+      .then((res) => res.json())
+      .then((response) => {
+        let user = { ...this.state.user };
+        user.firstName = response.preferredFirstName;
 
         this.setState({
           defaultMonthlyBudget: response.defaultMonthlyBudget,
           pastBudgets: response.pastBudgets,
           user,
-        })
+        });
       })
-      .catch((error) => { console.log("Error fetching data", error); })
+      .catch((error) => {
+        console.log("Error fetching data", error);
+      });
   }
 
-  setCurrentDate(){
+  setCurrentDate() {
     const d = new Date();
 
     let currentDate = {
       month: d.getMonth() + 1,
       year: 1900 + d.getYear(),
-    }
+    };
 
     this.setState({
-      currentDate
-    })
+      currentDate,
+    });
   }
 
   updateUserSettings(newSettings) {
-    fetch('/api/v1/users/settings', {
-      method: 'POST',
+    fetch("/api/v1/users/settings", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newSettings),
     })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((response) => {
-        let user = {...this.state.user}
-        user.firstName = response.preferredFirstName
+        let user = { ...this.state.user };
+        user.firstName = response.preferredFirstName;
 
         this.setState({
           defaultMonthlyBudget: response.defaultMonthlyBudget,
           pastBudgets: response.pastBudgets,
           currentPage: "home",
           user,
-        })
+        });
       })
-      .catch((error) => { console.log("Error fetching data", error); })
+      .catch((error) => {
+        console.log("Error fetching data", error);
+      });
   }
 
-  navigateToPage(page){
+  navigateToPage(page) {
     this.setState({
-      currentPage: page
-    })
+      currentPage: page,
+    });
   }
 
-  pageShouldIncludeDatepicker(){
+  pageShouldIncludeDatepicker() {
     return this.state.datepickerPages.includes(this.state.currentPage);
   }
 
-  fetchOptions(){
+  fetchOptions() {
     //const token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     return {
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': 'someTestValue',
-      }
-    }
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "someTestValue",
+      },
+    };
   }
 
-  toggleExpenseForm(){
+  toggleExpenseForm() {
     this.setState((prevState) => {
       return {
         showExpenseForm: !prevState.showExpenseForm,
-      }
-    })
+      };
+    });
   }
 
-  yearParams(){
+  yearParams() {
     return `?year=${this.state.currentDate.year}`;
   }
 
-  nextMonth(){
+  nextMonth() {
     // JS months run 0 to 11;
-    let newMonth = this.state.currentDate.month < 12 ? this.state.currentDate.month + 1 : 1;
-    let newYear = newMonth === 1 ? this.state.currentDate.year + 1 : this.state.currentDate.year;
+    let newMonth =
+      this.state.currentDate.month < 12 ? this.state.currentDate.month + 1 : 1;
+    let newYear =
+      newMonth === 1
+        ? this.state.currentDate.year + 1
+        : this.state.currentDate.year;
     this.updateCurrentDate(newMonth, newYear);
   }
 
-  previousMonth(){
+  previousMonth() {
     // JS months run 0 to 11
-    let newMonth = this.state.currentDate.month > 1 ? this.state.currentDate.month - 1 : 12;
-    let newYear = newMonth === 12 ? this.state.currentDate.year - 1 : this.state.currentDate.year;
+    let newMonth =
+      this.state.currentDate.month > 1 ? this.state.currentDate.month - 1 : 12;
+    let newYear =
+      newMonth === 12
+        ? this.state.currentDate.year - 1
+        : this.state.currentDate.year;
     this.updateCurrentDate(newMonth, newYear);
   }
 
-  updateCurrentDate(newMonth, newYear){
+  updateCurrentDate(newMonth, newYear) {
     const currentDate = {
       month: newMonth,
       year: newYear,
-    }
+    };
 
-    this.setState({currentDate}, () => {
-      if(!this.thisYearsExpensesAreAvailable()){ this.fetchExpenses() }
+    this.setState({ currentDate }, () => {
+      if (!this.thisYearsExpensesAreAvailable()) {
+        this.fetchExpenses();
+      }
     });
   }
 
   thisYearsExpensesAreAvailable() {
     const thisYear = this.state.currentDate.year;
-    return typeof(this.state.expenses[thisYear]) !== 'undefined'
+    return typeof this.state.expenses[thisYear] !== "undefined";
   }
 
-  generateUpdatedExpenseList(incomingExpenses){
+  generateUpdatedExpenseList(incomingExpenses) {
     const year = this.formattedYear(this.state.currentDate.year);
-    let currentExpenses = {...this.state.expenses};
+    let currentExpenses = { ...this.state.expenses };
     currentExpenses[year] = {};
 
     incomingExpenses.forEach((expense) => {
-      const month = (new Date(expense.timestamp).getMonth() + 1);
+      const month = new Date(expense.timestamp).getMonth() + 1;
       // add trailing 0
       const formattedMonth = this.formattedMonth(month);
 
-      if(typeof(currentExpenses[year][formattedMonth]) === 'undefined'){
+      if (typeof currentExpenses[year][formattedMonth] === "undefined") {
         currentExpenses[year][formattedMonth] = [expense];
       } else {
         currentExpenses[year][formattedMonth].push(expense);
       }
     });
 
-    return currentExpenses
+    return currentExpenses;
   }
 
-  insertOneExpense(expense){
-    let currentExpenses = {...this.state.expenses};
-    const month = this.formattedMonth(new Date(expense.timestamp).getMonth() + 1);
-    const year = this.formattedYear(new Date(expense.timestamp).getYear() + 1900);
+  insertOneExpense(expense) {
+    let currentExpenses = { ...this.state.expenses };
+    const month = this.formattedMonth(
+      new Date(expense.timestamp).getMonth() + 1
+    );
+    const year = this.formattedYear(
+      new Date(expense.timestamp).getYear() + 1900
+    );
 
     if (currentExpenses[year][month] === undefined) {
       currentExpenses[year][month] = [];
     }
 
-    currentExpenses[year][month].push({...expense, new: true});
+    currentExpenses[year][month].push({ ...expense, new: true });
     return currentExpenses;
   }
 
-  updateOneExpense(updatedExpense){
-    let currentExpenses = {...this.state.expenses};
-    const month = this.formattedMonth(new Date(updatedExpense.timestamp).getMonth() + 1);
-    const year = this.formattedYear(new Date(updatedExpense.timestamp).getYear() + 1900);
+  updateOneExpense(updatedExpense) {
+    let currentExpenses = { ...this.state.expenses };
+    const month = this.formattedMonth(
+      new Date(updatedExpense.timestamp).getMonth() + 1
+    );
+    const year = this.formattedYear(
+      new Date(updatedExpense.timestamp).getYear() + 1900
+    );
 
-    currentExpenses[year][month] = currentExpenses[year][month].map((expense) => {
-      if(expense.id === updatedExpense.id){
-        return {...updatedExpense, new: true};
-      } else {
-        return expense;
+    currentExpenses[year][month] = currentExpenses[year][month].map(
+      (expense) => {
+        if (expense.id === updatedExpense.id) {
+          return { ...updatedExpense, new: true };
+        } else {
+          return expense;
+        }
       }
-    })  
+    );
 
     return currentExpenses;
   }
 
-  currentMonthExpenses(){
-    if(typeof(this.state.expenses[this.formattedYear(this.state.currentDate.year)]) === 'undefined'){ 
-      return []; 
+  currentMonthExpenses() {
+    if (
+      typeof this.state.expenses[
+        this.formattedYear(this.state.currentDate.year)
+      ] === "undefined"
+    ) {
+      return [];
     }
 
-    const thisYearsExpenses = this.state.expenses[this.formattedYear(this.state.currentDate.year)];
-    const thisMonthsExpenses = thisYearsExpenses[this.formattedMonth(this.state.currentDate.month)];  
+    const thisYearsExpenses =
+      this.state.expenses[this.formattedYear(this.state.currentDate.year)];
+    const thisMonthsExpenses =
+      thisYearsExpenses[this.formattedMonth(this.state.currentDate.month)];
 
-    return  thisMonthsExpenses || [];
+    return thisMonthsExpenses || [];
   }
 
-  currentYearExpenses(){
-    if(typeof(this.state.expenses[this.formattedYear(this.state.currentDate.year)]) === 'undefined'){ 
-      return []; 
+  currentYearExpenses() {
+    if (
+      typeof this.state.expenses[
+        this.formattedYear(this.state.currentDate.year)
+      ] === "undefined"
+    ) {
+      return [];
     }
 
-    return this.state.expenses[this.formattedYear(this.state.currentDate.year)] || [];
-
+    return (
+      this.state.expenses[this.formattedYear(this.state.currentDate.year)] || []
+    );
   }
 
-  formattedMonth(month){
-    return (month.toString().length === 1) ? `0${month}` : month.toString();
+  formattedMonth(month) {
+    return month.toString().length === 1 ? `0${month}` : month.toString();
   }
 
-  formattedYear(year){
+  formattedYear(year) {
     return year.toString();
   }
 
   daysThisMonth() {
-    return new Date(this.state.currentDate.year, this.state.currentDate.month, 0).getDate()
+    return new Date(
+      this.state.currentDate.year,
+      this.state.currentDate.month,
+      0
+    ).getDate();
   }
 }
