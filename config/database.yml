@@ -80,6 +80,6 @@ test:
 
 production:
   <<: *default
-  database: dk0ogn6u27iuq
-  username: azalhsgcitgazh
+  database: trakr_production
+  username: trakr
   password: <%= ENV['TRAKR_DATABASE_PASSWORD'] %>
