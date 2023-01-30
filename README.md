@@ -13,4 +13,4 @@ Trakr is built with Rails 6 and React
 
 ## Setup
 
-Let me get oriented first
+- get the master key from heroku, create `config/master.key` and paste it there
