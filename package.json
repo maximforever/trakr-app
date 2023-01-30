@@ -13,8 +13,8 @@
     "heroku-postbuild": "yarn build && yarn deploy"
   },
   "engines": {
-    "node": "12.13.1",
-    "yarn": "1.21.1"
+    "node": "^16.17",
+    "yarn": "^1.22"
   },
   "repository": {
     "type": "git",
